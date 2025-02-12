@@ -1,0 +1,18 @@
+<mat-form-field appearance="outline">
+  <mat-label>Mensaje</mat-label>
+  <textarea
+    #textArea
+    matInput
+    placeholder="Escribe tu mensaje..."
+    rows="4"
+    (input)="this.escrito = true"
+  ></textarea>
+</mat-form-field>
+<button
+  mat-raised-button
+  color="primary"
+  (click)="romperTexto(textArea.value); textArea.value = ''"
+  [disabled]="!escrito"
+>
+  Enviar
+</button>
