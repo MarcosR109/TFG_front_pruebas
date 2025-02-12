@@ -1,0 +1,17 @@
+<!-- Contenedor para las tarjetas (cuadrados) -->
+<div style="display: flex; justify-content: space-between; gap: 16px; margin-bottom: 20px;">
+    <mat-card
+      *ngFor="let square of squares"
+      style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; text-align: center;"
+    >
+      <!-- Texto del cuadrado -->
+      {{ square.text || ' ' }}
+    </mat-card>
+  </div>
+  
+  <!-- Campo de entrada de texto -->
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label></mat-label>
+    <input matInput [(ngModel)]="userInput">
+  </mat-form-field>
+  
