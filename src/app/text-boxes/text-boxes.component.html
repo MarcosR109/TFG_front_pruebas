@@ -1,35 +1,51 @@
-<!-- Contenedor para las tarjetas (cuadrados) -->
-<div
-  style="
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 20px;
-  "
->
-  <div *ngFor="let linea of lines">
-    <input
-      type="text"
-      matInput
-      placeholder="{{ linea.letra }}"
-      required
-      value="{{ linea.letra }}"
-    />
+<div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
+  Arrastra este texto
+</div>
+<div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
+  Arrastra este texto
+</div>
+
+<div class="grid-container">
+  <div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
+    Arrastra este texto
   </div>
-  <mat-card
-    *ngFor="let square of squares"
-    style="
-      width: 70px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    "
-  >
-    <!-- Texto del cuadrado -->
-    {{ square.text || " " }}
-  </mat-card>
+  <div *ngFor="let linea of lines; let lineIndex = index" class="input-group">
+    <!-- Contenedor de cuadrados (todos tendrán el mismo ancho) -->
+    <div class="square-container" [style.width]="maxWidth">
+      <mat-card
+        class="square"
+        *ngFor="let i of [1, 2, 3, 4]; let squareIndex = index"
+        cdkDropList
+        (cdkDropListDropped)="onDrop($event, lineIndex, squareIndex)"
+        [cdkDropListData]="i"
+        [style.width]="maxWidth"
+      >
+        <div
+          *ngIf="linea.letra"
+          class="square-content"
+          cdkDrag
+          [cdkDragData]="linea.letra"
+        >
+          {{ linea.letra }}
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Input con ancho igual a maxWidth -->
+    <mat-form-field
+      appearance="outline"
+      class="input-field"
+      [style.width]="maxWidth"
+    >
+      <mat-label>Texto</mat-label>
+      <input
+        matInput
+        [(ngModel)]="linea.letra"
+        placeholder="Texto recibido"
+        [style.width]="maxWidth"
+      />
+    </mat-form-field>
+  </div>
 </div>
 
 <!-- Campo de entrada de texto -->
