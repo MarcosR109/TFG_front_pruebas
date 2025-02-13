@@ -8,6 +8,7 @@ import { HeroComponent } from './hero/hero.component';
 import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
+import { CancionComponent } from './cancion/cancion.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { TextBoxesComponent } from './text-boxes/text-boxes.component';
     SquareComponent,
     TextinputComponent,
     TextBoxesComponent,
+    CancionComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

@@ -1,32 +1,22 @@
 <div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
   Arrastra este texto
 </div>
-<div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
+<div #el class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
   Arrastra este texto
 </div>
 
 <div class="grid-container">
-  <div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
-    Arrastra este texto
-  </div>
+  <!-- Contenedor de cuadrados (todos tendrán el mismo ancho) -->
   <div *ngFor="let linea of lines; let lineIndex = index" class="input-group">
-    <!-- Contenedor de cuadrados (todos tendrán el mismo ancho) -->
     <div class="square-container" [style.width]="maxWidth">
       <mat-card
         class="square"
-        *ngFor="let i of [1, 2, 3, 4]; let squareIndex = index"
+        *ngFor="let acorde of linea.acordes; let squareIndex = index"
         cdkDropList
-        (cdkDropListDropped)="onDrop($event, lineIndex, squareIndex)"
-        [cdkDropListData]="i"
-        [style.width]="maxWidth"
+        [cdkDropListData]="acorde"
       >
-        <div
-          *ngIf="linea.letra"
-          class="square-content"
-          cdkDrag
-          [cdkDragData]="linea.letra"
-        >
-          {{ linea.letra }}
+        <div class="square-content" cdkDrag [cdkDragData]="acorde.acorde">
+          {{ (acorde?.acorde || "") + (acorde?.variacion || "") }}
         </div>
       </mat-card>
     </div>
@@ -49,4 +39,3 @@
 </div>
 
 <!-- Campo de entrada de texto -->
-<app-textinput (emisor)="updateText($event)"></app-textinput>

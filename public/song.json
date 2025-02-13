@@ -1,0 +1,29 @@
+{
+  "titulo": "Amanecer en Sol",
+  "artista": "Luz del Alba",
+  "genero": "Pop",
+  "usuario": "usuario123",
+  "tonalidad": "G",
+  "lineas": [
+    {
+      "nLinea": 1,
+      "letra": "El sol brilla en la mañana",
+      "acordes": [
+        { "posicion": 0, "acorde": "G", "variacion": "" },
+        { "posicion": 1, "acorde": "", "variacion": "" },
+        { "posicion": 2, "acorde": "C", "variacion": "maj7" },
+        { "posicion": 3, "acorde": "", "variacion": "" }
+      ]
+    },
+    {
+      "nLinea": 2,
+      "letra": "Las nubes bailan sobre el mar",
+      "acordes": [
+        { "posicion": 0, "acorde": "D", "variacion": "" },
+        { "posicion": 1, "acorde": "", "variacion": "" },
+        { "posicion": 2, "acorde": "G", "variacion": "" },
+        { "posicion": 3, "acorde": "", "variacion": "" }
+      ]
+    }
+  ]
+}
