@@ -9,6 +9,7 @@ import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
 import { CancionComponent } from './cancion/cancion.component';
+import { ChordSliderComponent } from './cancion/chord-slider/chord-slider.component';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { CancionComponent } from './cancion/cancion.component';
     TextinputComponent,
     TextBoxesComponent,
     CancionComponent,
+    ChordSliderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

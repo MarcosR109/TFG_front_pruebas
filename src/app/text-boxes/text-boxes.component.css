@@ -13,7 +13,6 @@
   gap: 8px;
 }
 
-/* Los cuadrados toman el mismo ancho de maxWidth */
 .square-container {
   display: flex;
   justify-content: space-between;
@@ -21,50 +20,77 @@
 }
 
 .square {
-  width: 25%;
-  height: 40px;
-  background-color: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-}
-
-/* El mat-form-field y los inputs mantienen el mismo tamaño */
-.input-field {
+  position: relative; /* Necesario para posicionar el botón de forma absoluta */
   width: 100%;
-}
-.input-field input {
-  width: 100%;
-  text-align: left; /* Justifica el texto a la izquierda */
-  padding: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-.drag-item {
-  display: inline-block;
-  padding: 10px;
-  margin: 10px;
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  cursor: move;
-  border-radius: 4px;
-}
-.square {
-  width: 50rem; /* Tamaño fijo */
   height: 50px;
   background-color: lightgray;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 4px;
+  margin: 0 2px;
   cursor: pointer;
   border-radius: 4px;
 }
 
+.delete-button {
+  position: absolute; /* Posicionamiento absoluto */
+  top: 4px; /* Ajusta la posición vertical */
+  right: 4px; /* Ajusta la posición horizontal */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 20px; /* Tamaño del botón */
+  height: 20px; /* Tamaño del botón */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.delete-button svg {
+  width: 15px; /* Tamaño del ícono */
+  height: 15px; /* Tamaño del ícono */
+}
+
+.delete-button:hover svg {
+  fill: #ff4444; /* Cambia el color al pasar el mouse */
+}
+
 .square-content {
-  font-size: 1em;
+  font-size: 1.2em;
   text-align: center;
-  min-width: 100%; /* Asegura que no cambie de tamaño */
+}
+
+.input-field {
+  width: 100%;
+}
+
+.input-field input {
+  width: 100%;
+  text-align: left;
+  padding: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.acorde-input {
+  width: 90px; /* Ajusta el tamaño según necesites */
+  font-size: 0.9em; /* Tamaño de fuente más pequeño */
+}
+
+.acorde-input .mat-form-field-wrapper {
+  padding: 5px; /* Elimina el padding interno */
+}
+
+.acorde-input .mat-form-field-outline {
+  border-radius: 3px; /* Bordes redondeados */
+}
+
+.acorde-input .mat-input-element {
+  text-align: center; /* Centra el texto */
+  padding: 4px; /* Ajusta el padding */
+}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  height: 30px; /* Reduce la altura del input */
 }

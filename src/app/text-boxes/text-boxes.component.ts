@@ -9,6 +9,8 @@ import { TextinputComponent } from '../textinput/textinput.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Linea } from '../cancion/linea';
 import { Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { acordesPorTonalidad, variaciones } from '../cancion/utils';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -23,33 +25,21 @@ import { Input } from '@angular/core';
     MatButtonModule,
     TextinputComponent,
     DragDropModule,
+    MatIconModule,
   ],
 })
 export class TextBoxesComponent {
   @Input() lines?: Linea[] = [];
   maxWidth: string = '10rem'; // Ancho inicial mínimo
 
-  /*updateText(_$event: string[]): void {
-    console.log('Updating text', _$event);
-    this.lines = _$event.map((linea) => ({ letra: linea }));
-    this.updateMaxWidth();
-  }*/
-
-  /*updateMaxWidth(): void {
-    const charWidth = 9; // Ajustado para mejorar el tamaño
-    const minWidth = 100; // Mínimo tamaño en px
-    const maxWidth = 500; // Máximo tamaño en px
-    let newWidth = Math.max(
-      ...this.lines.map((l) => l.letra.length * charWidth),
-      minWidth
-    );
-    this.maxWidth = `${Math.min(newWidth, maxWidth)}px`;
-  }*/
-  /*
-  onDrop(event: any, lineIndex: number, squareIndex: number): void {
-    const text = event.item.data;
-    this.lines[lineIndex].letra = this.lines[lineIndex].letra || '';
-    this.lines[lineIndex].letra += ` ${text}`;
+  // Función para eliminar un acorde
+  eliminarAcorde(nLinea: number, squareIndex: number) {
+    const linea = this.lines?.find((line) => line.nLinea === nLinea);
+    if (linea) {
+      const acorde = linea.acordes[squareIndex];
+      console.log(acorde);
+      acorde.acorde = ''; // Limpiamos el acorde
+      acorde.variacion = ''; // Limpiamos la variación
+    }
   }
-*/
 }

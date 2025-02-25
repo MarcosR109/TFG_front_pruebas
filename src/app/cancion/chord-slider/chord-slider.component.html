@@ -1,0 +1,26 @@
+<!-- Selección de tonalidades en forma de grid -->
+<div class="tonalidades-container">
+  <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-tile
+      *ngFor="let tonalidad of tonalidades"
+      (click)="selectTonalidad(tonalidad)"
+      [class.selected]="tonalidad === selectedTonalidad"
+    >
+      <div class="tile-content">
+        {{ tonalidad }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+<!-- Visualización de los acordes para la tonalidad seleccionada -->
+<div class="chords-container">
+  <h3>Acordes en {{ selectedTonalidad }}</h3>
+  <mat-grid-list cols="7" rowHeight="100px">
+    <mat-grid-tile *ngFor="let chord of acordes" cdkDrag>
+      <div class="tile-content">
+        {{ chord }}
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

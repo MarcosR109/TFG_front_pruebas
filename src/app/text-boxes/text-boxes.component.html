@@ -1,13 +1,5 @@
-<div class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
-  Arrastra este texto
-</div>
-<div #el class="drag-item" cdkDrag [cdkDragData]="'Texto corto'">
-  Arrastra este texto
-</div>
-
 <div class="grid-container">
-  <!-- Contenedor de cuadrados (todos tendrán el mismo ancho) -->
-  <div *ngFor="let linea of lines; let lineIndex = index" class="input-group">
+  <div *ngFor="let linea of lines" class="input-group">
     <div class="square-container" [style.width]="maxWidth">
       <mat-card
         class="square"
@@ -15,27 +7,39 @@
         cdkDropList
         [cdkDropListData]="acorde"
       >
-        <div class="square-content" cdkDrag [cdkDragData]="acorde.acorde">
-          {{ (acorde?.acorde || "") + (acorde?.variacion || "") }}
+        <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
+        <button
+          *ngIf="acorde.acorde"
+          class="delete-button"
+          (click)="eliminarAcorde(linea.nLinea, squareIndex)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="15px"
+            viewBox="0 -960 960 960"
+            width="15px"
+            fill="#999999"
+          >
+            <path
+              d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+            />
+          </svg>
+        </button>
+        <!-- Contenido del acorde -->
+        <div class="square-content">
+          {{ acorde.acorde
+          }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
       </mat-card>
     </div>
-
-    <!-- Input con ancho igual a maxWidth -->
+    <!-- Campo de entrada de texto -->
     <mat-form-field
       appearance="outline"
       class="input-field"
       [style.width]="maxWidth"
     >
       <mat-label>Texto</mat-label>
-      <input
-        matInput
-        [(ngModel)]="linea.letra"
-        placeholder="Texto recibido"
-        [style.width]="maxWidth"
-      />
+      <input matInput [(ngModel)]="linea.letra" placeholder="Texto recibido" />
     </mat-form-field>
   </div>
 </div>
-
-<!-- Campo de entrada de texto -->
