@@ -9,10 +9,10 @@
       "nLinea": 1,
       "letra": "El sol brilla en la mañana",
       "acordes": [
-        { "posicion": 0, "acorde": "G", "variacion": "" },
-        { "posicion": 1, "acorde": "", "variacion": "" },
-        { "posicion": 2, "acorde": "C", "variacion": "maj7" },
-        { "posicion": 3, "acorde": "", "variacion": "" }
+        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "C", "variacion": "maj7", "grado": 1 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
       ]
     },
     {

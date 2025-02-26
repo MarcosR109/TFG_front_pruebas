@@ -4,8 +4,6 @@
       <mat-card
         class="square"
         *ngFor="let acorde of linea.acordes; let squareIndex = index"
-        cdkDropList
-        [cdkDropListData]="acorde"
       >
         <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
         <button
@@ -26,7 +24,7 @@
           </svg>
         </button>
         <!-- Contenido del acorde -->
-        <div class="square-content">
+        <div class="square-content" cdkDrop>
           {{ acorde.acorde
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
@@ -43,3 +41,41 @@
     </mat-form-field>
   </div>
 </div>
+<aside>
+  <div class="contenedor">
+    <!-- Contenedor de Acordes (Expandible con animación) -->
+    <div
+      class="acordes-container"
+      [@expandir]="tonalidadExpandida ? 'expandido' : 'colapsado'"
+    >
+      <div
+        *ngFor="
+          let acorde of getAcordesDeTonalidad(tonalidadExpandida);
+          let i = index
+        "
+        [dndDraggable]="acorde"
+        (dndCopied)="onDragged($event, 'copy')"
+        (dndEnd)="onDragEnd($event)"
+        (dndLinked)="onDragged($event, 'link')"
+        (dndMoved)="onDragged($event, 'move')"
+        (dndStart)="onDragStart($event)"
+        (dndCanceled)="onDragged($event, 'none')"
+        class="acorde-box"
+      >
+        {{ acorde }}
+      </div>
+    </div>
+
+    <!-- Lista de Tonalidades -->
+    <div class="tonalidades-container">
+      <div
+        *ngFor="let tonalidad of tonalidades"
+        class="tonalidad-box"
+        [class.seleccionada]="tonalidadExpandida === tonalidad"
+        (click)="seleccionarTonalidad(tonalidad)"
+      >
+        {{ tonalidad }}
+      </div>
+    </div>
+  </div>
+</aside>
