@@ -4,7 +4,8 @@
       <mat-card
         class="square"
         *ngFor="let acorde of linea.acordes; let squareIndex = index"
-        dndDropzone
+        [dndDropzone]="['ACORDES']"
+        (dndDrop)="onDrop($event)"
         (dndDragover)="onDragover($event)"
         (dndDrop)="onDrop($event)"
       >
@@ -56,12 +57,14 @@
           let acorde of getAcordesDeTonalidad(tonalidadExpandida);
           let i = index
         "
+        [dndType]="'ACORDES'"
         [dndDraggable]="acorde"
-        (dndStart)="onDragStart($event)"
-        (dndCopied)="onDragged($event, 'copy')"
-        (dndEnd)="onDragEnd($event)"
-        (dndStart)="onDragStart($event)"
-        (dndCanceled)="onDragged($event, 'none')"
+        [dndEffectAllowed]="'all'"
+        [dndDisableIf]="false"
+        (dndStart)="onDragStart($event, acorde)"
+        (dndCopied)="onDraggableCopied($event, acorde)"
+        (dndLinked)="onDraggableLinked($event, acorde)"
+        (dndMoved)="onDraggableMoved($event, acorde)"
         class="acorde-box"
       >
         {{ acorde.acorde }}

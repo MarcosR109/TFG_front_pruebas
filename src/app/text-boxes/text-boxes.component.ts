@@ -26,6 +26,7 @@ import {
   DndModule,
   EffectAllowed,
 } from 'ngx-drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Acorde } from '../cancion/acorde';
 @Component({
   selector: 'app-text-boxes',
@@ -41,6 +42,7 @@ import { Acorde } from '../cancion/acorde';
     MatButtonModule,
     MatIconModule,
     DndModule,
+    DragDropModule,
   ],
   animations: [
     trigger('expandir', [
@@ -94,7 +96,7 @@ export class TextBoxesComponent {
   }
 
   onDragover(event: DragEvent) {
-    console.log('dragover', JSON.stringify(event, null, 2));
+    console.log('dragover', event, null, 2);
   }
 
   getAcordesDeTonalidad(tonalidad: string | null): Acorde[] {
@@ -104,30 +106,46 @@ export class TextBoxesComponent {
       ([grado, acorde]) => ({
         acorde: typeof acorde === 'string' ? acorde : acorde.acorde, // Si es string, lo convierte en objeto
         variacion: '',
-        posicionEnCompas: -1,
-        grado: Number(grado), // Convertimos el grado a número
+        grado: acorde.grado,
+        effect: 'all', // Convertimos el grado a número
       })
     );
   }
 
-  onDragStart(event: DragEvent) {
-    console.log(JSON.stringify(event, null, 2));
+  onDragStart(event: DragEvent, acorde: Acorde) {
+    console.log(event, null, 2);
+    console.log(acorde);
     this.lastDropEvent = null;
     this.currentDraggableEvent = event;
   }
 
   onDragged($event: DragEvent, effect: string) {
-    console.log(JSON.stringify($event, null, 2));
+    console.log($event, null, 2);
     console.log(`Drag ended with effect "${effect}"!`);
   }
 
   onDragEnd(event: DragEvent) {
     this.currentDraggableEvent = event;
-    console.log(`Drag ended!`, JSON.stringify(event, null, 2));
+    console.log(`Drag ended!`, event, null);
   }
 
   onDrop(event: DndDropEvent) {
-    console.log(JSON.stringify(event, null, 2));
+    console.log(event, null, 2);
     this.lastDropEvent = event;
+  }
+  onDraggableCopied(event: DragEvent, acorde: Acorde) {
+    console.log('draggable copied', JSON.stringify(event, null, 2));
+  }
+
+  onDraggableLinked(event: DragEvent, acorde: Acorde) {
+    console.log('draggable linked', JSON.stringify(event, null, 2));
+  }
+
+  onDraggableMoved(event: DragEvent, acorde: Acorde) {
+    console.log('draggable moved', JSON.stringify(event, null, 2));
+  }
+
+  onDragCanceled(event: DragEvent, acorde: Acorde) {
+    console.log('drag cancelled', JSON.stringify(event, null, 2));
   }
 }

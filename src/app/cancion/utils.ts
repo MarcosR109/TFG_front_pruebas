@@ -5,7 +5,7 @@ interface AcordesPorTonalidad {
 }
 export const acordesPorTonalidad: AcordesPorTonalidad = {
   C: [
-    { acorde: 'C', variacion: '' },
+    { acorde: 'C', grado: 1 },
     { acorde: 'Dm', grado: 2 },
     { acorde: 'Em', grado: 3 },
     { acorde: 'F', grado: 4 },

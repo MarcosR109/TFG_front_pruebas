@@ -3,4 +3,5 @@ export interface Acorde {
   variacion?: string;
   posicionEnCompas?: number;
   grado?: number;
+  effect?: string;
 }

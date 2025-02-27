@@ -176,6 +176,10 @@ aside {
   align-items: center;
   justify-content: center;
 }
-.cdk-drag-placeholder {
-  /*opacity: 0;*/
+.acorde-box {
+  user-select: none;
+  cursor: grab;
+}
+.acorde-box:active {
+  cursor: grabbing;
 }
