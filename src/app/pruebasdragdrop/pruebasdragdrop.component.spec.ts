@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChordSliderComponent } from './chord-slider.component';
+import { PruebasdragdropComponent } from './pruebasdragdrop.component';
 
-describe('ChordSliderComponent', () => {
-  let component: ChordSliderComponent;
-  let fixture: ComponentFixture<ChordSliderComponent>;
+describe('PruebasdragdropComponent', () => {
+  let component: PruebasdragdropComponent;
+  let fixture: ComponentFixture<PruebasdragdropComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChordSliderComponent]
+      imports: [PruebasdragdropComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChordSliderComponent);
+    fixture = TestBed.createComponent(PruebasdragdropComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

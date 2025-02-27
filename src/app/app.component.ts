@@ -9,8 +9,7 @@ import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
 import { CancionComponent } from './cancion/cancion.component';
-import { ChordSliderComponent } from './cancion/chord-slider/chord-slider.component';
-
+import { PruebasdragdropComponent } from './pruebasdragdrop/pruebasdragdrop.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -24,7 +23,7 @@ import { ChordSliderComponent } from './cancion/chord-slider/chord-slider.compon
     TextinputComponent,
     TextBoxesComponent,
     CancionComponent,
-    ChordSliderComponent,
+    PruebasdragdropComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

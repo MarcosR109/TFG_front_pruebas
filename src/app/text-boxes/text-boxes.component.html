@@ -4,6 +4,9 @@
       <mat-card
         class="square"
         *ngFor="let acorde of linea.acordes; let squareIndex = index"
+        dndDropzone
+        (dndDragover)="onDragover($event)"
+        (dndDrop)="onDrop($event)"
       >
         <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
         <button
@@ -24,7 +27,7 @@
           </svg>
         </button>
         <!-- Contenido del acorde -->
-        <div class="square-content" cdkDrop>
+        <div class="square-content">
           {{ acorde.acorde
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
@@ -54,15 +57,14 @@
           let i = index
         "
         [dndDraggable]="acorde"
+        (dndStart)="onDragStart($event)"
         (dndCopied)="onDragged($event, 'copy')"
         (dndEnd)="onDragEnd($event)"
-        (dndLinked)="onDragged($event, 'link')"
-        (dndMoved)="onDragged($event, 'move')"
         (dndStart)="onDragStart($event)"
         (dndCanceled)="onDragged($event, 'none')"
         class="acorde-box"
       >
-        {{ acorde }}
+        {{ acorde.acorde }}
       </div>
     </div>
 

@@ -18,7 +18,6 @@ import {
   trigger,
 } from '@angular/animations';
 import {
-  DndDraggableDirective,
   DndDragImageOffsetFunction,
   DndDragImageRefDirective,
   DndDropEvent,
@@ -41,11 +40,7 @@ import { Acorde } from '../cancion/acorde';
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    DndDraggableDirective,
     DndModule,
-    MatCardModule,
-    DndDraggableDirective,
-    MatIconModule,
   ],
   animations: [
     trigger('expandir', [
@@ -75,9 +70,8 @@ export class TextBoxesComponent {
   /**
    *
    */
-  constructor(private dnd: DndDraggableDirective) {}
+  constructor() {}
   public lastDropEvent: DndDropEvent | null = null;
-
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
   // Función para eliminar un acorde
@@ -90,37 +84,50 @@ export class TextBoxesComponent {
       acorde.variacion = ''; // Limpiamos la variación
     }
   }
+
   tonalidades = Object.keys(acordesPorTonalidad);
   tonalidadExpandida: string | null = null;
+
   seleccionarTonalidad(tonalidad: string) {
     this.tonalidadExpandida =
       this.tonalidadExpandida === tonalidad ? null : tonalidad;
   }
 
-  getAcordesDeTonalidad(tonalidad: string | null): string[] {
-    return tonalidad ? Object.values(acordesPorTonalidad[tonalidad]) : [];
+  onDragover(event: DragEvent) {
+    console.log('dragover', JSON.stringify(event, null, 2));
+  }
+
+  getAcordesDeTonalidad(tonalidad: string | null): Acorde[] {
+    if (!tonalidad || !acordesPorTonalidad[tonalidad]) return [];
+
+    return Object.entries(acordesPorTonalidad[tonalidad]).map(
+      ([grado, acorde]) => ({
+        acorde: typeof acorde === 'string' ? acorde : acorde.acorde, // Si es string, lo convierte en objeto
+        variacion: '',
+        posicionEnCompas: -1,
+        grado: Number(grado), // Convertimos el grado a número
+      })
+    );
   }
 
   onDragStart(event: DragEvent) {
-    console.log(event);
+    console.log(JSON.stringify(event, null, 2));
     this.lastDropEvent = null;
-    this.currentDragEffectMsg = '';
     this.currentDraggableEvent = event;
   }
 
   onDragged($event: DragEvent, effect: string) {
-    console.log(event);
-    this.currentDragEffectMsg = `Drag ended with effect "${effect}"!`;
+    console.log(JSON.stringify($event, null, 2));
+    console.log(`Drag ended with effect "${effect}"!`);
   }
 
   onDragEnd(event: DragEvent) {
-    console.log(event);
     this.currentDraggableEvent = event;
-    console.log(`Drag ended!`, undefined, { duration: 2000 });
+    console.log(`Drag ended!`, JSON.stringify(event, null, 2));
   }
 
   onDrop(event: DndDropEvent) {
-    console.log(event);
+    console.log(JSON.stringify(event, null, 2));
     this.lastDropEvent = event;
   }
 }
