@@ -31,7 +31,6 @@
   cursor: pointer;
   border-radius: 4px;
 }
-
 .delete-button {
   position: absolute; /* Posicionamiento absoluto */
   top: 4px; /* Ajusta la posición vertical */
@@ -63,7 +62,7 @@
 }
 
 .input-field {
-  width: 100%;
+  width: 100px;
 }
 
 .input-field input {
@@ -74,8 +73,15 @@
   box-sizing: border-box;
 }
 
+.acorde-input input {
+  width: 100% !important; /* Asegura que el input no exceda el contenedor */
+  text-align: center;
+  padding: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Evita que el padding afecte el tamaño total */
+}
 .acorde-input {
-  width: 90px; /* Ajusta el tamaño según necesites */
+  width: 90px !important; /* Fuerza el tamaño del contenedor */ /* Ajusta el tamaño según necesites */
   font-size: 0.9em; /* Tamaño de fuente más pequeño */
 }
 
@@ -98,15 +104,16 @@
 aside {
   position: fixed;
   right: 0;
-  top: 0;
+  margin-right: 10px;
+  top: 50%; /* Lo coloca en la mitad */
+  transform: translateY(-50%); /* Lo centra perfectamente */
   height: auto;
   background: #f5f5f5;
-  overflow: hidden;
   transition: width 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra estilo Material Design */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
 }
 
@@ -176,10 +183,65 @@ aside {
   align-items: center;
   justify-content: center;
 }
-.acorde-box {
-  user-select: none;
-  cursor: grab;
+.variaciones-container {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  background: rgba(245, 245, 245, 0.95);
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 10px;
+  z-index: 1000;
+  transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out;
+
+  bottom: 10px;
+  &.arriba {
+    top: 0px;
+    bottom: unset;
+    margin-top: 10px;
+  }
 }
-.acorde-box:active {
-  cursor: grabbing;
+
+.variaciones-slider {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f5f5f5;
+}
+
+.variaciones-slider::-webkit-scrollbar {
+  height: 6px;
+}
+
+.variaciones-slider::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 10px;
+}
+
+.variacion-btn {
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  min-width: 50px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+  user-select: none;
+  background: #e0e0e0;
+  border: none;
+  outline: none;
+}
+
+.variacion-btn:hover {
+  background: #d6d6d6;
 }

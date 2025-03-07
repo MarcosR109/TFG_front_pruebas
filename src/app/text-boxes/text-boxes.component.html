@@ -1,13 +1,11 @@
 <div class="grid-container">
-  <div *ngFor="let linea of lines" class="input-group">
+  <div *ngFor="let linea of lines" class="input-group" [style.width]="maxWidth">
     <div class="square-container" [style.width]="maxWidth">
       <mat-card
         class="square"
         *ngFor="let acorde of linea.acordes; let squareIndex = index"
-        [dndDropzone]="['ACORDES']"
-        (dndDrop)="onDrop($event)"
-        (dndDragover)="onDragover($event)"
-        (dndDrop)="onDrop($event)"
+        dndDropzone
+        (dndDrop)="onDrop($event, linea, squareIndex)"
       >
         <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
         <button
@@ -40,7 +38,6 @@
       class="input-field"
       [style.width]="maxWidth"
     >
-      <mat-label>Texto</mat-label>
       <input matInput [(ngModel)]="linea.letra" placeholder="Texto recibido" />
     </mat-form-field>
   </div>
@@ -55,17 +52,10 @@
       <div
         *ngFor="
           let acorde of getAcordesDeTonalidad(tonalidadExpandida);
-          let i = index
+          trackBy: trackByAcorde
         "
-        [dndType]="'ACORDES'"
-        [dndDraggable]="acorde"
-        [dndEffectAllowed]="'all'"
-        [dndDisableIf]="false"
-        (dndStart)="onDragStart($event, acorde)"
-        (dndCopied)="onDraggableCopied($event, acorde)"
-        (dndLinked)="onDraggableLinked($event, acorde)"
-        (dndMoved)="onDraggableMoved($event, acorde)"
         class="acorde-box"
+        [dndDraggable]="acorde"
       >
         {{ acorde.acorde }}
       </div>
@@ -84,3 +74,14 @@
     </div>
   </div>
 </aside>
+<div class="variaciones-container" [class.arriba]="menuArriba">
+  <div class="variaciones-slider">
+    <button
+      *ngFor="let variacion of variaciones"
+      class="variacion-btn"
+      [dndDraggable]="variacion"
+    >
+      {{ variacion }}
+    </button>
+  </div>
+</div>

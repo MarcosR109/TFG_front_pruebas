@@ -1,0 +1,16 @@
+.submit-container {
+  width: 100%; /* O un ancho específico si el contenido es estrecho */
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Espacio con el contenido */
+  margin-bottom: 20px; /* Espacio con el contenido */
+}
+
+button {
+  min-width: 200px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px; /* Bordes Material Design */
+  margin-bottom: 20px; /* Espacio con el contenido */
+}

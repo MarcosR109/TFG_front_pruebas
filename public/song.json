@@ -1,28 +1,118 @@
 {
-  "titulo": "Amanecer en Sol",
-  "artista": "Luz del Alba",
-  "genero": "Pop",
+  "titulo": "Rocket Man",
+  "artista": "Elton John",
+  "genero": "Rock",
   "usuario": "usuario123",
-  "tonalidad": "G",
+  "tonalidad": "C",
   "lineas": [
     {
       "nLinea": 1,
-      "letra": "El sol brilla en la mañana",
+      "letra": "She packed my bags last night, pre-flight",
       "acordes": [
-        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
         { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "C", "variacion": "maj7", "grado": 1 },
+        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
         { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
       ]
     },
     {
       "nLinea": 2,
-      "letra": "Las nubes bailan sobre el mar",
+      "letra": "Zero hour, 9 a.m.",
       "acordes": [
-        { "posicion": 0, "acorde": "D", "variacion": "" },
-        { "posicion": 1, "acorde": "", "variacion": "" },
-        { "posicion": 2, "acorde": "G", "variacion": "" },
-        { "posicion": 3, "acorde": "", "variacion": "" }
+        { "posicion": 0, "acorde": "Am", "variacion": "", "grado": 6 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "F", "variacion": "", "grado": 4 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 3,
+      "letra": "And I'm gonna be high as a kite by then",
+      "acordes": [
+        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 4,
+      "letra": "I miss the Earth so much, I miss my wife",
+      "acordes": [
+        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 5,
+      "letra": "It's lonely out in space",
+      "acordes": [
+        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "Am", "variacion": "", "grado": 6 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 6,
+      "letra": "On such a timeless flight",
+      "acordes": [
+        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 7,
+      "letra": "And I think it's gonna be a long, long time",
+      "acordes": [
+        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 8,
+      "letra": "'Til touchdown brings me 'round again to find",
+      "acordes": [
+        { "posicion": 0, "acorde": "Am", "variacion": "", "grado": 6 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "F", "variacion": "", "grado": 4 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 9,
+      "letra": "I'm not the man they think I am at home",
+      "acordes": [
+        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 10,
+      "letra": "Oh, no, no, no, I'm a rocket man",
+      "acordes": [
+        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+      ]
+    },
+    {
+      "nLinea": 11,
+      "letra": "Rocket man, burning out his fuse up here alone",
+      "acordes": [
+        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 2, "acorde": "Am", "variacion": "", "grado": 6 },
+        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
       ]
     }
   ]

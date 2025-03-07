@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, HostListener, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -68,14 +68,40 @@ import { Acorde } from '../cancion/acorde';
 })
 export class TextBoxesComponent {
   @Input() lines?: Linea[] = [];
-  maxWidth: string = '10rem'; // Ancho inicial mínimo
+
   /**
    *
    */
   constructor() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
+      this.calcularMaxWidth();
+    }
+  }
+  calcularMaxWidth() {
+    const maxLength = Math.max(
+      ...(this.lines?.map((linea) => linea.letra?.length || 0) || [])
+    );
+    this.maxWidth = `${maxLength * 10}px`; // Ajusta el factor según necesidad
+    console.log(`Ancho máximo calculado: ${this.maxWidth}`);
+  }
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
+  chord: Acorde = { acorde: 'C', variacion: '', grado: 1, effect: 'all' };
+  variaciones = variaciones;
+  menuArriba = false; // Estado del menú (false = abajo, true = arriba)
+  maxWidth: string = '25rem'; // Ancho inicial mínimo
+  tonalidades = Object.keys(acordesPorTonalidad);
+  tonalidadExpandida: string | null = null;
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const fullHeight = document.documentElement.scrollHeight;
+    // Si el usuario llega al final de la página, subimos el menú
+    this.menuArriba = scrollTop + windowHeight >= fullHeight - 10;
+  }
   // Función para eliminar un acorde
   eliminarAcorde(nLinea: number, squareIndex: number) {
     const linea = this.lines?.find((line) => line.nLinea === nLinea);
@@ -86,19 +112,10 @@ export class TextBoxesComponent {
       acorde.variacion = ''; // Limpiamos la variación
     }
   }
-
-  tonalidades = Object.keys(acordesPorTonalidad);
-  tonalidadExpandida: string | null = null;
-
   seleccionarTonalidad(tonalidad: string) {
     this.tonalidadExpandida =
       this.tonalidadExpandida === tonalidad ? null : tonalidad;
   }
-
-  onDragover(event: DragEvent) {
-    console.log('dragover', event, null, 2);
-  }
-
   getAcordesDeTonalidad(tonalidad: string | null): Acorde[] {
     if (!tonalidad || !acordesPorTonalidad[tonalidad]) return [];
 
@@ -107,11 +124,13 @@ export class TextBoxesComponent {
         acorde: typeof acorde === 'string' ? acorde : acorde.acorde, // Si es string, lo convierte en objeto
         variacion: '',
         grado: acorde.grado,
-        effect: 'all', // Convertimos el grado a número
+        effect: 'copy',
       })
     );
   }
-
+  trackByAcorde(index: number, item: Acorde) {
+    return item.acorde; // O un identificador único
+  }
   onDragStart(event: DragEvent, acorde: Acorde) {
     console.log(event, null, 2);
     console.log(acorde);
@@ -128,10 +147,18 @@ export class TextBoxesComponent {
     this.currentDraggableEvent = event;
     console.log(`Drag ended!`, event, null);
   }
-
-  onDrop(event: DndDropEvent) {
-    console.log(event, null, 2);
-    this.lastDropEvent = event;
+  onDrop(event: DndDropEvent, linea: Linea, squareIndex: number) {
+    console.log('Acorde soltado:', event.data.acorde);
+    console.log('Variación soltada:', event.data);
+    console.log('Drop event:', event);
+    console.log(linea);
+    console.log(this.lines);
+    if (event.data.acorde) {
+      linea.acordes[squareIndex].acorde = event.data.acorde;
+    } else if (linea.acordes[squareIndex].acorde) {
+      linea.acordes[squareIndex].variacion = event.data;
+    }
+    console.log(linea);
   }
   onDraggableCopied(event: DragEvent, acorde: Acorde) {
     console.log('draggable copied', JSON.stringify(event, null, 2));
@@ -148,4 +175,8 @@ export class TextBoxesComponent {
   onDragCanceled(event: DragEvent, acorde: Acorde) {
     console.log('drag cancelled', JSON.stringify(event, null, 2));
   }
+  /*onDragover(event: DragEvent, acorde: Acorde) {
+    console.log(acorde);
+    console.log('dragover', JSON.stringify(event, null, 2));
+  }*/
 }
