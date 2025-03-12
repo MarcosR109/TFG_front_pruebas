@@ -9,9 +9,9 @@
       "nLinea": 1,
       "letra": "She packed my bags last night, pre-flight",
       "acordes": [
-        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
+        { "posicion": 0, "acorde": "Eb", "variacion": "", "grado": 1 },
         { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
+        { "posicion": 2, "acorde": "Ab", "variacion": "", "grado": 5 },
         { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
       ]
     },
@@ -110,9 +110,9 @@
       "letra": "Rocket man, burning out his fuse up here alone",
       "acordes": [
         { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
+        { "posicion": 1, "acorde": "Gb", "variacion": "", "grado": 0 },
         { "posicion": 2, "acorde": "Am", "variacion": "", "grado": 6 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        { "posicion": 3, "acorde": "Ab", "variacion": "", "grado": 0 }
       ]
     }
   ]

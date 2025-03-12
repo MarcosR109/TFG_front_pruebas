@@ -1,4 +1,10 @@
-import { Component, input, HostListener, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  input,
+  HostListener,
+  SimpleChanges,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,6 +34,9 @@ import {
 } from 'ngx-drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Acorde } from '../cancion/acorde';
+import { elementAt } from 'rxjs';
+import { ConfirmComponent } from '../confirm/confirm.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -68,16 +77,35 @@ import { Acorde } from '../cancion/acorde';
 })
 export class TextBoxesComponent {
   @Input() lines?: Linea[] = [];
-
+  public lastDropEvent: DndDropEvent | null = null;
+  private currentDraggableEvent?: Event;
+  private currentDragEffectMsg?: string;
+  variaciones = variaciones;
+  menuArriba = false; // Estado del menú (false = abajo, true = arriba)
+  maxWidth: string = '25rem'; // Ancho inicial mínimo
+  tonalidades = Object.keys(acordesPorTonalidad);
+  tonalidadExpandida: string | null = null;
+  @HostListener('window:scroll', [])
+  botonBloqueado = false;
+  botonBorrarBloqueado = false;
+  acordesV = [
+    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
+    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
+    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
+    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
+  ];
+  preferirSostenidos = true;
   /**
    *
    */
-  constructor() {}
+  constructor(private cdRef: ChangeDetectorRef) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
       this.calcularMaxWidth();
     }
   }
+
   calcularMaxWidth() {
     const maxLength = Math.max(
       ...(this.lines?.map((linea) => linea.letra?.length || 0) || [])
@@ -85,16 +113,61 @@ export class TextBoxesComponent {
     this.maxWidth = `${maxLength * 10}px`; // Ajusta el factor según necesidad
     console.log(`Ancho máximo calculado: ${this.maxWidth}`);
   }
-  public lastDropEvent: DndDropEvent | null = null;
-  private currentDraggableEvent?: Event;
-  private currentDragEffectMsg?: string;
-  chord: Acorde = { acorde: 'C', variacion: '', grado: 1, effect: 'all' };
-  variaciones = variaciones;
-  menuArriba = false; // Estado del menú (false = abajo, true = arriba)
-  maxWidth: string = '25rem'; // Ancho inicial mínimo
-  tonalidades = Object.keys(acordesPorTonalidad);
-  tonalidadExpandida: string | null = null;
-  @HostListener('window:scroll', [])
+  transformToEnarmonic(acorde: string): string {
+    const enarmonicMap: { [key: string]: string } = {
+      'C#': 'Db',
+      'D#': 'Eb',
+      'F#': 'Gb',
+      'G#': 'Ab',
+      'A#': 'Bb',
+      Eb: 'D#',
+      Db: 'C#',
+      Gb: 'F#',
+      Ab: 'G#',
+      Bb: 'A#',
+    };
+    return this.preferirSostenidos ? enarmonicMap[acorde] || acorde : acorde;
+  }
+
+  togglePreferirSostenidos() {
+    console.log(this.preferirSostenidos);
+    this.preferirSostenidos = !this.preferirSostenidos;
+    this.cdRef.detectChanges();
+  }
+  agregarLineaDebajo(index: number): void {
+    console.log(this.preferirSostenidos);
+    if (this.botonBloqueado) return; // Evita doble interacción
+    this.botonBloqueado = true;
+
+    setTimeout(() => (this.botonBloqueado = false), 500); // Desbloquea después de 500ms
+
+    const nuevaLinea = {
+      nLinea: index + 1,
+      letra: '',
+      acordes: this.acordesV,
+    };
+
+    this.lines?.splice(index + 1, 0, nuevaLinea);
+    this.lines?.forEach((element, index) => {
+      element.nLinea = index; // Actualiza el número de línea con el índice
+    });
+  }
+  eliminarLinea(index: number) {
+    if (this.botonBorrarBloqueado) return; // Evita doble interacción
+    this.botonBorrarBloqueado = true;
+
+    setTimeout(() => (this.botonBorrarBloqueado = false), 100);
+
+    // Eliminar la línea en la posición correcta
+    this.lines?.splice(index, 1);
+
+    // Reasignar los índices de las líneas restantes
+    this.lines?.forEach((linea, idx) => {
+      linea.nLinea = idx;
+    });
+
+    console.log(this.lines);
+  }
   onScroll(): void {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;

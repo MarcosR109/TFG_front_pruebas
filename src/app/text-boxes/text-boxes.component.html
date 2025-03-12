@@ -1,5 +1,10 @@
+<button mat-raised-button (click)="togglePreferirSostenidos()"># / b</button>
 <div class="grid-container">
-  <div *ngFor="let linea of lines" class="input-group" [style.width]="maxWidth">
+  <div
+    *ngFor="let linea of lines; let index = index"
+    class="input-group"
+    [style.width]="maxWidth"
+  >
     <div class="square-container" [style.width]="maxWidth">
       <mat-card
         class="square"
@@ -27,7 +32,7 @@
         </button>
         <!-- Contenido del acorde -->
         <div class="square-content">
-          {{ acorde.acorde
+          {{ transformToEnarmonic(acorde.acorde || "")
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
       </mat-card>
@@ -40,6 +45,35 @@
     >
       <input matInput [(ngModel)]="linea.letra" placeholder="Texto recibido" />
     </mat-form-field>
+    <div class="button-container">
+      <button
+        mat-raised-button
+        class="add-line-btn"
+        color="secondary"
+        (click)="agregarLineaDebajo(index)"
+      >
+        +
+      </button>
+      <button
+        mat-raised-button
+        color="secondary"
+        class="delete-line-btn"
+        (click)="eliminarLinea(index)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 0 24 24"
+          width="20px"
+          fill="#000000"
+        >
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path
+            d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 <aside>
@@ -74,7 +108,7 @@
     </div>
   </div>
 </aside>
-<div class="variaciones-container" [class.arriba]="menuArriba">
+<!--<div class="variaciones-container" [class.arriba]="menuArriba">
   <div class="variaciones-slider">
     <button
       *ngFor="let variacion of variaciones"
@@ -84,4 +118,4 @@
       {{ variacion }}
     </button>
   </div>
-</div>
+</div>-->
