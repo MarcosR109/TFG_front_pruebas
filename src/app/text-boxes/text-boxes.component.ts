@@ -37,6 +37,12 @@ import { Acorde } from '../cancion/acorde';
 import { elementAt } from 'rxjs';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToggleButtonModule } from 'primeng/togglebutton'; // Importa el módulo
+import '@material/web/button/filled-button.js';
+import '@material/web/button/outlined-button.js';
+import '@material/web/checkbox/checkbox.js';
+import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
+import { MdOutlinedIconButton } from '@material/web/iconbutton/outlined-icon-button.js';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
