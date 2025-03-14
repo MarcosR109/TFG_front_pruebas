@@ -23,26 +23,12 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  DndDragImageOffsetFunction,
-  DndDragImageRefDirective,
-  DndDropEvent,
-  DndDropzoneDirective,
-  DndHandleDirective,
-  DndModule,
-  EffectAllowed,
-} from 'ngx-drag-drop';
+import { DndDropEvent, DndModule } from 'ngx-drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Acorde } from '../cancion/acorde';
-import { elementAt } from 'rxjs';
-import { ConfirmComponent } from '../confirm/confirm.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ToggleButtonModule } from 'primeng/togglebutton'; // Importa el módulo
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/checkbox/checkbox.js';
-import { MdOutlinedTextField } from '@material/web/textfield/outlined-text-field.js';
-import { MdOutlinedIconButton } from '@material/web/iconbutton/outlined-icon-button.js';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -94,12 +80,7 @@ export class TextBoxesComponent {
   @HostListener('window:scroll', [])
   botonBloqueado = false;
   botonBorrarBloqueado = false;
-  acordesV = [
-    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
-    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
-    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
-    { acorde: '', variacion: '', grado: 0, effect: 'copy' },
-  ];
+
   preferirSostenidos = true;
   /**
    *
@@ -141,23 +122,55 @@ export class TextBoxesComponent {
     this.cdRef.detectChanges();
   }
   agregarLineaDebajo(index: number): void {
-    console.log(this.preferirSostenidos);
     if (this.botonBloqueado) return; // Evita doble interacción
     this.botonBloqueado = true;
-
     setTimeout(() => (this.botonBloqueado = false), 500); // Desbloquea después de 500ms
-
+    let acordesV = [
+      {
+        posicion_en_compas: 0,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 666,
+      },
+      {
+        posicion_en_compas: 1,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 666,
+      },
+      {
+        posicion_en_compas: 2,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 666,
+      },
+      {
+        posicion_en_compas: 3,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 666,
+      },
+    ];
     const nuevaLinea = {
-      nLinea: index + 1,
+      n_linea: index + 1,
       letra: '',
-      acordes: this.acordesV,
+      acordes: acordesV,
     };
 
     this.lines?.splice(index + 1, 0, nuevaLinea);
     this.lines?.forEach((element, index) => {
-      element.nLinea = index; // Actualiza el número de línea con el índice
+      element.n_linea = index; // Actualiza el número de línea con el índice
     });
   }
+
   eliminarLinea(index: number) {
     if (this.botonBorrarBloqueado) return; // Evita doble interacción
     this.botonBorrarBloqueado = true;
@@ -169,7 +182,7 @@ export class TextBoxesComponent {
 
     // Reasignar los índices de las líneas restantes
     this.lines?.forEach((linea, idx) => {
-      linea.nLinea = idx;
+      linea.n_linea = idx;
     });
 
     console.log(this.lines);
@@ -182,8 +195,8 @@ export class TextBoxesComponent {
     this.menuArriba = scrollTop + windowHeight >= fullHeight - 10;
   }
   // Función para eliminar un acorde
-  eliminarAcorde(nLinea: number, squareIndex: number) {
-    const linea = this.lines?.find((line) => line.nLinea === nLinea);
+  eliminarAcorde(n_linea: number, squareIndex: number) {
+    const linea = this.lines?.find((line) => line.n_linea === n_linea);
     if (linea) {
       const acorde = linea.acordes[squareIndex];
       console.log(acorde);
@@ -204,6 +217,7 @@ export class TextBoxesComponent {
         variacion: '',
         grado: acorde.grado,
         effect: 'copy',
+        id: acorde.id,
       })
     );
   }
@@ -211,7 +225,6 @@ export class TextBoxesComponent {
     return item.acorde; // O un identificador único
   }
   onDragStart(event: DragEvent, acorde: Acorde) {
-    console.log(event, null, 2);
     console.log(acorde);
     this.lastDropEvent = null;
     this.currentDraggableEvent = event;

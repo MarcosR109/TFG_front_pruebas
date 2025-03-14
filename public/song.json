@@ -4,115 +4,387 @@
   "genero": "Rock",
   "usuario": "usuario123",
   "tonalidad": "C",
+  "metrica": "bin",
+  "comentario": "Canción muy conocida de Elton John",
+  "var": "no",
+  "artista_id": 1,
+  "genero_id": 1,
+  "tonalidade_id": 1,
+  "capo": 0,
+  "user_id": 1,
   "lineas": [
     {
-      "nLinea": 1,
+      "n_linea": 1,
       "letra": "She packed my bags last night, pre-flight",
       "acordes": [
-        { "posicion": 0, "acorde": "Eb", "variacion": "", "grado": 1 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "Ab", "variacion": "", "grado": 5 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "Eb",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "Ab",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 2,
+      "n_linea": 2,
       "letra": "Zero hour, 9 a.m.",
       "acordes": [
-        { "posicion": 0, "acorde": "Am", "variacion": "", "grado": 6 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "F", "variacion": "", "grado": 4 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "Am",
+          "variacion": "",
+          "grado": 6,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "F",
+          "variacion": "",
+          "grado": 4,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 3,
+      "n_linea": 3,
       "letra": "And I'm gonna be high as a kite by then",
       "acordes": [
-        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "G",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 4,
+      "n_linea": 4,
       "letra": "I miss the Earth so much, I miss my wife",
       "acordes": [
-        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "F",
+          "variacion": "",
+          "grado": 4,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 5,
+      "n_linea": 5,
       "letra": "It's lonely out in space",
       "acordes": [
-        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "Am", "variacion": "", "grado": 6 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "G",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "Am",
+          "variacion": "",
+          "grado": 6,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 6,
+      "n_linea": 6,
       "letra": "On such a timeless flight",
       "acordes": [
-        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "F",
+          "variacion": "",
+          "grado": 4,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 7,
+      "n_linea": 7,
       "letra": "And I think it's gonna be a long, long time",
       "acordes": [
-        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "G",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 8,
+      "n_linea": 8,
       "letra": "'Til touchdown brings me 'round again to find",
       "acordes": [
-        { "posicion": 0, "acorde": "Am", "variacion": "", "grado": 6 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "F", "variacion": "", "grado": 4 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "Am",
+          "variacion": "",
+          "grado": 6,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "F",
+          "variacion": "",
+          "grado": 4,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 9,
+      "n_linea": 9,
       "letra": "I'm not the man they think I am at home",
       "acordes": [
-        { "posicion": 0, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "G",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 10,
+      "n_linea": 10,
       "letra": "Oh, no, no, no, I'm a rocket man",
       "acordes": [
-        { "posicion": 0, "acorde": "F", "variacion": "", "grado": 4 },
-        { "posicion": 1, "acorde": "", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "C", "variacion": "", "grado": 1 },
-        { "posicion": 3, "acorde": "", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "F",
+          "variacion": "",
+          "grado": 4,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "C",
+          "variacion": "",
+          "grado": 1,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     },
     {
-      "nLinea": 11,
+      "n_linea": 11,
       "letra": "Rocket man, burning out his fuse up here alone",
       "acordes": [
-        { "posicion": 0, "acorde": "G", "variacion": "", "grado": 5 },
-        { "posicion": 1, "acorde": "Gb", "variacion": "", "grado": 0 },
-        { "posicion": 2, "acorde": "Am", "variacion": "", "grado": 6 },
-        { "posicion": 3, "acorde": "Ab", "variacion": "", "grado": 0 }
+        {
+          "posicion_en_compas": 0,
+          "acorde": "G",
+          "variacion": "",
+          "grado": 5,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 1,
+          "acorde": "Gb",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 2,
+          "acorde": "Am",
+          "variacion": "",
+          "grado": 6,
+          "id": 1
+        },
+        {
+          "posicion_en_compas": 3,
+          "acorde": "Ab",
+          "variacion": "",
+          "grado": 0,
+          "id": 1
+        }
       ]
     }
   ]

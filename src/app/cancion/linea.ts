@@ -1,6 +1,6 @@
 import { Acorde } from './acorde';
 export interface Linea {
-  nLinea: number;
+  n_linea: number;
   letra: string;
   acordes: Acorde[];
 }

@@ -44,7 +44,6 @@ export class CancionComponent {
     const dialogRef = this.dialog.open(ConfirmComponent, {
       data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
     });
-
     return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
   }
 }

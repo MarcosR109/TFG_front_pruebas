@@ -107,7 +107,7 @@ aside {
   margin-right: 10px;
   top: 50%; /* Lo coloca en la mitad */
   transform: translateY(-50%); /* Lo centra perfectamente */
-  height: auto;
+  height: 100%;
   background: #f5f5f5;
   transition: width 0.3s ease-in-out;
   display: flex;
@@ -115,6 +115,9 @@ aside {
   align-items: flex-start;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
+  overflow-y: auto; /* Permite el scroll vertical */
+  max-height: 60%; /* Ajusta según lo necesario */
+  scrollbar-width: none; /* Oculta la barra en Firefox */
 }
 
 /* Contenedor General */
@@ -164,6 +167,9 @@ aside {
   border-left: 2px solid #aaa; /* Cambié de border-right a border-left */
   overflow: hidden;
   order: 1; /* Esto asegura que los acordes estén a la izquierda */
+  overflow-y: auto; /* Permite el scroll vertical */
+  max-height: 300px; /* Ajusta según lo necesario */
+  scrollbar-width: none; /* Oculta la barra en Firefox */
 }
 
 /* Animación de expansión */
