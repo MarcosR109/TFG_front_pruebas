@@ -29,21 +29,21 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
           "acorde": "Ab",
           "variacion": "",
           "grado": 5,
-          "id": 1
+          "id": 5
         },
         {
           "posicion_en_compas": 3,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -63,21 +63,21 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
           "acorde": "F",
           "variacion": "",
           "grado": 4,
-          "id": 1
+          "id": 7
         },
         {
           "posicion_en_compas": 3,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -97,21 +97,21 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
           "acorde": "G",
           "variacion": "",
           "grado": 5,
-          "id": 1
+          "id": 4
         },
         {
           "posicion_en_compas": 3,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -131,21 +131,21 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
           "acorde": "C",
           "variacion": "",
           "grado": 1,
-          "id": 1
+          "id": 5
         },
         {
           "posicion_en_compas": 3,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -158,28 +158,28 @@
           "acorde": "G",
           "variacion": "",
           "grado": 5,
-          "id": 1
+          "id": 8
         },
         {
           "posicion_en_compas": 1,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
           "acorde": "Am",
           "variacion": "",
           "grado": 6,
-          "id": 1
+          "id": 10
         },
         {
           "posicion_en_compas": 3,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 15
         }
       ]
     },
@@ -192,14 +192,14 @@
           "acorde": "F",
           "variacion": "",
           "grado": 4,
-          "id": 1
+          "id": 8
         },
         {
           "posicion_en_compas": 1,
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 10
         },
         {
           "posicion_en_compas": 2,
@@ -213,7 +213,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 14
         }
       ]
     },
@@ -233,7 +233,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 15
         },
         {
           "posicion_en_compas": 2,
@@ -247,7 +247,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 11
         }
       ]
     },
@@ -267,7 +267,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
@@ -281,7 +281,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -301,7 +301,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
@@ -315,7 +315,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
@@ -335,7 +335,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         },
         {
           "posicion_en_compas": 2,
@@ -349,7 +349,7 @@
           "acorde": "",
           "variacion": "",
           "grado": 0,
-          "id": 1
+          "id": 170
         }
       ]
     },
