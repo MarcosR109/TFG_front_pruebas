@@ -1,5 +1,8 @@
 <div>
-  <app-text-boxes [lines]="this.cancion.lineas"></app-text-boxes>
+  <app-text-boxes
+    [lines]="this.cancion.lineas"
+    [bin]="this.binary"
+  ></app-text-boxes>
   <div class="submit-container">
     <button
       [disabled]="this.cancion.lineas?.length === 0"

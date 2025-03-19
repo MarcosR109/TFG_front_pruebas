@@ -4,7 +4,7 @@
   "genero": "Rock",
   "usuario": "usuario123",
   "tonalidad": "C",
-  "metrica": "bin",
+  "metrica": "ter",
   "comentario": "Canción muy conocida de Elton John",
   "var": "no",
   "artista_id": 1,
@@ -37,13 +37,6 @@
           "variacion": "",
           "grado": 5,
           "id": 5
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -71,13 +64,6 @@
           "variacion": "",
           "grado": 4,
           "id": 7
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -105,13 +91,6 @@
           "variacion": "",
           "grado": 5,
           "id": 4
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -139,13 +118,6 @@
           "variacion": "",
           "grado": 1,
           "id": 5
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -173,13 +145,6 @@
           "variacion": "",
           "grado": 6,
           "id": 10
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 15
         }
       ]
     },
@@ -207,13 +172,6 @@
           "variacion": "",
           "grado": 1,
           "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 14
         }
       ]
     },
@@ -241,13 +199,6 @@
           "variacion": "",
           "grado": 5,
           "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 11
         }
       ]
     },
@@ -275,13 +226,6 @@
           "variacion": "",
           "grado": 4,
           "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -309,13 +253,6 @@
           "variacion": "",
           "grado": 5,
           "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -343,13 +280,6 @@
           "variacion": "",
           "grado": 1,
           "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "",
-          "variacion": "",
-          "grado": 0,
-          "id": 169
         }
       ]
     },
@@ -376,13 +306,6 @@
           "acorde": "Am",
           "variacion": "",
           "grado": 6,
-          "id": 1
-        },
-        {
-          "posicion_en_compas": 3,
-          "acorde": "Ab",
-          "variacion": "",
-          "grado": 0,
           "id": 1
         }
       ]

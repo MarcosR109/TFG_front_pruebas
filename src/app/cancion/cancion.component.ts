@@ -23,12 +23,13 @@ import { ConfirmComponent } from '../confirm/confirm.component';
 })
 export class CancionComponent {
   cancion: Cancion = {};
+  public binary: boolean = true;
   constructor(
     private http: HttpClient,
     private cancionService: CancionService,
     public dialog: MatDialog
   ) {
-    this.http.get<Cancion>('song.json').subscribe((data) => {
+    this.http.get<Cancion>('song tri.json').subscribe((data) => {
       this.cancion = data;
       console.log(this.cancion);
     });

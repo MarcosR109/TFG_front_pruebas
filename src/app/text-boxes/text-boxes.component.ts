@@ -15,7 +15,7 @@ import { TextinputComponent } from '../textinput/textinput.component';
 import { Linea } from '../cancion/linea';
 import { Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { acordesPorTonalidad, variaciones } from '../cancion/utils';
+import { ACORDES_POR_TONALIDAD, VARIACIONES } from '../cancion/utils';
 import {
   animate,
   state,
@@ -69,18 +69,19 @@ import '@material/web/checkbox/checkbox.js';
 })
 export class TextBoxesComponent {
   @Input() lines?: Linea[] = [];
+  @Input() bin?: boolean = true;
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
-  variaciones = variaciones;
-  menuArriba = false; // Estado del menú (false = abajo, true = arriba)
-  maxWidth: string = '25rem'; // Ancho inicial mínimo
-  tonalidades = Object.keys(acordesPorTonalidad);
+  variaciones = VARIACIONES;
+  menuArriba = false;
+  maxWidth: string = '25rem';
+  tonalidades = Object.keys(ACORDES_POR_TONALIDAD);
   tonalidadExpandida: string | null = null;
   @HostListener('window:scroll', [])
   botonBloqueado = false;
   botonBorrarBloqueado = false;
-
+  preferirSp = false;
   preferirSostenidos = true;
   /**
    *
@@ -112,10 +113,63 @@ export class TextBoxesComponent {
       Gb: 'F#',
       Ab: 'G#',
       Bb: 'A#',
+      'C#m': 'Dbm',
+      'D#m': 'Ebm',
+      'F#m': 'Gbm',
+      'G#m': 'Abm',
+      'A#m': 'Bbm',
+      Ebm: 'D#m',
+      Dbm: 'C#m',
+      Gbm: 'F#m',
+      Abm: 'G#m',
+      Bbm: 'A#m',
     };
     return this.preferirSostenidos ? enarmonicMap[acorde] || acorde : acorde;
   }
-
+  transformToSpanish(acorde: string): string {
+    const spanishMap: { [key: string]: string } = {
+      C: 'Do',
+      D: 'Re',
+      E: 'Mi',
+      F: 'Fa',
+      G: 'Sol',
+      A: 'La',
+      B: 'Si',
+      Db: 'Reb',
+      Eb: 'Mib',
+      Gb: 'Solb',
+      Ab: 'Lab',
+      Bb: 'Sib',
+      Cm: 'Dom',
+      Dm: 'Rem',
+      Em: 'Mim',
+      Fm: 'Fam',
+      Gm: 'Solm',
+      Am: 'Lam',
+      Bm: 'Sim',
+      Dbm: 'Rebm',
+      Ebm: 'Mibm',
+      Gbm: 'Solbm',
+      Abm: 'Labm',
+      Bbm: 'Sibm',
+      'D#': 'Re#',
+      'G#': 'Sol#',
+      'A#': 'La#',
+      'F#': 'Fa#',
+      'C#': 'Do#',
+      'D#m': 'Re#m',
+      'F#m': 'Fa#m',
+      'G#m': 'Sol#m',
+      'A#m': 'La#m',
+      'C#m': 'Do#m',
+    };
+    return this.preferirSp ? spanishMap[acorde] || acorde : acorde;
+  }
+  togglePreferirSp() {
+    console.log(this.preferirSp);
+    this.preferirSp = !this.preferirSp;
+    this.cdRef.detectChanges();
+  }
   togglePreferirSostenidos() {
     console.log(this.preferirSostenidos);
     this.preferirSostenidos = !this.preferirSostenidos;
@@ -132,7 +186,7 @@ export class TextBoxesComponent {
         variacion: '',
         grado: 0,
         effect: 'copy',
-        id: 666,
+        id: 169,
       },
       {
         posicion_en_compas: 1,
@@ -140,7 +194,7 @@ export class TextBoxesComponent {
         variacion: '',
         grado: 0,
         effect: 'copy',
-        id: 666,
+        id: 169,
       },
       {
         posicion_en_compas: 2,
@@ -148,7 +202,7 @@ export class TextBoxesComponent {
         variacion: '',
         grado: 0,
         effect: 'copy',
-        id: 666,
+        id: 169,
       },
       {
         posicion_en_compas: 3,
@@ -156,7 +210,7 @@ export class TextBoxesComponent {
         variacion: '',
         grado: 0,
         effect: 'copy',
-        id: 666,
+        id: 169,
       },
     ];
     const nuevaLinea = {
@@ -164,7 +218,6 @@ export class TextBoxesComponent {
       letra: '',
       acordes: acordesV,
     };
-
     this.lines?.splice(index + 1, 0, nuevaLinea);
     this.lines?.forEach((element, index) => {
       element.n_linea = index; // Actualiza el número de línea con el índice
@@ -187,6 +240,7 @@ export class TextBoxesComponent {
 
     console.log(this.lines);
   }
+
   onScroll(): void {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
@@ -209,9 +263,8 @@ export class TextBoxesComponent {
       this.tonalidadExpandida === tonalidad ? null : tonalidad;
   }
   getAcordesDeTonalidad(tonalidad: string | null): Acorde[] {
-    if (!tonalidad || !acordesPorTonalidad[tonalidad]) return [];
-
-    return Object.entries(acordesPorTonalidad[tonalidad]).map(
+    if (!tonalidad || !ACORDES_POR_TONALIDAD[tonalidad]) return [];
+    return Object.entries(ACORDES_POR_TONALIDAD[tonalidad]).map(
       ([grado, acorde]) => ({
         acorde: typeof acorde === 'string' ? acorde : acorde.acorde, // Si es string, lo convierte en objeto
         variacion: '',

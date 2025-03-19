@@ -3,7 +3,7 @@ import { Acorde } from './acorde';
 interface AcordesPorTonalidad {
   [tonalidad: string]: Acorde[];
 }
-export const acordesPorTonalidad: AcordesPorTonalidad = {
+export const ACORDES_POR_TONALIDAD: AcordesPorTonalidad = {
   C: [
     {
       id: 1,
@@ -894,7 +894,7 @@ export const acordesPorTonalidad: AcordesPorTonalidad = {
   ],
 };
 
-export const variaciones = [
+export const VARIACIONES = [
   '5', // Power chord (C5)
   '6', // Sexta agregada (C6)
   '69', // Sexta con novena (C69)

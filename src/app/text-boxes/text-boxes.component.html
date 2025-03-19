@@ -1,3 +1,4 @@
+<button mat-icon-button (click)="togglePreferirSp()"></button>
 <button mat-icon-button (click)="togglePreferirSostenidos()">
   <mat-icon *ngIf="!preferirSostenidos"
     ><svg
@@ -80,7 +81,8 @@
         </button>
         <!-- Contenido del acorde -->
         <div class="square-content">
-          {{ transformToEnarmonic(acorde.acorde || "")
+          {{
+            transformToSpanish(transformToEnarmonic(acorde.acorde || "")) || ""
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
       </mat-card>

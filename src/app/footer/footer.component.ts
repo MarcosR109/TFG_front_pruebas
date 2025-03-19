@@ -5,20 +5,25 @@ import { MatToolbar } from '@angular/material/toolbar';
   selector: 'app-footer',
   imports: [MatToolbar],
   template: `
-<mat-toolbar color="primary" class="footer">
-  <div class="footer-content">
-    <span class="footer-text">&copy; 2025 Your Company Name</span>
-    <div class="footer-links">
-      <a mat-button href="https://example.com/privacy" target="_blank">Privacy Policy</a>
-      <a mat-button href="https://example.com/terms" target="_blank">Terms of Service</a>
-      <a mat-button href="https://example.com/contact" target="_blank">Contact Us</a>
-    </div>
-  </div>
-</mat-toolbar>
-
-
+    <mat-toolbar color="primary" class="footer">
+      <div class="footer-content">
+        <span class="footer-text">&copy; 2025 Your Company Name</span>
+        <div class="footer-links">
+          <a mat-button href="https://example.com/privacy" target="_blank"
+            >Privacy Policy</a
+          >
+          <a mat-button href="https://example.com/terms" target="_blank"
+            >Terms of Service</a
+          >
+          <a mat-button href="https://example.com/contact" target="_blank"
+            >Contact Us</a
+          >
+        </div>
+      </div>
+    </mat-toolbar>
   `,
   styles: `.footer {
+    margin-top  : 20px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -78,8 +83,6 @@ import { MatToolbar } from '@angular/material/toolbar';
     }
   }
   
-  `
+  `,
 })
-export class FooterComponent {
-
-}
+export class FooterComponent {}

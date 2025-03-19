@@ -13,4 +13,7 @@ export class CancionService {
       console.log(res);
     });
   }
+  getCanciones() {
+    return this.http.get<Cancion[]>(this.URL + 'canciones');
+  }
 }
