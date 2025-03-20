@@ -82,7 +82,9 @@
         <!-- Contenido del acorde -->
         <div class="square-content">
           {{
-            transformToSpanish(transformToEnarmonic(acorde.acorde || "")) || ""
+            transformToSpanish(
+              transformToEnarmonic(getAcorde(acorde.id || 169) || "")
+            ) || ""
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
       </mat-card>
@@ -93,7 +95,7 @@
       class="input-field"
       [style.width]="maxWidth"
     >
-      <input matInput [(ngModel)]="linea.letra" placeholder="Texto recibido" />
+      <input matInput [(ngModel)]="linea.texto" placeholder="Texto recibido" />
     </mat-form-field>
     <div class="button-container">
       <button

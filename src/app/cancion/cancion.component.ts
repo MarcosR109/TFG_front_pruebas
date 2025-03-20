@@ -8,6 +8,11 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { CancionService } from '../cancion.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../confirm/confirm.component';
+import { ActivatedRoute } from '@angular/router';
+import {
+  MatProgressSpinner,
+  ProgressSpinnerMode,
+} from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-cancion',
   imports: [
@@ -17,6 +22,7 @@ import { ConfirmComponent } from '../confirm/confirm.component';
     NgIf,
     MatButtonModule,
     ConfirmComponent,
+    MatProgressSpinner,
   ],
   templateUrl: './cancion.component.html',
   styleUrl: './cancion.component.css',
@@ -24,19 +30,30 @@ import { ConfirmComponent } from '../confirm/confirm.component';
 export class CancionComponent {
   cancion: Cancion = {};
   public binary: boolean = true;
+  public cargado: boolean = false;
   constructor(
     private http: HttpClient,
     private cancionService: CancionService,
-    public dialog: MatDialog
-  ) {
-    this.http.get<Cancion>('song tri.json').subscribe((data) => {
-      this.cancion = data;
-      console.log(this.cancion);
-    });
+    public dialog: MatDialog,
+    private rute: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    this.cancionService.getCancion(this.rute.snapshot.params['id']).subscribe(
+      (data) => {
+        this.cancion = data.cancion;
+        console.log(this.cancion);
+        this.cargado = true;
+      },
+      (error) => {
+        console.error('Error al cargar la canción', error);
+        this.cargado = true;
+      }
+    );
   }
+
   async enviarCancion() {
     const result = await this.openDialog(); // Espera la respuesta del diálogo
-
     if (result) {
       this.cancionService.enviarCancion(this.cancion);
     }

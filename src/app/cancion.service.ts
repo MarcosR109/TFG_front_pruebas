@@ -14,6 +14,18 @@ export class CancionService {
     });
   }
   getCanciones() {
-    return this.http.get<Cancion[]>(this.URL + 'canciones');
+    return this.http.get<{ message: String; canciones: any[] }>(
+      this.URL + 'canciones'
+    );
+  }
+  getCancionesByTitle(title: string) {
+    return this.http.get<{ message: String; canciones: any[] }>(
+      this.URL + 'canciones/' + title + '/list'
+    );
+  }
+  getCancion(id: number) {
+    return this.http.get<{ cancionMessage: string; cancion: Cancion }>(
+      this.URL + 'canciones/' + id
+    );
   }
 }

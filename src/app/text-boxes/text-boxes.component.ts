@@ -68,8 +68,9 @@ import '@material/web/checkbox/checkbox.js';
   ],
 })
 export class TextBoxesComponent {
-  @Input() lines?: Linea[] = [];
+  @Input() lines?: Linea[];
   @Input() bin?: boolean = true;
+  @Input() tonalidad?: any;
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
@@ -87,16 +88,30 @@ export class TextBoxesComponent {
    *
    */
   constructor(private cdRef: ChangeDetectorRef) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
+  ngAfterViewInit() {
+    console.log(this.lines);
+  }
+  getAcorde(acordeid: number) {
+    /*const acorde = ACORDES_POR_TONALIDAD[this.tonalidad].find(
+      (acorde) => acorde.id === acordeid
+    );*/
+    for (const [tonalidad, acordes] of Object.entries(ACORDES_POR_TONALIDAD)) {
+      const acordeEncontrado = acordes.find((acorde) => acorde.id === acordeid);
+      if (acordeEncontrado) {
+        return acordeEncontrado.acorde;
+      }
+    }
+    return '';
+  }
+  /*ngOnChanges(changes: SimpleChanges): void {
     if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
       this.calcularMaxWidth();
     }
-  }
+  }*/
 
   calcularMaxWidth() {
     const maxLength = Math.max(
-      ...(this.lines?.map((linea) => linea.letra?.length || 0) || [])
+      ...(this.lines?.map((linea) => linea.texto?.length || 0) || [])
     );
     this.maxWidth = `${maxLength * 10}px`; // Ajusta el factor según necesidad
     console.log(`Ancho máximo calculado: ${this.maxWidth}`);
@@ -215,7 +230,7 @@ export class TextBoxesComponent {
     ];
     const nuevaLinea = {
       n_linea: index + 1,
-      letra: '',
+      texto: '',
       acordes: acordesV,
     };
     this.lines?.splice(index + 1, 0, nuevaLinea);
