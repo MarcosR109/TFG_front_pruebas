@@ -14,3 +14,74 @@ button {
   border-radius: 4px; /* Bordes Material Design */
   margin-bottom: 20px; /* Espacio con el contenido */
 }
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  padding: 20px; /* Espacio alrededor para que no toque los bordes */
+  background-color: #c0c0c0; /* Un gris claro para resaltar la card */
+  color: #000000; /* Mantiene el color del texto */
+}
+
+.div1 {
+  grid-area: 1 / 2 / 3 / 4;
+}
+.div2 {
+  grid-area: 2 / 2 / 6 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.song-card {
+  padding: 16px;
+  display: flex;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .card-text {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .artist {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .description {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .tags {
+      margin-top: 8px;
+    }
+  }
+
+  .rating {
+    display: flex;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.2);
+  }
+
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+  }
+}
+.div2 {
+  background: rgb(255, 255, 255);
+}

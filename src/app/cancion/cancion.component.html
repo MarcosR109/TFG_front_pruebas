@@ -1,22 +1,47 @@
-<div *ngIf="!cargado" class="spinner-container">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
-<div *ngIf="cargado">
-  <ng-container *ngIf="cancion?.lineas">
-    <app-text-boxes
-      [lines]="cancion.lineas"
-      [bin]="this.binary"
-      [tonalidad]="this.cancion.tonalidad"
-    ></app-text-boxes>
-  </ng-container>
-  <div class="submit-container">
-    <button
-      [disabled]="this.cancion.lineas?.length === 0"
-      mat-raised-button
-      color="primary"
-      (click)="enviarCancion()"
-    >
-      Enviar canción
-    </button>
+<div class="parent">
+  <div class="div1">
+    <mat-card class="song-card" width="100%" heigth="100%">
+      <div class="card-content">
+        <div class="card-text">
+          <h2 class="title">{{ this.cancion.titulo }}</h2>
+          <h3 class="artist">{{ this.cancion.artista || "Anónimo" }}</h3>
+          <p *ngIf="this.cancion.comentario != 'no'" class="description">
+            {{ this.cancion.comentario }}
+          </p>
+          <div class="tags">
+            <mat-chip-listbox>
+              <mat-chip *ngIf="this.cancion.capo">
+                Capo: {{ this.cancion.capo }}</mat-chip
+              >
+              <mat-chip>{{ this.cancion.tonalidad }}</mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+        <div class="rating">
+          <mat-icon *ngFor="let star of stars" class="star"
+            >star_outline</mat-icon
+          >
+        </div>
+      </div>
+    </mat-card>
   </div>
+  <div *ngIf="cargado" class="div2 song-card">
+    <ng-container *ngIf="cancion?.lineas">
+      <app-text-boxes
+        [lines]="cancion.lineas"
+        [bin]="this.binary"
+        [tonalidad]="this.cancion.tonalidad"
+      ></app-text-boxes>
+    </ng-container>
+  </div>
+</div>
+<div class="submit-container">
+  <button
+    [disabled]="this.cancion.lineas?.length === 0"
+    mat-raised-button
+    color="primary"
+    (click)="enviarCancion()"
+  >
+    Enviar canción
+  </button>
 </div>

@@ -13,6 +13,10 @@ import {
   MatProgressSpinner,
   ProgressSpinnerMode,
 } from '@angular/material/progress-spinner';
+import { MatCard } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-cancion',
   imports: [
@@ -23,6 +27,10 @@ import {
     MatButtonModule,
     ConfirmComponent,
     MatProgressSpinner,
+    MatCard,
+    MatCardModule,
+    MatIconModule,
+    MatChipsModule,
   ],
   templateUrl: './cancion.component.html',
   styleUrl: './cancion.component.css',
@@ -31,6 +39,7 @@ export class CancionComponent {
   cancion: Cancion = {};
   public binary: boolean = true;
   public cargado: boolean = false;
+  stars = Array(5).fill(0);
   constructor(
     private http: HttpClient,
     private cancionService: CancionService,

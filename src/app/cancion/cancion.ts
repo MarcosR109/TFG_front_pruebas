@@ -7,4 +7,6 @@ export interface Cancion {
   usuario?: string;
   tonalidad?: string;
   lineas?: Linea[];
+  comentario?: string;
+  capo?: number;
 }

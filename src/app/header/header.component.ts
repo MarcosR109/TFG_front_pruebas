@@ -1,86 +1,160 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon'; // Para los iconos (como el menú hamburguesa)
-import { MatMenuModule } from '@angular/material/menu';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
+    MatSidenavModule,
     MatIconModule,
-    MatMenuModule,
-    RouterLink,
+    MatButtonModule,
+    RouterModule,
+    MatToolbarModule,
   ],
-  template: `<mat-toolbar color="primary">
-    <!-- Icono de menú para pantallas móviles -->
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <!-- Menú de navegación visible solo en pantallas grandes -->
-    <div class="desktop-menu">
-      <button mat-button [routerLink]="['/home']">Home</button>
-      <button mat-button [routerLink]="['/canciones']">Canciones</button>
-      <button mat-button [routerLink]="['/canciones/mine']">
-        Canciones guardadas
+  template: `
+    <!-- Toolbar solo para móviles -->
+    <mat-toolbar color="primary" class="mobile-toolbar" *ngIf="isMobile">
+      <button mat-icon-button (click)="toggleMenu()">
+        <mat-icon>menu</mat-icon>
       </button>
-      <button mat-button [routerLink]="['/canciones/create']">
-        Crear canción
+      <span class="spacer"></span>
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
       </button>
-    </div>
-
-    <!-- Menú hamburguesa -->
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="['/home']">
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
-      </button>
-      <button mat-menu-item [routerLink]="['/canciones']">
-        <mat-icon>music_note</mat-icon>
-        <span>Canciones</span>
-      </button>
-      <button mat-menu-item [routerLink]="['/canciones/create']">
-        <mat-icon>add</mat-icon>
-        <span>Crear canción</span>
-      </button>
-      <button mat-menu-item [routerLink]="['/canciones/mine']">
-        <mat-icon>library_music</mat-icon>
-        <span>Canciones guardadas</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>logout</mat-icon>
-        <span>Salir</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar> `,
-  styles: `/* Por defecto, el menú de navegación en desktop es visible y el icono hamburguesa está oculto */
-  .desktop-menu {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .menu-icon {
-    display: none;
-  }
-  
-  /* Media Query para pantallas más pequeñas (móviles) */
-  @media (max-width: 768px) {
-    /* En móviles, mostrar solo el menú hamburguesa */
-    .menu-icon {
-      display: inline-block;
+    </mat-toolbar>
+    <!-- Menú lateral para pantallas grandes -->
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav #sidenav mode="side" [opened]="!isMobile || isMenuOpen">
+        <div class="menu">
+          <button mat-button [routerLink]="['/home']" class="menu-item">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+          </button>
+          <button mat-button [routerLink]="['/canciones']" class="menu-item">
+            <mat-icon>search</mat-icon>
+            <span>Buscar</span>
+          </button>
+          <button mat-button [routerLink]="['/canciones']" class="menu-item">
+            <mat-icon>music_note</mat-icon>
+            <span>Canciones</span>
+          </button>
+          <button
+            mat-button
+            [routerLink]="['/canciones/mine']"
+            class="menu-item"
+          >
+            <mat-icon>library_music</mat-icon>
+            <span>Guardadas</span>
+          </button>
+          <button
+            mat-button
+            [routerLink]="['/canciones/create']"
+            class="menu-item"
+          >
+            <mat-icon>add</mat-icon>
+            <span>Crear</span>
+          </button>
+          <button mat-button class="menu-item">
+            <mat-icon>logout</mat-icon>
+            <span>Salir</span>
+          </button>
+        </div>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <ng-content> <router-outlet></router-outlet></ng-content>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  `,
+  styles: `
+    .sidenav-container {
+      height: 100vh;
     }
-  
-    /* Ocultar el menú de navegación en pantallas móviles */
-    .desktop-menu {
+    mat-sidenav {
+      width: 80px;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 16px;
+    }
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-transform: none;
+      font-size: 14px;
+      height: 60px;
+      padding: 8px 0;
+    }
+    .menu-item mat-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .menu-item span {
+      font-size: 12px;
+    }
+
+    /* Estilos para móviles */
+    .mobile-toolbar {
       display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
     }
-  }
-  
-  
-`,
+    .spacer {
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toolbar {
+        display: flex;
+      }
+      mat-sidenav {
+        width: 200px; /* Ancho del menú lateral en móviles */
+        position: fixed;
+        top: 56px; /* Altura del toolbar */
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.1s ease;
+      }
+      mat-sidenav[opened] {
+        transform: translateX(0);
+      }
+    }
+  `,
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  isMobile = false;
+  isMenuOpen = false;
+
+  constructor() {
+    this.checkScreenSize();
+    window.addEventListener('resize', () => this.checkScreenSize());
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+}
