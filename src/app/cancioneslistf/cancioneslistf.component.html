@@ -27,10 +27,18 @@
     <td mat-cell *matCellDef="let element">{{ element?.artista }}</td>
   </ng-container>
 
-  <!-- Rating (Placeholder, si lo tienes) -->
   <ng-container matColumnDef="rating">
     <th mat-header-cell *matHeaderCellDef>Rating</th>
-    <td mat-cell *matCellDef="let element">{{ element.rating || "N/A" }}</td>
+    <td mat-cell *matCellDef="let element">
+      <div class="rating">
+        <mat-icon
+          *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+          class="star"
+        >
+          {{ i + 1 <= (element.rating ?? 0) ? "star" : "star_outline" }}
+        </mat-icon>
+      </div>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

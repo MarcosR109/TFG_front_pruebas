@@ -1,3 +1,5 @@
+<p>Canciones-list-component</p>
+
 <table
   mat-table
   [dataSource]="this.cancionesList"
@@ -9,7 +11,7 @@
     <td
       mat-cell
       *matCellDef="let element"
-      [routerLink]="['/canciones', element.titulo]"
+      [routerLink]="['/canciones/search/', element.titulo]"
     >
       {{ element.titulo }}
     </td>
@@ -25,12 +27,6 @@
   <ng-container matColumnDef="artista">
     <th mat-header-cell *matHeaderCellDef>Artista</th>
     <td mat-cell *matCellDef="let element">{{ element?.artista }}</td>
-  </ng-container>
-
-  <!-- Rating (Placeholder, si lo tienes) -->
-  <ng-container matColumnDef="rating">
-    <th mat-header-cell *matHeaderCellDef>Rating</th>
-    <td mat-cell *matCellDef="let element">{{ element.rating || "N/A" }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

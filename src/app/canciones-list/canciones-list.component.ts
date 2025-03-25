@@ -3,15 +3,17 @@ import { CancionService } from '../cancion.service';
 import { Cancion } from '../cancion/cancion';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-canciones-list',
-  imports: [MatTableModule, RouterLink],
+  imports: [MatTableModule, RouterLink, MatIconModule, CommonModule],
   templateUrl: './canciones-list.component.html',
   styleUrl: './canciones-list.component.css',
 })
 export class CancionesListComponent {
   cancionesList: CancionFoo[] = [];
-  displayedColumns: string[] = ['titulo', 'genero', 'artista', 'rating'];
+  displayedColumns: string[] = ['titulo', 'genero', 'artista'];
 
   constructor(private canciones: CancionService) {
     this.canciones.getCanciones().subscribe((data) => {

@@ -6,6 +6,27 @@
   margin-bottom: 20px; /* Espacio con el contenido */
 }
 
+.star {
+  cursor: pointer;
+  font-size: 24px;
+  color: gold;
+}
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.favorite-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: gray;
+  transition: color 0.3s ease;
+}
+
+.favorite-icon.favorito {
+  color: red;
+}
 button {
   min-width: 200px;
   height: 48px;
@@ -84,4 +105,39 @@ button {
 }
 .div2 {
   background: rgb(255, 255, 255);
+}
+.song-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  min-width: 300px;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s;
+}
+
+.favorite-icon.favorito {
+  color: red;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.rating {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
 }

@@ -4,9 +4,11 @@ import { CancionService } from '../cancion.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-cancioneslistf',
-  imports: [MatTableModule, RouterLink],
+  imports: [MatTableModule, RouterLink, MatIconModule, CommonModule],
   templateUrl: './cancioneslistf.component.html',
   styleUrl: './cancioneslistf.component.css',
 })
@@ -24,6 +26,7 @@ export class CancioneslistfComponent {
     canciones.getCancionesByTitle(title).subscribe((data) => {
       this.cancionesList = data.canciones;
       console.log(this.cancionesList);
+      console.log(data.canciones);
     });
   }
 }

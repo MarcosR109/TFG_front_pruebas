@@ -39,7 +39,51 @@ export class CancionComponent {
   cancion: Cancion = {};
   public binary: boolean = true;
   public cargado: boolean = false;
-  stars = Array(5).fill(0);
+  rating: number = 0;
+  public blockRating = false;
+  esFavorito!: boolean;
+
+  toggleFavorito() {
+    if (!this.esFavorito) {
+      this.cancionService.addFavorito(this.cancion.id!).subscribe(
+        (data) => {
+          console.log('Canción añadida a favoritos', data);
+          this.esFavorito = true;
+        },
+        (error) => {
+          console.error('Error al añadir a favoritos', error);
+        }
+      );
+    } else {
+      // Si ya es favorito, se quita
+      this.cancionService.quitarFavorito(this.cancion.id!).subscribe(
+        (data) => {
+          console.log('Canción eliminada de favoritos', data);
+          this.esFavorito = false;
+        },
+        (error) => {
+          console.error('Error al eliminar de favoritos', error);
+        }
+      );
+    }
+  }
+
+  rate(value: number) {
+    if (!this.blockRating) {
+      this.rating = value;
+      this.cancionService.addRating(this.rating, this.cancion.id!).subscribe(
+        (data) => {
+          console.log('Rating actualizado', data);
+          console.log(this.rating); // Emite el nuevo rating
+          this.blockRating = true; // Bloquea el rating
+        },
+        (error) => {
+          console.error('Error al actualizar el rating', error);
+        }
+      );
+    }
+  }
+
   constructor(
     private http: HttpClient,
     private cancionService: CancionService,
@@ -53,11 +97,20 @@ export class CancionComponent {
         this.cancion = data.cancion;
         console.log(this.cancion);
         this.cargado = true;
+        this.rating = this.cancion.rating || 0;
       },
       (error) => {
         console.error('Error al cargar la canción', error);
         this.cargado = true;
       }
+    );
+    this.cancionService.checkFavorito(this.cancion.id!).subscribe(
+      (data) => {
+        this.esFavorito = true;
+      },
+      (error) => {
+        console.error('Error al cargar favorito', error);
+      } // Si hay un error, no es favorito
     );
   }
 

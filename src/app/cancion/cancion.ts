@@ -1,6 +1,7 @@
 import { Linea } from './linea';
 
 export interface Cancion {
+  id?: number;
   titulo?: string;
   artista?: string;
   genero?: string;
@@ -9,4 +10,5 @@ export interface Cancion {
   lineas?: Linea[];
   comentario?: string;
   capo?: number;
+  rating?: number;
 }

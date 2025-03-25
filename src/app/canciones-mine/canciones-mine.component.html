@@ -1,1 +1,46 @@
-<p>canciones-mine works!</p>
+<p>Canciones-list-component</p>
+
+<table
+  mat-table
+  [dataSource]="this.cancionesList"
+  class="mat-elevation-z8 demo-table"
+>
+  <!-- Título -->
+  <ng-container matColumnDef="titulo">
+    <th mat-header-cell *matHeaderCellDef>Título</th>
+    <td
+      mat-cell
+      *matCellDef="let element"
+      [routerLink]="['/canciones', element.titulo]"
+    >
+      {{ element.titulo }}
+    </td>
+  </ng-container>
+  <!-- Género -->
+  <ng-container matColumnDef="genero">
+    <th mat-header-cell *matHeaderCellDef>Género</th>
+    <td mat-cell *matCellDef="let element">{{ element?.genero }}</td>
+  </ng-container>
+
+  <!-- Artista -->
+  <ng-container matColumnDef="artista">
+    <th mat-header-cell *matHeaderCellDef>Artista</th>
+    <td mat-cell *matCellDef="let element">{{ element?.artista }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="rating">
+    <th mat-header-cell *matHeaderCellDef>Rating</th>
+    <td mat-cell *matCellDef="let element">
+      <div class="rating">
+        <mat-icon
+          *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+          class="star"
+        >
+          {{ i + 1 <= (element.rating ?? 0) ? "star" : "star_outline" }}
+        </mat-icon>
+      </div>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

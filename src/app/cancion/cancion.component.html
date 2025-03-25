@@ -4,6 +4,13 @@
       <div class="card-content">
         <div class="card-text">
           <h2 class="title">{{ this.cancion.titulo }}</h2>
+          <mat-icon
+            class="favorite-icon"
+            (click)="toggleFavorito()"
+            [ngClass]="{ favorito: esFavorito }"
+          >
+            {{ esFavorito ? "favorite" : "favorite_border" }}
+          </mat-icon>
           <h3 class="artist">{{ this.cancion.artista || "Anónimo" }}</h3>
           <p *ngIf="this.cancion.comentario != 'no'" class="description">
             {{ this.cancion.comentario }}
@@ -18,9 +25,13 @@
           </div>
         </div>
         <div class="rating">
-          <mat-icon *ngFor="let star of stars" class="star"
-            >star_outline</mat-icon
+          <mat-icon
+            *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+            class="star"
+            (click)="rate(i + 1)"
           >
+            {{ i + 1 <= rating ? "star" : "star_outline" }}
+          </mat-icon>
         </div>
       </div>
     </mat-card>
