@@ -29,6 +29,11 @@ import { Acorde } from '../cancion/acorde';
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
 import '@material/web/checkbox/checkbox.js';
+import { ConfirmComponent } from '../confirm/confirm.component';
+import { Cancion } from '../cancion/cancion';
+import { CancionService } from '../cancion.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -44,6 +49,7 @@ import '@material/web/checkbox/checkbox.js';
     MatIconModule,
     DndModule,
     DragDropModule,
+    ConfirmComponent,
   ],
   animations: [
     trigger('expandir', [
@@ -69,8 +75,10 @@ import '@material/web/checkbox/checkbox.js';
 })
 export class TextBoxesComponent {
   @Input() lines?: Linea[];
-  @Input() bin?: boolean = true;
+  @Input() bin?: boolean = false;
   @Input() tonalidad?: any;
+  @Input() cancion?: Cancion;
+  public block: boolean = true;
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
@@ -84,17 +92,25 @@ export class TextBoxesComponent {
   botonBorrarBloqueado = false;
   preferirSp = false;
   preferirSostenidos = true;
+  menuOpen: boolean = false;
+  sliderOpen = false;
+  scroll: boolean = false;
+
   /**
    *
    */
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private cancionService: CancionService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {}
   ngAfterViewInit() {
     console.log(this.lines);
+    console.log(this.tonalidad);
   }
+
   getAcorde(acordeid: number) {
-    /*const acorde = ACORDES_POR_TONALIDAD[this.tonalidad].find(
-      (acorde) => acorde.id === acordeid
-    );*/
     for (const [tonalidad, acordes] of Object.entries(ACORDES_POR_TONALIDAD)) {
       const acordeEncontrado = acordes.find((acorde) => acorde.id === acordeid);
       if (acordeEncontrado) {
@@ -108,7 +124,28 @@ export class TextBoxesComponent {
       this.calcularMaxWidth();
     }
   }*/
+  autoScrollWindow() {
+    const scrollAmount = window.innerHeight; // Altura de la ventana
+    const currentScroll = window.scrollY; // Posición actual del scroll
 
+    window.scrollTo({
+      top: currentScroll + scrollAmount, // Desplazar hacia abajo
+      behavior: 'smooth', // Movimiento suave
+    });
+  }
+
+  startAutoScroll() {
+    setInterval(() => this.autoScrollWindow(), 3000); // Cambia el tiempo si quieres más rápido o más lento
+  }
+  toggleAutoScroll() {
+    this.scroll = !this.scroll;
+  }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+  toggleSlider() {
+    this.sliderOpen = !this.sliderOpen; // Cambia el estado del slider
+  }
   calcularMaxWidth() {
     const maxLength = Math.max(
       ...(this.lines?.map((linea) => linea.texto?.length || 0) || [])
@@ -228,15 +265,53 @@ export class TextBoxesComponent {
         id: 169,
       },
     ];
-    const nuevaLinea = {
-      n_linea: index + 1,
-      texto: '',
-      acordes: acordesV,
-    };
-    this.lines?.splice(index + 1, 0, nuevaLinea);
-    this.lines?.forEach((element, index) => {
-      element.n_linea = index; // Actualiza el número de línea con el índice
-    });
+    let acordesT = [
+      {
+        posicion_en_compas: 0,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 1,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 2,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+    ];
+    if (this.bin) {
+      const nuevaLinea = {
+        n_linea: index + 1,
+        texto: '',
+        acordes: acordesV,
+      };
+      this.lines?.splice(index + 1, 0, nuevaLinea);
+      this.lines?.forEach((element, index) => {
+        element.n_linea = index; // Actualiza el número de línea con el índice
+      });
+    } else {
+      const nuevaLinea = {
+        n_linea: index + 1,
+        texto: '',
+        acordes: acordesT,
+      };
+      this.lines?.splice(index + 1, 0, nuevaLinea);
+      this.lines?.forEach((element, index) => {
+        element.n_linea = index; // Actualiza el número de línea con el índice
+      });
+    }
   }
 
   eliminarLinea(index: number) {
@@ -315,6 +390,9 @@ export class TextBoxesComponent {
     console.log(this.lines);
     if (event.data.acorde) {
       linea.acordes[squareIndex].acorde = event.data.acorde;
+      linea.acordes[squareIndex].grado = event.data.grado;
+      linea.acordes[squareIndex].effect = event.data.effect;
+      linea.acordes[squareIndex].id = event.data.id;
     } else if (linea.acordes[squareIndex].acorde) {
       linea.acordes[squareIndex].variacion = event.data;
     }
@@ -339,4 +417,19 @@ export class TextBoxesComponent {
     console.log(acorde);
     console.log('dragover', JSON.stringify(event, null, 2));
   }*/
+  async enviarCancion() {
+    const result = await this.openDialog();
+    console.log(this.cancion);
+    // Espera la respuesta del diálogo
+    if (result) {
+      this.cancionService.enviarCancion(this.cancion!);
+      //this.router.navigate(['/canciones']);
+    }
+  }
+  openDialog(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
+    });
+    return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
+  }
 }

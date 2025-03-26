@@ -9,7 +9,6 @@ import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
 import { CancionComponent } from './cancion/cancion.component';
-import { PruebasdragdropComponent } from './pruebasdragdrop/pruebasdragdrop.component';
 import { Routes } from '@angular/router';
 @Component({
   selector: 'app-root',
@@ -22,9 +21,7 @@ import { Routes } from '@angular/router';
     HeroComponent,
     SquareComponent,
     TextinputComponent,
-    TextBoxesComponent,
     CancionComponent,
-    PruebasdragdropComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

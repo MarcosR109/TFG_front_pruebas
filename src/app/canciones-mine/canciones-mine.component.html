@@ -1,4 +1,4 @@
-<p>Canciones-list-component</p>
+<p>Canciones-mine-component</p>
 
 <table
   mat-table
@@ -11,7 +11,7 @@
     <td
       mat-cell
       *matCellDef="let element"
-      [routerLink]="['/canciones', element.titulo]"
+      [routerLink]="['/canciones/show', element.id]"
     >
       {{ element.titulo }}
     </td>

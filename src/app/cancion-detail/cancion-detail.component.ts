@@ -12,10 +12,13 @@ import { TextBoxesComponent } from '../text-boxes/text-boxes.component';
 })
 export class CancionDetailComponent {
   cancion: Cancion = {};
-
+  bin: boolean = true;
   constructor(private cancionS: CancionService, private rute: ActivatedRoute) {
     this.cancionS.getCancion(rute.snapshot.params['id']).subscribe((data) => {
       this.cancion = data.cancion;
+      if (data.cancion.metrica != 'bin') {
+        this.bin = false;
+      }
       console.log(this.cancion);
     });
   }

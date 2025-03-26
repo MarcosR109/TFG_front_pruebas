@@ -1,18 +1,106 @@
-<mat-form-field appearance="outline">
-  <mat-label>Mensaje</mat-label>
-  <textarea
-    #textArea
-    matInput
-    placeholder="Escribe tu mensaje..."
-    rows="4"
-    (input)="this.escrito = true"
-  ></textarea>
-</mat-form-field>
-<button
-  mat-raised-button
-  color="primary"
-  (click)="romperTexto(textArea.value); textArea.value = ''"
-  [disabled]="!escrito"
->
-  Enviar
-</button>
+<div *ngIf="!enviado">
+  <mat-form-field appearance="outline">
+    <mat-label>Título</mat-label>
+    <input
+      matInput
+      placeholder="Escribe el título..."
+      [(ngModel)]="cancion.titulo"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Letra</mat-label>
+    <textarea
+      #textArea
+      matInput
+      placeholder="Escribe la letra..."
+      rows="4"
+      (input)="this.escrito = true"
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Compás</mat-label>
+    <mat-select [(value)]="bin">
+      <mat-option [value]="true">Binario</mat-option>
+      <mat-option [value]="false">Ternario</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Artista</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="Escribe el nombre del artista..."
+      [matAutocomplete]="auto"
+      [value]="artistaSeleccionado?.nombre || ''"
+      (input)="filtrarArtistas($event)"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option
+        *ngFor="let artista of artistasFiltrados"
+        [value]="artista.nombre"
+        (onSelectionChange)="seleccionarArtista(artista)"
+      >
+        {{ artista.nombre }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Género</mat-label>
+    <mat-select [(value)]="generoSeleccionado">
+      <mat-option *ngFor="let genero of generos.generos" [value]="genero">
+        {{ genero.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Tonalidad</mat-label>
+    <mat-select [(value)]="tonalidadSeleccionada">
+      <mat-option *ngFor="let tono of tonalidades" [value]="tono">{{
+        tono.nombre
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Capo</mat-label>
+    <mat-select [(value)]="cancion.capo">
+      <mat-option [value]="0" selected>0</mat-option>
+      <mat-option
+        *ngFor="let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+        [value]="index"
+        >{{ index }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Comentario</mat-label>
+    <textarea
+      matInput
+      placeholder="Escribe un comentario..."
+      [(ngModel)]="cancion.comentario"
+      rows="3"
+    ></textarea>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="romperTexto(textArea.value); textArea.value = ''"
+    [disabled]="!escrito"
+  >
+    Enviar
+  </button>
+</div>
+<div *ngIf="enviado">
+  <app-text-boxes
+    [cancion]="this.cancion"
+    [lines]="this.lineas"
+    [bin]="this.bin"
+    [tonalidad]="this.cancion.tonalidad"
+  ></app-text-boxes>
+</div>

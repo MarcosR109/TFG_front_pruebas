@@ -1,53 +1,75 @@
-<button mat-icon-button (click)="togglePreferirSp()"></button>
-<button mat-icon-button (click)="togglePreferirSostenidos()">
-  <mat-icon *ngIf="!preferirSostenidos"
-    ><svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill="#000000"
-    >
-      <path
-        d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z"
-      /></svg
-  ></mat-icon>
-  <mat-icon *ngIf="preferirSostenidos"
-    ><svg
-      height="24px"
-      width="24px"
-      version="1.1"
-      id="_x32_"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox="-51.2 -51.2 614.40 614.40"
-      xml:space="preserve"
-      fill="#000000"
-      stroke="#000000"
-    >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g
-        id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke="#CCCCCC"
-        stroke-width="1.024"
-      ></g>
-      <g id="SVGRepo_iconCarrier">
-        <style type="text/css">
-          .st0 {
-            fill: #000000;
-          }
-        </style>
-        <g>
-          <path
-            class="st0"
-            d="M200.438,214.712V0h-71.18v512c0,0,170.389-50.606,236.182-162.99 C424.052,248.893,324.927,139.024,200.438,214.712z M300.508,302.609c-6.37,82.823-100.117,126.984-100.117,126.984v-156.27 C239.449,239.14,305.394,239.14,300.508,302.609z"
-          ></path>
-        </g>
-      </g></svg
-  ></mat-icon>
-</button>
+<mat-icon *ngIf="!sliderOpen" class="slider-toggle" (click)="toggleSlider()"
+  >chevron_left</mat-icon
+>
+<mat-icon *ngIf="sliderOpen" class="slider-toggle" (click)="toggleSlider()"
+  >chevron_right</mat-icon
+>
+<div class="slider-container" [class.open]="sliderOpen">
+  <div *ngIf="block" class="">
+    <div>
+      <button mat-icon-button (click)="togglePreferirSp()">SP/LT</button>
+    </div>
+    <div>
+      <button mat-icon-button (click)="togglePreferirSostenidos()">
+        <mat-icon *ngIf="!preferirSostenidos">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z"
+            />
+          </svg>
+        </mat-icon>
+        <mat-icon *ngIf="preferirSostenidos">
+          <svg
+            height="24px"
+            width="24px"
+            version="1.1"
+            id="_x32_"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="-51.2 -51.2 614.40 614.40"
+            xml:space="preserve"
+            fill="#000000"
+            stroke="#000000"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke="#CCCCCC"
+              stroke-width="1.024"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <style type="text/css">
+                .st0 {
+                  fill: #000000;
+                }
+              </style>
+              <g>
+                <path
+                  class="st0"
+                  d="M200.438,214.712V0h-71.18v512c0,0,170.389-50.606,236.182-162.99 C424.052,248.893,324.927,139.024,200.438,214.712z M300.508,302.609c-6.37,82.823-100.117,126.984-100.117,126.984v-156.27 C239.449,239.14,305.394,239.14,300.508,302.609z"
+                ></path>
+              </g>
+            </g>
+          </svg>
+        </mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-icon-button (click)="startAutoScroll()">
+        <span mat-icon>arrow_downward </span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="grid-container">
   <div
     *ngFor="let linea of lines; let index = index"
@@ -63,7 +85,7 @@
       >
         <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
         <button
-          *ngIf="acorde.acorde"
+          *ngIf="acorde.acorde && !block"
           class="delete-button"
           (click)="eliminarAcorde(linea.n_linea, squareIndex)"
         >
@@ -81,23 +103,29 @@
         </button>
         <!-- Contenido del acorde -->
         <div class="square-content">
-          {{
-            transformToSpanish(
-              transformToEnarmonic(getAcorde(acorde.id || 169) || "")
-            ) || ""
+          {{ acorde.acorde || ""
           }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
         </div>
       </mat-card>
     </div>
     <!-- Campo de entrada de texto -->
     <mat-form-field
+      *ngIf="!block"
       appearance="outline"
       class="input-field"
       [style.width]="maxWidth"
     >
       <input matInput [(ngModel)]="linea.texto" placeholder="Texto recibido" />
     </mat-form-field>
-    <div class="button-container">
+
+    <!-- Texto plano cuando this.block es true -->
+    <div *ngIf="block" class="plaintext">
+      <p class="text-material-design">
+        {{ linea.texto }}
+      </p>
+    </div>
+
+    <div class="button-container" *ngIf="!block">
       <button
         mat-raised-button
         class="add-line-btn"
@@ -128,7 +156,7 @@
     </div>
   </div>
 </div>
-<aside>
+<aside *ngIf="!block">
   <div class="contenedor">
     <!-- Contenedor de Acordes (Expandible con animación) -->
     <div
@@ -160,7 +188,7 @@
     </div>
   </div>
 </aside>
-<!--<div class="variaciones-container" [class.arriba]="menuArriba">
+<div *ngIf="!block" class="variaciones-container" [class.arriba]="menuArriba">
   <div class="variaciones-slider">
     <button
       *ngFor="let variacion of variaciones"
@@ -170,4 +198,31 @@
       {{ variacion }}
     </button>
   </div>
-</div>-->
+</div>
+<div *ngIf="!block" class="submit-container">
+  <button
+    [disabled]="this.cancion?.lineas?.length === 0"
+    mat-raised-button
+    color="primary"
+    (click)="enviarCancion()"
+  >
+    Enviar canción
+  </button>
+</div>
+
+<script>
+  function autoScrollWindow() {
+    // Establece cuánto se desplazará cada vez
+    const scrollAmount = window.innerHeight; // Desplazarse una vez por la altura de la ventana
+    const currentScroll = window.scrollY; // Posición actual del scroll
+    console.log(currentScroll);
+
+    // Desplazar la ventana hacia abajo
+    window.scrollTo({
+      top: currentScroll + scrollAmount, // Desplaza hacia abajo
+      behavior: "smooth", // Desplazamiento suave
+    });
+  }
+  // Configura el intervalo de desplazamiento automático (por ejemplo, cada 3 segundos)
+  setInterval(autoScrollWindow, 10);
+</script>

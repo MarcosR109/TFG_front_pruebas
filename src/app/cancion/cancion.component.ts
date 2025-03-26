@@ -98,6 +98,9 @@ export class CancionComponent {
         console.log(this.cancion);
         this.cargado = true;
         this.rating = this.cancion.rating || 0;
+        if (this.cancion.metrica != 'bin') {
+          this.binary = false;
+        }
       },
       (error) => {
         console.error('Error al cargar la canción', error);
