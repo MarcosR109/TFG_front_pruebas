@@ -94,7 +94,9 @@ export class TextBoxesComponent {
   preferirSostenidos = true;
   menuOpen: boolean = false;
   sliderOpen = false;
-  scroll: boolean = false;
+  velocidad: number = 1;
+  scrollId: any = null;
+  intervaloBase: number = 100; // Base del intervalo en milisegundos
 
   /**
    *
@@ -124,21 +126,48 @@ export class TextBoxesComponent {
       this.calcularMaxWidth();
     }
   }*/
-  autoScrollWindow() {
-    const scrollAmount = window.innerHeight; // Altura de la ventana
-    const currentScroll = window.scrollY; // Posición actual del scroll
-
-    window.scrollTo({
-      top: currentScroll + scrollAmount, // Desplazar hacia abajo
-      behavior: 'smooth', // Movimiento suave
-    });
+  autoScrollContainer() {
+    const container = document.querySelector('.scroll-container');
+    if (container) {
+      container.scrollBy({
+        top: this.velocidad,
+        behavior: 'smooth',
+      });
+    }
   }
 
   startAutoScroll() {
-    setInterval(() => this.autoScrollWindow(), 3000); // Cambia el tiempo si quieres más rápido o más lento
+    console.log('Auto scroll iniciado');
+    console.log(this.velocidad);
+
+    if (this.scrollId) {
+      clearInterval(this.scrollId);
+    }
+    this.scrollId = setInterval(
+      () => this.autoScrollContainer(),
+      this.intervaloBase / this.velocidad
+    );
   }
-  toggleAutoScroll() {
-    this.scroll = !this.scroll;
+
+  resetAutoScroll() {
+    this.velocidad = 1;
+    clearInterval(this.scrollId);
+    this.scrollId = null;
+  }
+
+  addVelocidad() {
+    this.velocidad = Math.min(this.velocidad + 0.5, 10);
+    this.startAutoScroll();
+  }
+
+  substractVelocidad() {
+    if (this.scrollId) {
+      this.velocidad = Math.max(this.velocidad - 0.5, 0.5);
+      this.startAutoScroll();
+    }
+    if (this.velocidad == 0.5) {
+      this.resetAutoScroll();
+    }
   }
   toggleMenu() {
     this.menuOpen = !this.menuOpen;

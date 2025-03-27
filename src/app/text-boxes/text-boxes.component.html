@@ -1,15 +1,16 @@
-<mat-icon *ngIf="!sliderOpen" class="slider-toggle" (click)="toggleSlider()"
-  >chevron_left</mat-icon
->
-<mat-icon *ngIf="sliderOpen" class="slider-toggle" (click)="toggleSlider()"
-  >chevron_right</mat-icon
->
 <div class="slider-container" [class.open]="sliderOpen">
-  <div *ngIf="block" class="">
-    <div>
+  <!-- Botón de despliegue dentro del slider -->
+  <button class="slider-toggle" (click)="toggleSlider()">
+    <mat-icon *ngIf="!sliderOpen">chevron_left</mat-icon>
+    <mat-icon *ngIf="sliderOpen">chevron_right</mat-icon>
+  </button>
+
+  <div *ngIf="block" class="slider-content">
+    <div class="button-row">
       <button mat-icon-button (click)="togglePreferirSp()">SP/LT</button>
     </div>
-    <div>
+
+    <div class="button-row">
       <button mat-icon-button (click)="togglePreferirSostenidos()">
         <mat-icon *ngIf="!preferirSostenidos">
           <svg
@@ -62,97 +63,128 @@
         </mat-icon>
       </button>
     </div>
+
     <div>
-      <button mat-icon-button (click)="startAutoScroll()">
-        <span mat-icon>arrow_downward </span>
-      </button>
+      <div class="button-row">
+        <button mat-icon-button (click)="addVelocidad()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          *ngIf="!this.scrollId"
+          (click)="startAutoScroll()"
+        >
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          *ngIf="this.scrollId"
+          (click)="resetAutoScroll()"
+        >
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button mat-icon-button (click)="substractVelocidad()">
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button mat-icon-button><span>+1</span></button>
+      <button mat-icon-button><span>-1</span></button>
     </div>
   </div>
 </div>
 
 <div class="grid-container">
-  <div
-    *ngFor="let linea of lines; let index = index"
-    class="input-group"
-    [style.width]="maxWidth"
-  >
-    <div class="square-container" [style.width]="maxWidth">
-      <mat-card
-        class="square"
-        *ngFor="let acorde of linea.acordes; let squareIndex = index"
-        dndDropzone
-        (dndDrop)="onDrop($event, linea, squareIndex)"
+  <div class="scroll-container">
+    <div
+      *ngFor="let linea of lines; let index = index"
+      class="input-group"
+      [style.width]="maxWidth"
+    >
+      <div class="square-container" [style.width]="maxWidth">
+        <mat-card
+          class="square"
+          *ngFor="let acorde of linea.acordes; let squareIndex = index"
+          dndDropzone
+          (dndDrop)="onDrop($event, linea, squareIndex)"
+        >
+          <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
+          <button
+            *ngIf="acorde.acorde && !block"
+            class="delete-button"
+            (click)="eliminarAcorde(linea.n_linea, squareIndex)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="15px"
+              viewBox="0 -960 960 960"
+              width="15px"
+              fill="#999999"
+            >
+              <path
+                d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+              />
+            </svg>
+          </button>
+          <!-- Contenido del acorde -->
+          <div class="square-content">
+            {{ acorde.acorde || ""
+            }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Campo de entrada de texto -->
+      <mat-form-field
+        *ngIf="!block"
+        appearance="outline"
+        class="input-field"
+        [style.width]="maxWidth"
       >
-        <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
+        <input
+          matInput
+          [(ngModel)]="linea.texto"
+          placeholder="Texto recibido"
+        />
+      </mat-form-field>
+
+      <!-- Texto plano cuando this.block es true -->
+      <div *ngIf="block" class="plaintext">
+        <p class="text-material-design">
+          {{ linea.texto }}
+        </p>
+      </div>
+
+      <div class="button-container" *ngIf="!block">
         <button
-          *ngIf="acorde.acorde && !block"
-          class="delete-button"
-          (click)="eliminarAcorde(linea.n_linea, squareIndex)"
+          mat-raised-button
+          class="add-line-btn"
+          color="secondary"
+          (click)="agregarLineaDebajo(index)"
+        >
+          +
+        </button>
+        <button
+          mat-raised-button
+          color="secondary"
+          class="delete-line-btn"
+          (click)="eliminarLinea(index)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="15px"
-            viewBox="0 -960 960 960"
-            width="15px"
-            fill="#999999"
+            height="20px"
+            viewBox="0 0 24 24"
+            width="20px"
+            fill="#000000"
           >
+            <path d="M0 0h24v24H0V0z" fill="none" />
             <path
-              d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+              d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
             />
           </svg>
         </button>
-        <!-- Contenido del acorde -->
-        <div class="square-content">
-          {{ acorde.acorde || ""
-          }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
-        </div>
-      </mat-card>
-    </div>
-    <!-- Campo de entrada de texto -->
-    <mat-form-field
-      *ngIf="!block"
-      appearance="outline"
-      class="input-field"
-      [style.width]="maxWidth"
-    >
-      <input matInput [(ngModel)]="linea.texto" placeholder="Texto recibido" />
-    </mat-form-field>
-
-    <!-- Texto plano cuando this.block es true -->
-    <div *ngIf="block" class="plaintext">
-      <p class="text-material-design">
-        {{ linea.texto }}
-      </p>
-    </div>
-
-    <div class="button-container" *ngIf="!block">
-      <button
-        mat-raised-button
-        class="add-line-btn"
-        color="secondary"
-        (click)="agregarLineaDebajo(index)"
-      >
-        +
-      </button>
-      <button
-        mat-raised-button
-        color="secondary"
-        class="delete-line-btn"
-        (click)="eliminarLinea(index)"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="20px"
-          viewBox="0 0 24 24"
-          width="20px"
-          fill="#000000"
-        >
-          <path d="M0 0h24v24H0V0z" fill="none" />
-          <path
-            d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
-          />
-        </svg>
-      </button>
+      </div>
     </div>
   </div>
 </div>
@@ -209,20 +241,3 @@
     Enviar canción
   </button>
 </div>
-
-<script>
-  function autoScrollWindow() {
-    // Establece cuánto se desplazará cada vez
-    const scrollAmount = window.innerHeight; // Desplazarse una vez por la altura de la ventana
-    const currentScroll = window.scrollY; // Posición actual del scroll
-    console.log(currentScroll);
-
-    // Desplazar la ventana hacia abajo
-    window.scrollTo({
-      top: currentScroll + scrollAmount, // Desplaza hacia abajo
-      behavior: "smooth", // Desplazamiento suave
-    });
-  }
-  // Configura el intervalo de desplazamiento automático (por ejemplo, cada 3 segundos)
-  setInterval(autoScrollWindow, 10);
-</script>
