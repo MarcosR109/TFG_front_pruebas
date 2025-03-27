@@ -34,6 +34,9 @@ import { Cancion } from '../cancion/cancion';
 import { CancionService } from '../cancion.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AcordesTransformService } from '../acordes-transform.service';
+import { AcordeshowComponent } from '../acordeshow/acordeshow.component';
+import { AcordeTransformPipe } from '../acorde-transform.pipe';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -50,6 +53,8 @@ import { Router } from '@angular/router';
     DndModule,
     DragDropModule,
     ConfirmComponent,
+    AcordeshowComponent,
+    AcordeTransformPipe,
   ],
   animations: [
     trigger('expandir', [
@@ -78,7 +83,7 @@ export class TextBoxesComponent {
   @Input() bin?: boolean = false;
   @Input() tonalidad?: any;
   @Input() cancion?: Cancion;
-  public block: boolean = true;
+  public block: boolean = false;
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
@@ -97,7 +102,8 @@ export class TextBoxesComponent {
   velocidad: number = 1;
   scrollId: any = null;
   intervaloBase: number = 100; // Base del intervalo en milisegundos
-
+  preferSostenidos = false;
+  notation: 'latin' | 'american' = 'american';
   /**
    *
    */
@@ -105,22 +111,18 @@ export class TextBoxesComponent {
     private cdRef: ChangeDetectorRef,
     private cancionService: CancionService,
     public dialog: MatDialog,
-    private router: Router
-  ) {}
+    private router: Router,
+    private chordService: AcordesTransformService,
+    private pipeInstance: AcordeTransformPipe
+  ) {
+    this.pipeInstance.preferSostenidos = true;
+    this.pipeInstance.notation = 'latin';
+  }
   ngAfterViewInit() {
     console.log(this.lines);
     console.log(this.tonalidad);
   }
 
-  getAcorde(acordeid: number) {
-    for (const [tonalidad, acordes] of Object.entries(ACORDES_POR_TONALIDAD)) {
-      const acordeEncontrado = acordes.find((acorde) => acorde.id === acordeid);
-      if (acordeEncontrado) {
-        return acordeEncontrado.acorde;
-      }
-    }
-    return '';
-  }
   /*ngOnChanges(changes: SimpleChanges): void {
     if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
       this.calcularMaxWidth();
@@ -460,5 +462,21 @@ export class TextBoxesComponent {
       data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
     });
     return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
+  }
+
+  toggleNotation(): void {
+    const newNotation =
+      this.chordService.notation === 'american' ? 'latin' : 'american';
+    this.chordService.setNotation(newNotation);
+  }
+
+  toggleSostenidos(): void {
+    this.chordService.toggleSostenidos();
+  }
+
+  transposeAll(semitones: number): void {
+    // Aquí necesitarías implementar la lógica para transponer todos los acordes
+    // Esto podría hacerse con un servicio compartido o un Observable
+    console.log(`Transponer todos los acordes ${semitones} semitonos`);
   }
 }

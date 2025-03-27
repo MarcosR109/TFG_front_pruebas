@@ -5,13 +5,13 @@
     <mat-icon *ngIf="sliderOpen">chevron_right</mat-icon>
   </button>
 
-  <div *ngIf="block" class="slider-content">
+  <div class="slider-content">
     <div class="button-row">
-      <button mat-icon-button (click)="togglePreferirSp()">SP/LT</button>
+      <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
     </div>
 
     <div class="button-row">
-      <button mat-icon-button (click)="togglePreferirSostenidos()">
+      <button mat-icon-button (click)="toggleSostenidos()">
         <mat-icon *ngIf="!preferirSostenidos">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@
         >
           <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
           <button
-            *ngIf="acorde.acorde && !block"
+            *ngIf="acorde.acorde != 'aux' && !block"
             class="delete-button"
             (click)="eliminarAcorde(linea.n_linea, squareIndex)"
           >
@@ -130,8 +130,11 @@
           </button>
           <!-- Contenido del acorde -->
           <div class="square-content">
-            {{ acorde.acorde || ""
-            }}<span *ngIf="acorde.variacion">{{ acorde.variacion }}</span>
+            <app-acordeshow
+              *ngIf="acorde.acorde != 'aux'"
+              [chord]="acorde.acorde || ''"
+              [variacion]="acorde.variacion || ''"
+            ></app-acordeshow>
           </div>
         </mat-card>
       </div>

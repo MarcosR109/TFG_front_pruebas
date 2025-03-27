@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class AcordesTransformService {
   constructor() {}
-  private preferSostenidos = false;
-  private notation: 'latin' | 'american' = 'american';
+  public preferSostenidos = false;
+  public notation: 'latin' | 'american' = 'american';
 
   // Mapeo de acordes
   private chordMap = {
@@ -40,29 +40,43 @@ export class AcordesTransformService {
 
     const currentNotation = this.chordMap[this.notation];
     const normalizedChord = this.normalizeChord(chord);
-
     const baseChord = normalizedChord.replace(/[#b]/, '');
-    const currentIndex = currentNotation.findIndex(
-      (c) => c.replace(/[#b]/, '') === baseChord
-    );
+    console.log('Pretransformar', baseChord);
 
+    const currentIndex = currentNotation.findIndex(
+      (c) => c.replace(/[#b]/, '') === baseChord,
+      console.log('Mapa', this.chordMap[this.notation])
+    );
+    console.log('CURRENT NOTATION', currentNotation);
+
+    const coincidencia = currentNotation.find((c) => c == baseChord);
+    let prueba = currentNotation.find((c) => c == 'Do');
+    console.log('Prueba', prueba);
+    console.log('Coincidencia', coincidencia);
+
+    console.log('normalizedChord', normalizedChord);
+    console.log('Notacion actual ', this.notation);
+    console.log('PreferirSostenidos', this.preferSostenidos);
+    console.log('Index', currentIndex);
     if (currentIndex === -1) return chord;
 
     const newIndex = (currentIndex + semitones + 12) % 12;
     let newChord = currentNotation[newIndex];
+    console.log('Acorde en nueva notación ', newChord);
 
     // Aplicar preferencia de sostenidos/bemoles
     if (this.preferSostenidos) {
       newChord = this.convertToSostenidos(newChord);
+      console.log(newChord);
     } else {
       newChord = this.convertToBemoles(newChord);
+      console.log(newChord);
     }
 
     return this.applyOriginalFormat(newChord, chord);
   }
 
   private normalizeChord(chord: string): string {
-    // Normaliza a notación americana para procesamiento interno
     const latinToAmerican: { [key: string]: string } = {
       Do: 'C',
       Re: 'D',
@@ -72,8 +86,21 @@ export class AcordesTransformService {
       La: 'A',
       Si: 'B',
     };
-
+    const americanToLatin: { [key: string]: string } = {
+      C: 'Do',
+      D: 'Re',
+      E: 'Mi',
+      F: 'Fa',
+      G: 'Sol',
+      A: 'La',
+      B: 'Si',
+    };
     const base = chord.replace(/[#b]/, '');
+    console.log('BASE', base);
+    console.log('AMERICANTOLATIN', americanToLatin[base]);
+
+    console.log('LATINTOAMERICAN', latinToAmerican[base]);
+
     return latinToAmerican[base] || base;
   }
 
@@ -100,8 +127,8 @@ export class AcordesTransformService {
   }
 
   private applyOriginalFormat(newChord: string, originalChord: string): string {
-    // Mantener sufijos como m, 7, etc.
     const suffix = originalChord.replace(/^[A-Ga-g][#b]?/, '');
+    console.log(newChord);
     return newChord + suffix;
   }
 }
