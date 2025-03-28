@@ -1,2 +1,2 @@
-<span>{{ chord | acordeTransform }}</span
-><span *ngIf="variacion" class="variation">{{ variacion }}</span>
+<span>{{ chord | acordeTranspose : this.semitones | acordeTransform }}</span
+><span *ngIf="variacion">{{ variacion }}</span>

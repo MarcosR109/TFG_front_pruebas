@@ -34,9 +34,10 @@ import { Cancion } from '../cancion/cancion';
 import { CancionService } from '../cancion.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AcordesTransformService } from '../acordes-transform.service';
 import { AcordeshowComponent } from '../acordeshow/acordeshow.component';
 import { AcordeTransformPipe } from '../acorde-transform.pipe';
+import { AcordeTransformSettingsService } from '../acorde-transform-settings.service';
+import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -79,45 +80,41 @@ import { AcordeTransformPipe } from '../acorde-transform.pipe';
   ],
 })
 export class TextBoxesComponent {
-  @Input() lines?: Linea[];
-  @Input() bin?: boolean = false;
-  @Input() tonalidad?: any;
-  @Input() cancion?: Cancion;
-  public block: boolean = false;
+  @Input() lines?: Linea[]; //Lineas que recibe de componente padre
+  @Input() bin?: boolean = false; //Variable para especificar si es binario o ternario
+  @Input() tonalidad?: any; //Tonalidad de la canción
+  @Input() cancion?: Cancion; //Canción que recibe de componente padre
+  public block: boolean = false; //Bloquea el formulario de edición y carga vista
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
-  variaciones = VARIACIONES;
-  menuArriba = false;
-  maxWidth: string = '25rem';
-  tonalidades = Object.keys(ACORDES_POR_TONALIDAD);
-  tonalidadExpandida: string | null = null;
+  variaciones = VARIACIONES; // Variaciones de acordes
+  menuArriba = false; // Indica si el menú está arriba
+  maxWidth: string = '25rem'; // Ancho máximo de las líneas, se recalcula en un método al cargar
+  tonalidades = Object.keys(ACORDES_POR_TONALIDAD); // Tonalidades disponibles
+  tonalidadExpandida: string | null = null; // Tonalidad seleccionada en el menú
   @HostListener('window:scroll', [])
   botonBloqueado = false;
   botonBorrarBloqueado = false;
-  preferirSp = false;
-  preferirSostenidos = true;
-  menuOpen: boolean = false;
   sliderOpen = false;
   velocidad: number = 1;
   scrollId: any = null;
   intervaloBase: number = 100; // Base del intervalo en milisegundos
-  preferSostenidos = false;
+  preferSostenidos: boolean = false; // Preferencia de sostenidos o bemoles
   notation: 'latin' | 'american' = 'american';
-  /**
-   *
-   */
+  semitones = 0; // Semitonos para transponer acordes
   constructor(
     private cdRef: ChangeDetectorRef,
     private cancionService: CancionService,
     public dialog: MatDialog,
     private router: Router,
-    private chordService: AcordesTransformService,
-    private pipeInstance: AcordeTransformPipe
+    private pipeInstance: AcordeTransformPipe,
+    private settingsService: AcordeTransformSettingsService,
+    private pipeTransposeInstance: AcordeTransposePipe
   ) {
-    this.pipeInstance.preferSostenidos = true;
-    this.pipeInstance.notation = 'latin';
+    this.settingsService.currentSettings.preferSostenidos;
   }
+
   ngAfterViewInit() {
     console.log(this.lines);
     console.log(this.tonalidad);
@@ -171,9 +168,6 @@ export class TextBoxesComponent {
       this.resetAutoScroll();
     }
   }
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
   toggleSlider() {
     this.sliderOpen = !this.sliderOpen; // Cambia el estado del slider
   }
@@ -184,80 +178,27 @@ export class TextBoxesComponent {
     this.maxWidth = `${maxLength * 10}px`; // Ajusta el factor según necesidad
     console.log(`Ancho máximo calculado: ${this.maxWidth}`);
   }
-  transformToEnarmonic(acorde: string): string {
-    const enarmonicMap: { [key: string]: string } = {
-      'C#': 'Db',
-      'D#': 'Eb',
-      'F#': 'Gb',
-      'G#': 'Ab',
-      'A#': 'Bb',
-      Eb: 'D#',
-      Db: 'C#',
-      Gb: 'F#',
-      Ab: 'G#',
-      Bb: 'A#',
-      'C#m': 'Dbm',
-      'D#m': 'Ebm',
-      'F#m': 'Gbm',
-      'G#m': 'Abm',
-      'A#m': 'Bbm',
-      Ebm: 'D#m',
-      Dbm: 'C#m',
-      Gbm: 'F#m',
-      Abm: 'G#m',
-      Bbm: 'A#m',
-    };
-    return this.preferirSostenidos ? enarmonicMap[acorde] || acorde : acorde;
+
+  togglePreferirSostenidos(): void {
+    console.log('Preferir sostenidos', this.preferSostenidos);
+    const current = this.settingsService.currentSettings.preferSostenidos;
+    this.settingsService.setPreferSostenidos(!current);
+    this.preferSostenidos = !this.preferSostenidos;
   }
-  transformToSpanish(acorde: string): string {
-    const spanishMap: { [key: string]: string } = {
-      C: 'Do',
-      D: 'Re',
-      E: 'Mi',
-      F: 'Fa',
-      G: 'Sol',
-      A: 'La',
-      B: 'Si',
-      Db: 'Reb',
-      Eb: 'Mib',
-      Gb: 'Solb',
-      Ab: 'Lab',
-      Bb: 'Sib',
-      Cm: 'Dom',
-      Dm: 'Rem',
-      Em: 'Mim',
-      Fm: 'Fam',
-      Gm: 'Solm',
-      Am: 'Lam',
-      Bm: 'Sim',
-      Dbm: 'Rebm',
-      Ebm: 'Mibm',
-      Gbm: 'Solbm',
-      Abm: 'Labm',
-      Bbm: 'Sibm',
-      'D#': 'Re#',
-      'G#': 'Sol#',
-      'A#': 'La#',
-      'F#': 'Fa#',
-      'C#': 'Do#',
-      'D#m': 'Re#m',
-      'F#m': 'Fa#m',
-      'G#m': 'Sol#m',
-      'A#m': 'La#m',
-      'C#m': 'Do#m',
-    };
-    return this.preferirSp ? spanishMap[acorde] || acorde : acorde;
+  modSemitono(semitones: number) {
+    if (this.semitones == 12 || this.semitones == -12) this.semitones = 0;
+    this.semitones += semitones;
   }
-  togglePreferirSp() {
-    console.log(this.preferirSp);
-    this.preferirSp = !this.preferirSp;
-    this.cdRef.detectChanges();
+  toggleNotation(): void {
+    console.log('NOTACIÓN EN TEXTBOXES', this.notation);
+    if (this.notation === 'latin') {
+      this.notation = 'american';
+    } else {
+      this.notation = 'latin';
+    }
+    this.settingsService.setNotation(this.notation);
   }
-  togglePreferirSostenidos() {
-    console.log(this.preferirSostenidos);
-    this.preferirSostenidos = !this.preferirSostenidos;
-    this.cdRef.detectChanges();
-  }
+
   agregarLineaDebajo(index: number): void {
     if (this.botonBloqueado) return; // Evita doble interacción
     this.botonBloqueado = true;
@@ -462,16 +403,6 @@ export class TextBoxesComponent {
       data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
     });
     return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
-  }
-
-  toggleNotation(): void {
-    const newNotation =
-      this.chordService.notation === 'american' ? 'latin' : 'american';
-    this.chordService.setNotation(newNotation);
-  }
-
-  toggleSostenidos(): void {
-    this.chordService.toggleSostenidos();
   }
 
   transposeAll(semitones: number): void {
