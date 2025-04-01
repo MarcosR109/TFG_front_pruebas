@@ -96,4 +96,14 @@ export class CancionService {
       this.URL + 'canciones/' + artista + '/lista'
     );
   }
-}
+  getCancionesArevisar() {
+    return this.http.get<{ message: String; canciones: any[] }>(
+      this.URL + 'canciones/lista/revisar'
+    );
+  }
+  actualizarBadge(){
+    return this.http.get<any>(this.URL + 'badge');
+    }
+  }
+
+//   

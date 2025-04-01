@@ -1,0 +1,77 @@
+/* Estilos para la tabla de revisiones */
+.results-container {
+    padding: 24px;
+    margin: 16px;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    color: #666;
+  }
+  
+  .error-message {
+    color: #f44336;
+    padding: 16px;
+    background-color: #ffebee;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+  
+  .results-header {
+    margin-bottom: 20px;
+  }
+  
+  .results-header h2 {
+    margin: 0 0 8px 0;
+    color: #3f51b5;
+  }
+  
+  .results-header p {
+    margin: 0;
+    color: #666;
+  }
+  
+  /* Estilos para las celdas con iconos */
+  .song-link, .artist-info, .genre-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .song-link {
+    color: #3f51b5;
+    text-decoration: none;
+  }
+  
+  .song-link:hover {
+    text-decoration: underline;
+  }
+  
+  .rating-stars {
+    display: flex;
+  }
+  
+  .rating-stars mat-icon {
+    color: #ffc107;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+  }
+  
+  .no-results {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    color: #4caf50;
+  }
+  
+  /* Asegurar alineación vertical de iconos */
+  .mat-cell mat-icon {
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }

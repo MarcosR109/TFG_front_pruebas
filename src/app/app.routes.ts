@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CancionFormComponent } from './cancion-form/cancion-form.component';
 import { CancioneslistfComponent } from './cancioneslistf/cancioneslistf.component';
 import { CancionComponent } from './cancion/cancion.component';
+import { RevisionesComponent } from './revisiones/revisiones.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -16,5 +17,7 @@ export const routes: Routes = [
   { path: 'canciones/search/:query', component: CancioneslistfComponent },
   { path: 'canciones/create', component: CancionFormComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'revisiones', component: RevisionesComponent},
   { path: 'debug', component: CancionComponent },
+  { path: 'revisiones/:id', component: CancionFormComponent},
 ];

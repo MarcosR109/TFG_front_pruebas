@@ -5,7 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { MatBadgeModule } from '@angular/material/badge';
+import { catchError, interval, Observable, Subscription, switchMap } from 'rxjs';
+import { BadgeService } from '../badge.service';
+import { CancionService } from '../cancion.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -16,6 +19,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
     RouterModule,
     MatToolbarModule,
+    MatBadgeModule,
   ],
   template: `
     <!-- Toolbar solo para móviles -->
@@ -32,6 +36,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="side" [opened]="!isMobile || isMenuOpen">
         <div class="menu">
+          <button mat-button [routerLink]="['/revisiones']" class="menu-item">
+            <mat-icon mat-badge  [matBadge]="badgeCount" matBadgePosition="after" matBadgeOverlap="false"  matBadgeColor="primary">notifications</mat-icon>
+            <span>Revisiones</span>
+          </button>
           <button mat-button [routerLink]="['/home']" class="menu-item">
             <mat-icon>home</mat-icon>
             <span>Home</span>
@@ -99,6 +107,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
       font-size: 14px;
       height: 60px;
       padding: 8px 0;
+      margin-top: 16px;
     }
     .menu-item mat-icon {
       font-size: 20px;
@@ -144,10 +153,42 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 export class HeaderComponent {
   isMobile = false;
   isMenuOpen = false;
+  badgeCount = 0;
+  badgeCount$!: Observable<number>;
+  private subscription!: Subscription;
 
-  constructor() {
+  constructor(
+    private badgeService: BadgeService,
+    private cancionesService: CancionService
+  ) {
+    this.badgeCount$ = this.badgeService.badgeCount$ || 0;
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
+  }
+
+  ngOnInit() {
+    this.cancionesService.actualizarBadge().subscribe((count) => {
+      this.badgeCount = count.count;
+    });
+    this.subscription = interval(50000)
+      .pipe(
+        switchMap(() => this.cancionesService.actualizarBadge()), // Llama al backend cada 5s
+        catchError((err) => {
+          console.error('Error al actualizar badge:', err);
+          return []; // Devuelve un array vacío para evitar que se rompa la suscripción
+        })
+      )
+      .subscribe((res) => {
+        this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
+        console.log('Badge actualizado:', res.count);
+        this.badgeCount = res.count;
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe(); // Evita fugas de memoria
+    }
   }
 
   checkScreenSize() {

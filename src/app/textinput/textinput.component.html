@@ -8,10 +8,15 @@
     <!-- Fila 1 -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Título</mat-label>
-      <input
+      <input *ngIf="!revisable"
         matInput
         placeholder="Escribe el título..."
         [(ngModel)]="cancion.titulo"
+      />
+      <input *ngIf="revisable"
+        matInput
+        placeholder="Escribe el título..."
+        [(ngModel)]="revisable.titulo"
       />
       <mat-icon matSuffix>title</mat-icon>
     </mat-form-field>
@@ -24,7 +29,7 @@
         matInput
         placeholder="Escribe la letra..."
         rows="6"
-        (input)="this.escrito = true"
+        [(ngModel)]="text"
       ></textarea>
       <mat-icon matSuffix>lyrics</mat-icon>
     </mat-form-field>
@@ -121,7 +126,6 @@
       mat-raised-button
       color="primary"
       (click)="romperTexto(textArea.value); textArea.value = ''"
-      [disabled]="!escrito"
     >
       <mat-icon>send</mat-icon>
       Procesar Canción
@@ -135,6 +139,7 @@
     [lines]="this.lineas"
     [bin]="this.bin"
     [tonalidad]="this.cancion.tonalidad"
+    [block]="false"	
   >
   </app-text-boxes>
 </div>

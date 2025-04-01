@@ -20,6 +20,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Artistas } from '../artistas';
 import { generos } from '../generos';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
+import { CancionService } from '../cancion.service';
 @Component({
   selector: 'app-textinput',
   imports: [
@@ -75,7 +77,6 @@ export class TextinputComponent {
 
   text: Array<string> = [];
   lineas: Linea[] = [];
-  escrito: boolean = false;
   enviado: boolean = false;
   bin: boolean = true;
   tonalidadSeleccionada!: { id: number; nombre: string } | null;
@@ -85,12 +86,24 @@ export class TextinputComponent {
   inputTexto = ''; // Para mostrar el valor en el input
   generos = generos;
   generoSeleccionado = { id: 1, nombre: 'Pop' };
-  constructor() {
+  revisable!: Cancion;
+  constructor(route: ActivatedRoute, cancionService: CancionService) {
+    let id = route.snapshot.params['id'];
+    if (id) {
+      cancionService.getCancion(id).subscribe((res) => {
+        this.revisable = res.cancion;
+        this.cancion = this.revisable;
+        this.text = (this.cancion.lineas ?? []).map((linea) => linea.texto + '\n');
+      });
+    }
     this.text = [];
     this.cancion.capo = 0;
     this.cancion.rating = 0;
     this.cancion.comentario = '';
     this.cancion.var = 'no';
+  }
+  ngOnInit() {
+
   }
   filtrarArtistas(event: any) {
     const filtro = event.target.value.toLowerCase();
@@ -98,8 +111,8 @@ export class TextinputComponent {
     this.artistaSeleccionado = null; // Resetear la selección si el usuario escribe
     this.artistasFiltrados = filtro
       ? this.artistas.artistas.filter((artista) =>
-          artista.nombre.toLowerCase().includes(filtro)
-        )
+        artista.nombre.toLowerCase().includes(filtro)
+      )
       : this.artistas.artistas;
   }
 

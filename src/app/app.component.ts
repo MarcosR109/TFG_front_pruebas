@@ -10,6 +10,9 @@ import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
 import { CancionComponent } from './cancion/cancion.component';
 import { Routes } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
+import { CancionService } from './cancion.service';
+import { BadgeService } from './badge.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -28,4 +31,10 @@ import { Routes } from '@angular/router';
 })
 export class AppComponent {
   title = 'Mi Proyecto Angular';
+  badgeCount = 0;
+  private subscription!: Subscription;
+  constructor(private canciones:CancionService,private badgeService:BadgeService) {
+    
+    
+  }
 }

@@ -26,9 +26,6 @@ import {
 import { DndDropEvent, DndModule } from 'ngx-drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { Acorde } from '../cancion/acorde';
-import '@material/web/button/filled-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/checkbox/checkbox.js';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { Cancion } from '../cancion/cancion';
 import { CancionService } from '../cancion.service';
@@ -84,7 +81,7 @@ export class TextBoxesComponent {
   @Input() bin?: boolean = false; //Variable para especificar si es binario o ternario
   @Input() tonalidad?: any; //Tonalidad de la canción
   @Input() cancion?: Cancion; //Canción que recibe de componente padre
-  public block: boolean = false; //Bloquea el formulario de edición y carga vista
+  @Input() block: boolean = false; //Bloquea el formulario de edición y carga vista
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
