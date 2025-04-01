@@ -1,0 +1,69 @@
+FILTROCOMPONENT
+<form [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+  <mat-form-field appearance="outline">
+    <mat-label>Título</mat-label>
+    <input matInput formControlName="titulo" placeholder="Buscar..." />
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="form-col">
+    <mat-label>Artista</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="Buscar artista..."
+      [matAutocomplete]="autoArtista"
+      [value]="inputTextoArtista"
+      (input)="filtrarArtistas($event)"
+    />
+    <mat-autocomplete #autoArtista="matAutocomplete">
+      <mat-option
+        *ngFor="let artista of artistasFiltrados"
+        [value]="artista.nombre"
+        (onSelectionChange)="seleccionarArtista(artista)"
+      >
+        <div class="artist-option">
+          <mat-icon>person</mat-icon>
+          <span>{{ artista.nombre }}</span>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- Campo Género -->
+  <mat-form-field appearance="outline" class="form-col">
+    <mat-label>Género</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="Buscar género..."
+      [matAutocomplete]="autoGenero"
+      [value]="inputTextoGenero"
+      (input)="filtrarGeneros($event)"
+    />
+    <mat-autocomplete #autoGenero="matAutocomplete">
+      <mat-option
+        *ngFor="let genero of generosFiltrados"
+        [value]="genero.nombre"
+        (onSelectionChange)="seleccionarGenero(genero)"
+      >
+        <div class="genre-option">
+          <mat-icon>music_note</mat-icon>
+          <span>{{ genero.nombre }}</span>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Rating mínimo</mat-label>
+    <mat-select formControlName="calificacion">
+      <mat-option [value]="null">Cualquiera</mat-option>
+      <mat-option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">
+        {{ num }} ⭐
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Filtrar</button>
+</form>

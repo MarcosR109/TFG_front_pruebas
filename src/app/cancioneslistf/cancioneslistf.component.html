@@ -1,46 +1,130 @@
-<table
-  mat-table
-  [dataSource]="this.cancionesList"
-  class="mat-elevation-z8 demo-table"
->
-  <!-- Título -->
-  <ng-container matColumnDef="titulo">
-    <th mat-header-cell *matHeaderCellDef>Título</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [routerLink]="['/canciones/show', element.id]"
-    >
-      {{ element.titulo }}
-    </td>
-  </ng-container>
+LISTFCOMPONENT
+<div class="main-container">
+  <!-- Contenedor de Filtros -->
+  <mat-card class="filtros-container mat-elevation-z4">
+    <h2>Filtrar Resultados</h2>
+    <div class="filtros-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Género</mat-label>
+        <input
+          matInput
+          [(ngModel)]="filtros.genero"
+          (input)="aplicarFiltros()"
+          placeholder="Filtrar por género"
+        />
+      </mat-form-field>
 
-  <!-- Género -->
-  <ng-container matColumnDef="genero">
-    <th mat-header-cell *matHeaderCellDef>Género</th>
-    <td mat-cell *matCellDef="let element">{{ element?.genero }}</td>
-  </ng-container>
-
-  <!-- Artista -->
-  <ng-container matColumnDef="artista">
-    <th mat-header-cell *matHeaderCellDef>Artista</th>
-    <td mat-cell *matCellDef="let element">{{ element?.artista }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="rating">
-    <th mat-header-cell *matHeaderCellDef>Rating</th>
-    <td mat-cell *matCellDef="let element">
-      <div class="rating">
-        <mat-icon
-          *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-          class="star"
+      <mat-form-field appearance="outline">
+        <mat-label>Rating mínimo</mat-label>
+        <mat-select
+          [(ngModel)]="filtros.ratingMin"
+          (selectionChange)="aplicarFiltros()"
         >
-          {{ i + 1 <= (element.rating ?? 0) ? "star" : "star_outline" }}
-        </mat-icon>
-      </div>
-    </td>
-  </ng-container>
+          <mat-option [value]="0">Todos</mat-option>
+          <mat-option [value]="1">1+ ⭐</mat-option>
+          <mat-option [value]="2">2+ ⭐</mat-option>
+          <mat-option [value]="3">3+ ⭐</mat-option>
+          <mat-option [value]="4">4+ ⭐</mat-option>
+          <mat-option [value]="5">5 ⭐</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+  <!-- Contenedor de Resultados -->
+  <mat-card class="results-container mat-elevation-z4">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner diameter="40"></mat-spinner>
+      <span>Buscando canciones...</span>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading" class="results-content">
+      <div class="results-header">
+        <h2>
+          <span *ngIf="searchType === 'titulo'"
+            >Canciones con título: "{{ query }}"</span
+          >
+          <span *ngIf="searchType === 'artista'"
+            >Canciones del artista: "{{ query }}"</span
+          >
+        </h2>
+        <p>
+          Mostrando {{ filteredCanciones.length }} de
+          {{ cancionesList.length }} resultados
+        </p>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="filteredCanciones"
+        *ngIf="filteredCanciones.length > 0"
+      >
+        <!-- Columna Título -->
+        <ng-container matColumnDef="titulo">
+          <th mat-header-cell *matHeaderCellDef>Título</th>
+          <td mat-cell *matCellDef="let cancion">
+            <a
+              [routerLink]="['/canciones/show/', cancion.id]"
+              class="song-link"
+            >
+              <mat-icon>music_note</mat-icon>
+              {{ cancion.titulo }}
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Columna Artista -->
+        <ng-container matColumnDef="artista">
+          <th mat-header-cell *matHeaderCellDef>Artista</th>
+          <td mat-cell *matCellDef="let cancion">
+            <a
+              [routerLink]="[
+                '/canciones/search/',
+                cancion.artista.nombre || cancion.artista
+              ]"
+              class="artist-link"
+            >
+              <mat-icon>person</mat-icon>
+              {{ cancion.artista.nombre || cancion.artista }}
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Columna Género -->
+        <ng-container matColumnDef="genero">
+          <th mat-header-cell *matHeaderCellDef>Género</th>
+          <td mat-cell *matCellDef="let cancion">
+            <mat-icon>album</mat-icon>
+            {{ cancion.genero.nombre || cancion.genero }}
+          </td>
+        </ng-container>
+
+        <!-- Columna Rating -->
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef>Rating</th>
+          <td mat-cell *matCellDef="let cancion">
+            <div class="rating-stars">
+              <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]">
+                {{ star <= (cancion.rating || 0) ? "star" : "star_border" }}
+              </mat-icon>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <div
+        *ngIf="filteredCanciones.length === 0 && !isLoading && !errorMessage"
+        class="no-results"
+      >
+        No se encontraron canciones que coincidan con los filtros
+      </div>
+    </div>
+  </mat-card>
+</div>

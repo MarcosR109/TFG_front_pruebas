@@ -108,9 +108,7 @@ export class TextBoxesComponent {
     private cancionService: CancionService,
     public dialog: MatDialog,
     private router: Router,
-    private pipeInstance: AcordeTransformPipe,
-    private settingsService: AcordeTransformSettingsService,
-    private pipeTransposeInstance: AcordeTransposePipe
+    private settingsService: AcordeTransformSettingsService
   ) {
     this.settingsService.currentSettings.preferSostenidos;
   }

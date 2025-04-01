@@ -166,13 +166,10 @@ export class AcordeTransformPipe implements PipeTransform {
   };
 
   transform(chord: string): string {
-    console.log('PREFERIRSOSTENIDOS', this.preferSostenidos);
-    console.log('NOTATION', this.notation);
-    console.log('ACORDE QUE ENTRA', chord);
     if (!chord || chord.trim() === '' || chord == 'aux') return chord;
-    console.log('ACORDE QUE ENTRA', chord);
+
     const transformedBase = this.transformBaseChord(chord);
-    console.log('ACORDE QUE SALE', transformedBase);
+
     return transformedBase;
   }
 
@@ -180,30 +177,20 @@ export class AcordeTransformPipe implements PipeTransform {
     // 1. Normalizar a notación americana para procesamiento
     const normalized = this.normalizeToAmerican(baseChord);
     if (!normalized) return baseChord;
-    console.log('Normalized', normalized);
 
     // 2. Encontrar índice en la escala cromática
     const americanChords = this.chordMap.american;
     const index = americanChords.indexOf(normalized);
     if (index === -1) return baseChord;
-    console.log('Acorde encontrado en escala americana index : ', index);
+
     // 3. Aplicar preferencia de sostenidos/bemoles
     let processedChord = americanChords[index];
-    console.log(
-      'Processed Chord antes de preferirsostenidos/bemol',
-      processedChord
-    );
 
     if (this.preferSostenidos) {
       processedChord = this.convertToSostenidos(processedChord);
-      console.log('Processed Chord en converttosostenidos', processedChord);
     } else {
       processedChord = this.convertToBemoles(processedChord);
-      console.log('Processed Chord en converttobemoles', processedChord);
     }
-
-    console.log('Notación preferida', this.notation);
-    console.log('Antes de procesar la notación', processedChord);
 
     // 4. Convertir a la notación deseada
     return this.notation === 'latin'
@@ -214,7 +201,6 @@ export class AcordeTransformPipe implements PipeTransform {
   private normalizeToAmerican(chord: string): string | null {
     // Si ya está en notación americana
     if (this.chordMap.american.includes(chord)) {
-      console.log('Acorde en notación americana', chord);
       return chord;
     }
 

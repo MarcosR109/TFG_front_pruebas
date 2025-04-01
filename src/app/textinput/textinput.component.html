@@ -1,106 +1,140 @@
-<div *ngIf="!enviado">
-  <mat-form-field appearance="outline">
-    <mat-label>Título</mat-label>
-    <input
-      matInput
-      placeholder="Escribe el título..."
-      [(ngModel)]="cancion.titulo"
-    />
-  </mat-form-field>
+<div *ngIf="!enviado" class="form-container">
+  <div class="form-header">
+    <h1 class="mat-headline">Nueva Canción</h1>
+    <p class="mat-subheading-2">Completa los detalles de la canción</p>
+  </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Letra</mat-label>
-    <textarea
-      #textArea
-      matInput
-      placeholder="Escribe la letra..."
-      rows="4"
-      (input)="this.escrito = true"
-    ></textarea>
-  </mat-form-field>
+  <div class="form-grid">
+    <!-- Fila 1 -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Título</mat-label>
+      <input
+        matInput
+        placeholder="Escribe el título..."
+        [(ngModel)]="cancion.titulo"
+      />
+      <mat-icon matSuffix>title</mat-icon>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Compás</mat-label>
-    <mat-select [(value)]="bin">
-      <mat-option [value]="true">Binario</mat-option>
-      <mat-option [value]="false">Ternario</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Fila 2 -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Letra</mat-label>
+      <textarea
+        #textArea
+        matInput
+        placeholder="Escribe la letra..."
+        rows="6"
+        (input)="this.escrito = true"
+      ></textarea>
+      <mat-icon matSuffix>lyrics</mat-icon>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Artista</mat-label>
-    <input
-      type="text"
-      matInput
-      placeholder="Escribe el nombre del artista..."
-      [matAutocomplete]="auto"
-      [value]="artistaSeleccionado?.nombre || ''"
-      (input)="filtrarArtistas($event)"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option
-        *ngFor="let artista of artistasFiltrados"
-        [value]="artista.nombre"
-        (onSelectionChange)="seleccionarArtista(artista)"
-      >
-        {{ artista.nombre }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+    <!-- Fila 3 - Columnas -->
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Artista</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Buscar artista..."
+          [matAutocomplete]="auto"
+          [value]="artistaSeleccionado?.nombre || ''"
+          (input)="filtrarArtistas($event)"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let artista of artistasFiltrados"
+            [value]="artista.nombre"
+            (onSelectionChange)="seleccionarArtista(artista)"
+          >
+            <div class="artist-option">
+              <mat-icon>person</mat-icon>
+              <span>{{ artista.nombre }}</span>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Género</mat-label>
-    <mat-select [(value)]="generoSeleccionado">
-      <mat-option *ngFor="let genero of generos.generos" [value]="genero">
-        {{ genero.nombre }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Género</mat-label>
+        <mat-select [(value)]="generoSeleccionado">
+          <mat-option *ngFor="let genero of generos.generos" [value]="genero">
+            {{ genero.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>music_note</mat-icon>
+      </mat-form-field>
+    </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Tonalidad</mat-label>
-    <mat-select [(value)]="tonalidadSeleccionada">
-      <mat-option *ngFor="let tono of tonalidades" [value]="tono">{{
-        tono.nombre
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <!-- Fila 4 - Columnas -->
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Tonalidad</mat-label>
+        <mat-select [(value)]="tonalidadSeleccionada">
+          <mat-option *ngFor="let tono of tonalidades" [value]="tono">
+            {{ tono.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>tune</mat-icon>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Capo</mat-label>
-    <mat-select [(value)]="cancion.capo">
-      <mat-option [value]="0" selected>0</mat-option>
-      <mat-option
-        *ngFor="let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
-        [value]="index"
-        >{{ index }}</mat-option
-      >
-    </mat-select>
-  </mat-form-field>
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Compás</mat-label>
+        <mat-select [(value)]="bin">
+          <mat-option [value]="true">Binario</mat-option>
+          <mat-option [value]="false">Ternario</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>speed</mat-icon>
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Comentario</mat-label>
-    <textarea
-      matInput
-      placeholder="Escribe un comentario..."
-      [(ngModel)]="cancion.comentario"
-      rows="3"
-    ></textarea>
-  </mat-form-field>
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="romperTexto(textArea.value); textArea.value = ''"
-    [disabled]="!escrito"
-  >
-    Enviar
-  </button>
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Capo</mat-label>
+        <mat-select [(value)]="cancion.capo">
+          <mat-option [value]="0" selected>0 (Sin capo)</mat-option>
+          <mat-option
+            *ngFor="let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+            [value]="index"
+          >
+            Traste {{ index }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>filter_none</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Fila 5 -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comentarios</mat-label>
+      <textarea
+        matInput
+        placeholder="Añade notas adicionales..."
+        [(ngModel)]="cancion.comentario"
+        rows="3"
+      ></textarea>
+      <mat-icon matSuffix>notes</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="form-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="romperTexto(textArea.value); textArea.value = ''"
+      [disabled]="!escrito"
+    >
+      <mat-icon>send</mat-icon>
+      Procesar Canción
+    </button>
+  </div>
 </div>
-<div *ngIf="enviado">
+
+<div *ngIf="enviado" class="result-container">
   <app-text-boxes
     [cancion]="this.cancion"
     [lines]="this.lineas"
     [bin]="this.bin"
     [tonalidad]="this.cancion.tonalidad"
-  ></app-text-boxes>
+  >
+  </app-text-boxes>
 </div>

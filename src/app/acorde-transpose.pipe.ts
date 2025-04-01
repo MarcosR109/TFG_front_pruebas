@@ -39,13 +39,10 @@ export class AcordeTransposePipe implements PipeTransform {
 
   transform(chord: string, semitones: number): string {
     if (!chord || semitones === 0) return chord;
-    console.log('SEMITONES', semitones);
-    console.log(chord);
 
     const matches = chord.match(/^([A-Ga-g][#b]?)(.*)/);
     if (!matches) return chord;
     const [_, base, suffix] = matches;
-    console.log('SEMITONOS ANTES DE TRANSPOSE', semitones);
 
     const newBase = this.transposeBase(base, semitones);
 
@@ -56,13 +53,9 @@ export class AcordeTransposePipe implements PipeTransform {
     semitones = semitones;
   }
   private transposeBase(base: string, semitones: number): string {
-    console.log('BASE', base);
-    console.log('SEMITONES', semitones);
-
     const index = this.chromaticScale.indexOf(base.toUpperCase());
     if (index === -1) return base;
     const newIndex = (index + semitones + 12) % 12;
-    console.log(this.chromaticScale[newIndex]);
 
     return this.chromaticScale[newIndex];
   }

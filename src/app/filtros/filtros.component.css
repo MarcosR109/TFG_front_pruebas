@@ -1,0 +1,21 @@
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.filtros-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #632626;
+}
+
+.cancion-item {
+  transition: all 0.3s ease;
+}
+
+.cancion-item:hover {
+  background-color: #f5f5f5;
+}

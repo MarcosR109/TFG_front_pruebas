@@ -10,11 +10,10 @@ import { CancionComponent } from './cancion/cancion.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-
   { path: 'canciones', component: CancionesListComponent },
   { path: 'canciones/mine', component: CancionesMineComponent },
   { path: 'canciones/show/:id', component: CancionComponent },
-  { path: 'canciones/search/:title', component: CancioneslistfComponent },
+  { path: 'canciones/search/:query', component: CancioneslistfComponent },
   { path: 'canciones/create', component: CancionFormComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'debug', component: CancionComponent },

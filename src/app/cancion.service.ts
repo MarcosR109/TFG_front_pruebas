@@ -1,13 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Cancion } from './cancion/cancion';
-import { HttpClient } from '@angular/common/http';
-
+import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  switchMap,
+} from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class CancionService {
-  URL = 'http://localhost:8000/api/';
   constructor(private http: HttpClient) {}
+  URL = 'http://localhost:8000/api/';
+  private canciones: any[] = [];
+  private filtrosSubject = new BehaviorSubject<any>({});
+  cancionesFiltradas$ = this.filtrosSubject.asObservable();
+  setCanciones(canciones: any[]) {
+    this.canciones = [...canciones];
+    this.filtrosSubject.next({}); // Emitir filtros vacíos para mostrar todos
+    console.log(this.canciones);
+  }
+
+  actualizarFiltros(filtros: any) {
+    this.filtrosSubject.next(filtros);
+    console.log(filtros);
+  }
+  public filtrar(canciones: any[], filtros: any): any[] {
+    return canciones.filter((cancion) => {
+      console.log('CANCIONES', canciones);
+      console.log('FILTROS', filtros);
+
+      const coincideTitulo =
+        !filtros.titulo ||
+        cancion.titulo.toLowerCase().includes(filtros.titulo.toLowerCase());
+      const coincideArtista =
+        !filtros.artista || cancion.artista === filtros.artista;
+      const coincideGenero =
+        !filtros.genero || cancion.genero === filtros.genero;
+      const coincideRating =
+        !filtros.calificacion || cancion.rating >= filtros.calificacion;
+      console.log('Genero', coincideGenero);
+
+      return (
+        coincideTitulo && coincideArtista && coincideGenero && coincideRating
+      );
+    });
+  }
+
   enviarCancion(cancion: Cancion) {
     this.http.post(this.URL + 'canciones', cancion).subscribe((res) => {
       console.log(res);
@@ -48,5 +89,11 @@ export class CancionService {
   }
   quitarFavorito(id: number) {
     return this.http.delete(this.URL + 'users/' + id + '/favoritos');
+  }
+  buscarPorArtista(artista: string) {
+    console.log('BUSCANDO POR ARTISTA', artista);
+    return this.http.get<{ message: string; canciones: Cancion[] }>(
+      this.URL + 'canciones/' + artista + '/lista'
+    );
   }
 }

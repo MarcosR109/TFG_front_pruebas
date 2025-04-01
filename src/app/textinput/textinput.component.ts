@@ -19,6 +19,7 @@ import { artistas } from '../artistas';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Artistas } from '../artistas';
 import { generos } from '../generos';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-textinput',
   imports: [
@@ -36,6 +37,7 @@ import { generos } from '../generos';
     CommonModule,
     FormsModule,
     MatAutocompleteModule,
+    MatIconModule,
   ],
   templateUrl: './textinput.component.html',
   styleUrl: './textinput.component.css',
