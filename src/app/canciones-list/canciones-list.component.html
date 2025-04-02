@@ -23,15 +23,18 @@ LIST COMPONENT
 
     <!-- Tabla de resultados -->
     <table
+      matSort
+      (matSortChange)="sortData($event)"
       mat-table
       [dataSource]="cancionesFiltradas"
       *ngIf="cancionesFiltradas.length > 0"
       class="mat-elevation-z1"
-      matSort
     >
       <!-- Columna Título -->
       <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Título</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="titulo">
+          Título
+        </th>
         <td mat-cell *matCellDef="let cancion">
           <a
             [routerLink]="['/canciones/search/', cancion.titulo]"
@@ -45,7 +48,9 @@ LIST COMPONENT
 
       <!-- Columna Artista -->
       <ng-container matColumnDef="artista">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Artista</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="artista">
+          Artista
+        </th>
         <td mat-cell *matCellDef="let cancion">
           <a
             [routerLink]="['/canciones/search', cancion.artista]"
@@ -59,7 +64,9 @@ LIST COMPONENT
 
       <!-- Columna Género -->
       <ng-container matColumnDef="genero">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Género</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="genero">
+          Género
+        </th>
         <td mat-cell *matCellDef="let cancion">
           <span class="genre">
             <mat-icon>album</mat-icon>

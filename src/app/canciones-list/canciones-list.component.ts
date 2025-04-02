@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CancionService } from '../cancion.service';
 import { Cancion } from '../cancion/cancion';
 import { MatTableModule } from '@angular/material/table';
@@ -9,7 +9,7 @@ import { FiltrosComponent } from '../filtros/filtros.component';
 import { MatListModule } from '@angular/material/list';
 import { MatCard } from '@angular/material/card';
 import { MatIconButton } from '@angular/material/button';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 @Component({
   selector: 'app-canciones-list',
   imports: [
@@ -23,13 +23,15 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatIconModule,
     MatIconButton,
     MatSortModule,
+    MatSort,
   ],
   templateUrl: './canciones-list.component.html',
   styleUrl: './canciones-list.component.css',
 })
 export class CancionesListComponent {
   cancionesFiltradas: any[] = [];
-  @ViewChild(MatSort) sort!: MatSort;
+
+  debug: any[] = [];
   cancionesInit!: Cancion[];
   constructor(private cancionService: CancionService) {}
 
@@ -39,6 +41,7 @@ export class CancionesListComponent {
       this.cancionService.setCanciones(this.cancionesInit);
       this.cancionesFiltradas = [...this.cancionesInit];
     });
+
     this.cancionService.cancionesFiltradas$.subscribe((filtros) => {
       if (this.cancionesInit) {
         this.cancionesFiltradas = this.cancionService.filtrar(
@@ -48,4 +51,29 @@ export class CancionesListComponent {
       }
     });
   }
+  sortData(sort: Sort) {
+    const data = this.cancionesFiltradas.slice();
+    if (!sort.active || sort.direction === '') {
+      this.debug = data;
+      console.log(this.debug);
+      return;
+    }
+    this.debug = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'titulo':
+          return compare(a.titulo, b.titulo, isAsc);
+        case 'artista':
+          return compare(a.artista, b.artista, isAsc);
+        case 'genero':
+          return compare(a.genero, b.genero, isAsc);
+        default:
+          return 0;
+      }
+    });
+    this.cancionesFiltradas = this.debug;
+  }
+}
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
