@@ -82,6 +82,7 @@ export class TextBoxesComponent {
   @Input() tonalidad?: any; //Tonalidad de la canción
   @Input() cancion?: Cancion; //Canción que recibe de componente padre
   @Input() block: boolean = false; //Bloquea el formulario de edición y carga vista
+  @Input() revision: boolean = false; //Bloquea el formulario de edición y carga vista
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
@@ -113,6 +114,7 @@ export class TextBoxesComponent {
   ngAfterViewInit() {
     console.log(this.lines);
     console.log(this.tonalidad);
+    console.log(this.cancion);
   }
 
   /*ngOnChanges(changes: SimpleChanges): void {
@@ -393,16 +395,20 @@ export class TextBoxesComponent {
       //this.router.navigate(['/canciones']);
     }
   }
+  async editarCancion() {
+    const result = await this.openDialog();
+    // Espera la respuesta del diálogo
+    console.log('EDITANDO CANCION', this.cancion);
+
+    if (result) {
+      this.cancionService.editarCancion(this.cancion!);
+      //this.router.navigate(['/canciones']);
+    }
+  }
   openDialog(): Promise<boolean> {
     const dialogRef = this.dialog.open(ConfirmComponent, {
       data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
     });
     return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
-  }
-
-  transposeAll(semitones: number): void {
-    // Aquí necesitarías implementar la lógica para transponer todos los acordes
-    // Esto podría hacerse con un servicio compartido o un Observable
-    console.log(`Transponer todos los acordes ${semitones} semitonos`);
   }
 }

@@ -23,6 +23,12 @@
   color: gray;
   transition: color 0.3s ease;
 }
+.save-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: gray;
+  transition: color 0.3s ease;
+}
 
 .favorite-icon.favorito {
   color: red;
@@ -122,7 +128,17 @@ button {
   color: gray;
   transition: color 0.3s;
 }
-
+.save-icon {
+  position: absolute;
+  top: 8px;
+  right: 32px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s;
+}
+.save-icon.guardado {
+  color: black;
+}
 .favorite-icon.favorito {
   color: red;
 }

@@ -42,7 +42,7 @@ export class CancionComponent {
   rating: number = 0;
   public blockRating = false;
   esFavorito!: boolean;
-
+  estaGuardado!: boolean;
   toggleFavorito() {
     if (!this.esFavorito) {
       this.cancionService.addFavorito(this.cancion.id!).subscribe(
@@ -84,6 +84,30 @@ export class CancionComponent {
     }
   }
 
+  toggleGuardado() {
+    if (!this.estaGuardado) {
+      this.cancionService.addGuardado(this.cancion.id!).subscribe(
+        (data) => {
+          console.log('Canción añadida a guardados', data);
+          this.estaGuardado = true;
+        },
+        (error) => {
+          console.error('Error al añadir a guardados', error);
+        }
+      );
+    } else {
+      // Si ya es favorito, se quita
+      this.cancionService.quitarGuardado(this.cancion.id!).subscribe(
+        (data) => {
+          console.log('Canción eliminada de guardados', data);
+          this.estaGuardado = false;
+        },
+        (error) => {
+          console.error('Error al eliminar de guardados', error);
+        }
+      );
+    }
+  }
   constructor(
     private http: HttpClient,
     private cancionService: CancionService,
@@ -92,6 +116,7 @@ export class CancionComponent {
   ) {}
 
   ngOnInit() {
+    this.estaGuardado = false;
     this.cancionService.getCancion(this.rute.snapshot.params['id']).subscribe(
       (data) => {
         this.cancion = data.cancion;
@@ -114,6 +139,14 @@ export class CancionComponent {
       (error) => {
         console.error('Error al cargar favorito', error);
       } // Si hay un error, no es favorito
+    );
+    this.cancionService.checkGuardado(this.cancion.id!).subscribe(
+      (data: any) => {
+        this.estaGuardado = true;
+      },
+      (error: any) => {
+        console.error('Error al cargar guardado', error);
+      }
     );
   }
 

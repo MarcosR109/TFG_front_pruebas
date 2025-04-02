@@ -2,7 +2,7 @@ export interface Acorde {
   id?: number;
   acorde?: string;
   variacion?: string;
-  posicionEnCompas?: number;
+  posicion_en_compas?: number;
   grado?: number;
   effect?: string;
 }

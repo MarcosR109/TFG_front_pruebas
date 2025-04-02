@@ -8,12 +8,14 @@
     <!-- Fila 1 -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Título</mat-label>
-      <input *ngIf="!revisable"
+      <input
+        *ngIf="!revisable"
         matInput
         placeholder="Escribe el título..."
         [(ngModel)]="cancion.titulo"
       />
-      <input *ngIf="revisable"
+      <input
+        *ngIf="revisable"
         matInput
         placeholder="Escribe el título..."
         [(ngModel)]="revisable.titulo"
@@ -29,7 +31,7 @@
         matInput
         placeholder="Escribe la letra..."
         rows="6"
-        [(ngModel)]="text"
+        [(ngModel)]="texto"
       ></textarea>
       <mat-icon matSuffix>lyrics</mat-icon>
     </mat-form-field>
@@ -61,9 +63,12 @@
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-col">
+      <mat-form-field *ngIf="revisable" appearance="outline" class="form-col">
         <mat-label>Género</mat-label>
-        <mat-select [(value)]="generoSeleccionado">
+        <mat-select
+          [(value)]="generoSeleccionado"
+          [(ngModel)]="generoSeleccionado"
+        >
           <mat-option *ngFor="let genero of generos.generos" [value]="genero">
             {{ genero.nombre }}
           </mat-option>
@@ -138,8 +143,9 @@
     [cancion]="this.cancion"
     [lines]="this.lineas"
     [bin]="this.bin"
-    [tonalidad]="this.cancion.tonalidad"
-    [block]="false"	
+    [tonalidad]="this.cancion.tonalidade_id"
+    [block]="false"
+    [revision]="esRevision"
   >
   </app-text-boxes>
 </div>

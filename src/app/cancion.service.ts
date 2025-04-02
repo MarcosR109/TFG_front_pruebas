@@ -54,6 +54,13 @@ export class CancionService {
       console.log(res);
     });
   }
+  editarCancion(cancion: Cancion) {
+    this.http
+      .put(this.URL + 'canciones/' + cancion.id + ' /editar', cancion)
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
   getCanciones() {
     return this.http.get<{ message: String; canciones: any[] }>(
       this.URL + 'canciones'
@@ -87,6 +94,15 @@ export class CancionService {
   checkFavorito(id: number) {
     return this.http.get(this.URL + 'users/' + id + '/favoritos');
   }
+  addGuardado(id: number) {
+    return this.http.put(this.URL + 'users/' + id + '/guardados', {});
+  }
+  checkGuardado(id: number) {
+    return this.http.get(this.URL + 'users/' + id + '/guardados');
+  }
+  quitarGuardado(id: number) {
+    return this.http.delete(this.URL + 'users/' + id + '/guardados');
+  }
   quitarFavorito(id: number) {
     return this.http.delete(this.URL + 'users/' + id + '/favoritos');
   }
@@ -101,9 +117,9 @@ export class CancionService {
       this.URL + 'canciones/lista/revisar'
     );
   }
-  actualizarBadge(){
+  actualizarBadge() {
     return this.http.get<any>(this.URL + 'badge');
-    }
   }
+}
 
-//   
+//

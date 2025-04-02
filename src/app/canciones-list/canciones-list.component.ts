@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CancionService } from '../cancion.service';
 import { Cancion } from '../cancion/cancion';
 import { MatTableModule } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { FiltrosComponent } from '../filtros/filtros.component';
 import { MatListModule } from '@angular/material/list';
 import { MatCard } from '@angular/material/card';
 import { MatIconButton } from '@angular/material/button';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 @Component({
   selector: 'app-canciones-list',
   imports: [
@@ -21,13 +22,14 @@ import { MatIconButton } from '@angular/material/button';
     MatCard,
     MatIconModule,
     MatIconButton,
+    MatSortModule,
   ],
   templateUrl: './canciones-list.component.html',
   styleUrl: './canciones-list.component.css',
 })
 export class CancionesListComponent {
   cancionesFiltradas: any[] = [];
-
+  @ViewChild(MatSort) sort!: MatSort;
   cancionesInit!: Cancion[];
   constructor(private cancionService: CancionService) {}
 
@@ -37,7 +39,6 @@ export class CancionesListComponent {
       this.cancionService.setCanciones(this.cancionesInit);
       this.cancionesFiltradas = [...this.cancionesInit];
     });
-
     this.cancionService.cancionesFiltradas$.subscribe((filtros) => {
       if (this.cancionesInit) {
         this.cancionesFiltradas = this.cancionService.filtrar(
