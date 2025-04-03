@@ -16,4 +16,5 @@ export interface Cancion {
   rating?: number;
   metrica?: string;
   var?: string;
+  privada?: boolean;
 }

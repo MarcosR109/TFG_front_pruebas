@@ -162,4 +162,13 @@ export class CancionComponent {
     });
     return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
   }
+  getStarType(star: number, rating: number): string {
+    if (star <= rating) {
+      return 'star'; // Estrella llena
+    } else if (star - 0.5 <= rating) {
+      return 'star_half'; // Media estrella
+    } else {
+      return 'star_border'; // Estrella vacía
+    }
+  }
 }

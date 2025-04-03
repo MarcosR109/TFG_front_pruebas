@@ -6,9 +6,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { catchError, interval, Observable, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  interval,
+  Observable,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { BadgeService } from '../badge.service';
 import { CancionService } from '../cancion.service';
+import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -36,8 +43,20 @@ import { CancionService } from '../cancion.service';
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="side" [opened]="!isMobile || isMenuOpen">
         <div class="menu">
-          <button mat-button [routerLink]="['/revisiones']" class="menu-item">
-            <mat-icon mat-badge  [matBadge]="badgeCount" matBadgePosition="after" matBadgeOverlap="false"  matBadgeColor="primary">notifications</mat-icon>
+          <button
+            *ngIf="this.userRole === 2"
+            mat-button
+            [routerLink]="['/revisiones']"
+            class="menu-item"
+          >
+            <mat-icon
+              mat-badge
+              [matBadge]="badgeCount"
+              matBadgePosition="after"
+              matBadgeOverlap="false"
+              matBadgeColor="primary"
+              >notifications</mat-icon
+            >
             <span>Revisiones</span>
           </button>
           <button mat-button [routerLink]="['/home']" class="menu-item">
@@ -48,11 +67,8 @@ import { CancionService } from '../cancion.service';
             <mat-icon>search</mat-icon>
             <span>Buscar</span>
           </button>
-          <button mat-button [routerLink]="['/canciones']" class="menu-item">
-            <mat-icon>music_note</mat-icon>
-            <span>Canciones</span>
-          </button>
           <button
+            *ngIf="isLoggedIn"
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"
@@ -61,6 +77,7 @@ import { CancionService } from '../cancion.service';
             <span>Guardadas</span>
           </button>
           <button
+            *ngIf="isLoggedIn"
             mat-button
             [routerLink]="['/canciones/create']"
             class="menu-item"
@@ -68,9 +85,32 @@ import { CancionService } from '../cancion.service';
             <mat-icon>add</mat-icon>
             <span>Crear</span>
           </button>
-          <button mat-button class="menu-item">
+          <button
+            *ngIf="isLoggedIn"
+            mat-button
+            class="menu-item"
+            (click)="logout()"
+          >
             <mat-icon>logout</mat-icon>
             <span>Salir</span>
+          </button>
+          <button
+            *ngIf="!isLoggedIn"
+            mat-button
+            class="menu-item"
+            [routerLink]="['/login']"
+          >
+            <mat-icon>login</mat-icon>
+            <span>Login</span>
+          </button>
+          <button
+            *ngIf="!isLoggedIn"
+            mat-button
+            class="menu-item"
+            [routerLink]="['/register']"
+          >
+            <mat-icon>how_to_reg</mat-icon>
+            <span>Register</span>
           </button>
         </div>
       </mat-sidenav>
@@ -156,10 +196,12 @@ export class HeaderComponent {
   badgeCount = 0;
   badgeCount$!: Observable<number>;
   private subscription!: Subscription;
-
+  userRole!: number;
+  isLoggedIn = false; // Variable para verificar si el usuario está logueado
   constructor(
     private badgeService: BadgeService,
-    private cancionesService: CancionService
+    private cancionesService: CancionService,
+    private authService: AuthService
   ) {
     this.badgeCount$ = this.badgeService.badgeCount$ || 0;
     this.checkScreenSize();
@@ -183,7 +225,12 @@ export class HeaderComponent {
         console.log('Badge actualizado:', res.count);
         this.badgeCount = res.count;
       });
+    this.authService.$role.subscribe((role) => (this.userRole = role));
+    this.authService.authStatus.subscribe((status) => {
+      this.isLoggedIn = status; // Actualiza el estado de login
+    });
   }
+  login() {}
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -197,5 +244,8 @@ export class HeaderComponent {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+  logout() {
+    this.authService.logout();
   }
 }

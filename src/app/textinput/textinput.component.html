@@ -75,6 +75,18 @@
         </mat-select>
         <mat-icon matSuffix>music_note</mat-icon>
       </mat-form-field>
+      <mat-form-field *ngIf="!revisable" appearance="outline" class="form-col">
+        <mat-label>Género</mat-label>
+        <mat-select
+          [(value)]="generoSeleccionado"
+          [(ngModel)]="generoSeleccionado"
+        >
+          <mat-option *ngFor="let genero of generos.generos" [value]="genero">
+            {{ genero.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>music_note</mat-icon>
+      </mat-form-field>
     </div>
 
     <!-- Fila 4 - Columnas -->
@@ -108,6 +120,15 @@
           >
             Traste {{ index }}
           </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>filter_none</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-col">
+        <mat-label>Privada</mat-label>
+        <mat-select [(value)]="cancion.privada">
+          <mat-option [value]="true" selected>Sí</mat-option>
+          <mat-option [value]="false">No</mat-option>
         </mat-select>
         <mat-icon matSuffix>filter_none</mat-icon>
       </mat-form-field>

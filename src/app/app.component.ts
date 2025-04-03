@@ -13,6 +13,7 @@ import { Routes } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { CancionService } from './cancion.service';
 import { BadgeService } from './badge.service';
+import { JwtInterceptor } from './auth/interceptor.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -33,8 +34,8 @@ export class AppComponent {
   title = 'Mi Proyecto Angular';
   badgeCount = 0;
   private subscription!: Subscription;
-  constructor(private canciones:CancionService,private badgeService:BadgeService) {
-    
-    
-  }
+  constructor(
+    private canciones: CancionService,
+    private badgeService: BadgeService
+  ) {}
 }

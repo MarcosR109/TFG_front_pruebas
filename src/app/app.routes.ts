@@ -8,16 +8,42 @@ import { CancionFormComponent } from './cancion-form/cancion-form.component';
 import { CancioneslistfComponent } from './cancioneslistf/cancioneslistf.component';
 import { CancionComponent } from './cancion/cancion.component';
 import { RevisionesComponent } from './revisiones/revisiones.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard } from './auth/authguard.service';
+import { GuestGuard } from './auth/guestguard.service';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'canciones', component: CancionesListComponent },
-  { path: 'canciones/mine', component: CancionesMineComponent },
-  { path: 'canciones/show/:id', component: CancionComponent },
-  { path: 'canciones/search/:query', component: CancioneslistfComponent },
-  { path: 'canciones/create', component: CancionFormComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'revisiones', component: RevisionesComponent},
-  { path: 'debug', component: CancionComponent },
-  { path: 'revisiones/:id', component: CancionFormComponent},
+  { path: 'canciones', component: CancionesListComponent }, // Pública
+  {
+    path: 'canciones/mine',
+    component: CancionesMineComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'canciones/show/:id', component: CancionComponent }, // Pública
+  { path: 'canciones/search/:query', component: CancioneslistfComponent }, // Pública
+  {
+    path: 'canciones/create',
+    component: CancionFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'revisiones',
+    component: RevisionesComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'debug', component: CancionComponent, canActivate: [AuthGuard] },
+  {
+    path: 'revisiones/:id',
+    component: CancionFormComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
 ];

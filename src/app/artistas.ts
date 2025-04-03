@@ -204,5 +204,6 @@ export const artistas: Artistas = {
     { id: 178, nombre: 'Sia' },
     { id: 179, nombre: '21 Pilots' },
     { id: 180, nombre: 'Anónimo' },
+    
   ],
 };

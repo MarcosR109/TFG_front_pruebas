@@ -15,6 +15,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 @Component({
   selector: 'app-cancioneslistf',
   imports: [
@@ -35,6 +36,8 @@ import { MatInput } from '@angular/material/input';
     MatOption,
     FormsModule,
     MatInput,
+    MatSort,
+    MatSortModule,
   ],
   templateUrl: './cancioneslistf.component.html',
   styleUrl: './cancioneslistf.component.css',
@@ -47,11 +50,13 @@ export class CancioneslistfComponent {
   isLoading = false;
   errorMessage = '';
   searchType: 'titulo' | 'artista' | 'ambos' = 'ambos';
-
+  esArtista = true;
+  debug: any;
   // Filtros
   filtros = {
     genero: '',
     ratingMin: 0.0,
+    titulo: '',
   };
 
   constructor(
@@ -76,8 +81,13 @@ export class CancioneslistfComponent {
           .toLowerCase()
           .includes(this.filtros.genero.toLowerCase());
       const matchesRating = (cancion.rating ?? 0) >= this.filtros.ratingMin;
+      const matchesTitle =
+        !this.filtros.titulo ||
+        (cancion?.titulo ?? '')
+          .toLowerCase()
+          .includes(this.filtros.titulo.toLowerCase());
 
-      return matchesGenero && matchesRating;
+      return matchesGenero && matchesRating && matchesTitle;
     });
   }
 
@@ -97,6 +107,7 @@ export class CancioneslistfComponent {
             this.filteredCanciones = [...this.cancionesList];
             console.log(this.cancionesList);
           } else {
+            this.esArtista = false;
             this.buscarPorArtista();
           }
         },
@@ -127,4 +138,41 @@ export class CancioneslistfComponent {
         },
       });
   }
+  sortData(sort: Sort) {
+    const data = this.cancionesList.slice();
+    if (!sort.active || sort.direction === '') {
+      this.debug = data;
+      console.log("SORTNOACTIVE O DIRECTION '' ", this.debug);
+      return;
+    }
+    this.debug = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'titulo':
+          return compare(a.titulo ?? '', b.titulo ?? '', isAsc);
+        case 'artista':
+          return compare(a.artista ?? '', b.artista ?? '', isAsc);
+        case 'genero':
+          return compare(a.genero ?? '', b.genero ?? '', isAsc);
+        case 'rating':
+          return compare(a.rating ?? 0, b.rating ?? 0, isAsc);
+        default:
+          return 0;
+      }
+    });
+    this.filteredCanciones = this.debug;
+  }
+  getStarType(star: number, rating: number): string {
+    if (star <= rating) {
+      return 'star'; // Estrella llena
+    } else if (star - 0.5 <= rating) {
+      return 'star_half'; // Media estrella
+    } else {
+      return 'star_border'; // Estrella vacía
+    }
+  }
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

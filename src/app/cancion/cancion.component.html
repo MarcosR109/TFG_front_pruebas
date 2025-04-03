@@ -33,12 +33,8 @@
           </div>
         </div>
         <div class="rating">
-          <mat-icon
-            *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-            class="star"
-            (click)="rate(i + 1)"
-          >
-            {{ i + 1 <= rating ? "star" : "star_outline" }}
+          <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]">
+            {{ getStarType(star, cancion.rating || 0) }}
           </mat-icon>
         </div>
       </div>

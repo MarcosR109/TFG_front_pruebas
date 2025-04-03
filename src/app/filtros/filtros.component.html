@@ -55,7 +55,7 @@ FILTROCOMPONENT
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" *ngIf="esLista">
     <mat-label>Rating mínimo</mat-label>
     <mat-select formControlName="calificacion">
       <mat-option [value]="null">Cualquiera</mat-option>

@@ -42,7 +42,7 @@ export class FiltrosComponent {
   generoSeleccionado: any = null;
   inputTextoArtista: string = '';
   inputTextoGenero: string = '';
-
+  esLista: boolean = false;
   constructor(private fb: FormBuilder, private cancionService: CancionService) {
     this.filtrosForm = this.fb.group({
       titulo: [''],
