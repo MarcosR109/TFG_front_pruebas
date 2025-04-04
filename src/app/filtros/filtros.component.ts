@@ -53,12 +53,11 @@ export class FiltrosComponent {
     this.artistas = artistas.artistas;
     this.generos = generos.generos;
   }
-  // Método para filtrar artistas
+
   filtrarArtistas(event: any) {
     const filtro = event.target.value.toLowerCase();
     this.inputTextoArtista = event.target.value;
     this.artistaSeleccionado = null;
-
     this.artistasFiltrados = filtro
       ? this.artistas.filter((artista: { nombre: string }) =>
           artista.nombre.toLowerCase().includes(filtro)
@@ -66,7 +65,6 @@ export class FiltrosComponent {
       : [...this.artistas];
   }
 
-  // Método para seleccionar artista
   seleccionarArtista(artista: any) {
     this.artistaSeleccionado = artista;
     this.inputTextoArtista = artista.nombre;
@@ -76,7 +74,6 @@ export class FiltrosComponent {
     });
   }
 
-  // Método para filtrar géneros
   filtrarGeneros(event: any) {
     const filtro = event.target.value.toLowerCase();
     this.inputTextoGenero = event.target.value;
@@ -87,7 +84,12 @@ export class FiltrosComponent {
         )
       : [...this.generos];
   }
-
+  sleepFiltro() {
+    // Esperar 200ms antes de aplicar el filtro, se lanza cuando alguien introduce un título
+    setTimeout(() => {
+      this.aplicarFiltros();
+    }, 200);
+  }
   // Método para seleccionar género
   seleccionarGenero(genero: any) {
     this.generoSeleccionado = genero;

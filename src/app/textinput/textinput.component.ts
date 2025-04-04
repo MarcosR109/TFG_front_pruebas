@@ -89,8 +89,13 @@ export class TextinputComponent {
   generoSeleccionado = { id: 1, nombre: 'Pop' };
   revisable!: any;
   esRevision: boolean = false;
+  esEdicion: boolean = false;
   constructor(route: ActivatedRoute, cancionService: CancionService) {
     let id = route.snapshot.params['id'];
+    this.esEdicion = route.snapshot.params['edicion'] == 'true';
+
+    console.log(this.esEdicion);
+
     if (id) {
       cancionService.getCancion(id).subscribe((res) => {
         this.revisable = res.cancion;
@@ -125,7 +130,9 @@ export class TextinputComponent {
     this.cancion.comentario = 'no';
     this.cancion.var = 'no';
   }
+
   ngOnInit() {}
+
   filtrarArtistas(event: any) {
     const filtro = event.target.value.toLowerCase();
     this.inputTexto = event.target.value; // Actualiza el texto del input
@@ -181,7 +188,7 @@ export class TextinputComponent {
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
-    if (!this.esRevision) {
+    if (!this.esRevision || !this.esEdicion) {
       this.text.forEach((line) => {
         if (this.bin) {
           let acordesV = [

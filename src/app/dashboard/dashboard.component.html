@@ -1,1 +1,234 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Filtros -->
+  <mat-card class="filtros-card">
+    <div class="filtros-header">
+      <h2>Filtrar Canciones</h2>
+      <button mat-raised-button color="warn" (click)="limpiarFiltros()">
+        <mat-icon>clear</mat-icon>
+        Limpiar
+      </button>
+    </div>
+
+    <div class="filtros-content">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          [(ngModel)]="filtros.busqueda"
+          (input)="aplicarFiltros()"
+          placeholder="Título o Artista"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Género</mat-label>
+        <mat-select
+          [(ngModel)]="filtros.genero"
+          (selectionChange)="aplicarFiltros()"
+        >
+          <mat-option value="">Todos los géneros</mat-option>
+          <mat-option
+            *ngFor="let genero of generosDisponibles"
+            [value]="genero.nombre"
+          >
+            {{ genero.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Rating mínimo</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="filtros.ratingMin"
+          (change)="aplicarFiltros()"
+          min="0"
+          max="5"
+          step="0.1"
+        />
+      </mat-form-field>
+    </div>
+  </mat-card>
+  <mat-tab-group
+    animationDuration="300ms"
+    (selectedTabChange)="cambiarVista($event)"
+  >
+    <mat-tab label="Canciones">
+      <!-- Lista de canciones -->
+      <mat-card class="lista-card">
+        <div class="lista-header">
+          <h2>
+            <mat-icon>queue_music</mat-icon>
+            Lista de Canciones
+            <span class="contador"
+              >({{ cancionesFiltradas.length }} resultados)</span
+            >
+          </h2>
+          <button
+            *ngIf="this.selectList.length > 0"
+            mat-raised-button
+            color="warn"
+            class="clear-button"
+            (click)="eliminarCancion()"
+            style="margin-left: auto; display: flex"
+          >
+            <mat-icon>delete</mat-icon>
+            Eliminar {{ selectList.length }}
+          </button>
+        </div>
+
+        <table
+          mat-table
+          [dataSource]="cancionesFiltradas"
+          class="mat-elevation-z1"
+        >
+          <!-- Columna Título -->
+          <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef>Título</th>
+            <td mat-cell *matCellDef="let cancion">
+              <span class="titulo">{{ cancion.titulo }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="usuario">
+            <th mat-header-cell *matHeaderCellDef>Usuario</th>
+            <td mat-cell *matCellDef="let cancion">
+              <span class="user">{{ cancion.user.name }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Columna Artista -->
+          <ng-container matColumnDef="artista">
+            <th mat-header-cell *matHeaderCellDef>Artista</th>
+            <td mat-cell *matCellDef="let cancion">
+              {{ cancion.artista.nombre }}
+            </td>
+          </ng-container>
+
+          <!-- Columna Género -->
+          <ng-container matColumnDef="genero">
+            <th mat-header-cell *matHeaderCellDef>Género</th>
+            <td mat-cell *matCellDef="let cancion">
+              <mat-chip>{{ cancion.genero.nombre }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Columna Rating -->
+          <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef>Rating</th>
+            <td mat-cell *matCellDef="let cancion">
+              <div class="rating-container">
+                <span class="rating-value"
+                  >{{ cancion.rating | number : "1.1-1" }}/5</span
+                >
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Columna Acciones -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let cancion">
+              <button
+                mat-icon-button
+                color="primary"
+                [routerLink]="['/revisiones', cancion.id, true]"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="light"
+                [routerLink]="['/revisiones', cancion.id]"
+              >
+                <mat-icon>task</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let cancion">
+              <span>{{ assertPublicada(cancion.publicada) }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="seleccionar">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox
+                [checked]="todasSeleccionadas"
+                [indeterminate]="algunasSeleccionadas"
+                (change)="toggleSeleccionTodas($event.checked)"
+              ></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let cancion">
+              <mat-checkbox
+                [(ngModel)]="cancion.seleccionada"
+                (change)="actualizarEstadoHeader()"
+                (click)="anadirALista(cancion)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnasMostradas"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columnasMostradas"
+            [ngClass]="{ row: selectList.includes(row.id) }"
+          ></tr>
+        </table>
+
+        <div *ngIf="cancionesFiltradas.length === 0" class="no-results">
+          <mat-icon>search_off</mat-icon>
+          <h3>No se encontraron canciones</h3>
+          <p>Prueba ajustando los filtros de búsqueda</p>
+        </div>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Usuarios">
+      <!-- Nueva tabla para usuarios -->
+      <mat-card class="lista-card">
+        <div class="lista-header">
+          <h2>
+            <mat-icon>people</mat-icon>
+            Lista de Usuarios
+          </h2>
+        </div>
+
+        <table mat-table [dataSource]="usuarios" class="mat-elevation-z1">
+          <!-- Columna Nombre -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let usuario">{{ usuario.name }}</td>
+          </ng-container>
+
+          <!-- Columna Email -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let usuario">{{ usuario.email }}</td>
+          </ng-container>
+
+          <!-- Columna Rol -->
+          <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let usuario">
+              <mat-chip>{{ usuario.role_id }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Columna Acciones -->
+          <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let usuario">
+              <button mat-icon-button color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnasUsuarios"></tr>
+          <tr mat-row *matRowDef="let row; columns: columnasUsuarios"></tr>
+        </table>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>

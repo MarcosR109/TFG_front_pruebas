@@ -44,6 +44,11 @@ export const routes: Routes = [
     component: CancionFormComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'revisiones/:id/:edicion',
+    component: CancionFormComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
 ];

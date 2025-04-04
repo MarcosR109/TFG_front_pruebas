@@ -74,18 +74,37 @@ export class CancioneslistfComponent {
   }
 
   aplicarFiltros() {
-    this.filteredCanciones = this.cancionesList.filter((cancion) => {
+    this.filteredCanciones = this.cancionesList.filter((cancion: any) => {
+      console.log(cancion);
+
+      // Asegurarse de que género es string y manejar null/undefined correctamente
+      const generoCancion = cancion?.genero?.nombre
+        ? String(cancion.genero.nombre).toLowerCase()
+        : '';
+      const generoFiltro = this.filtros.genero
+        ? String(this.filtros.genero).toLowerCase()
+        : '';
+      console.log('GENERO CANCION', generoCancion);
+      console.log('GENERO FILTRO', generoFiltro);
+
       const matchesGenero =
-        !this.filtros.genero ||
-        (cancion?.genero ?? '')
-          .toLowerCase()
-          .includes(this.filtros.genero.toLowerCase());
-      const matchesRating = (cancion.rating ?? 0) >= this.filtros.ratingMin;
+        !this.filtros.genero || generoCancion.includes(generoFiltro);
+
+      // Asegurar que rating es numérico
+      const ratingCancion = Number(cancion?.rating) || 0;
+      const matchesRating =
+        ratingCancion >= Number(this.filtros.ratingMin) || 0;
+
+      // Asegurar que título es string
+      const tituloCancion = cancion?.titulo
+        ? String(cancion.titulo).toLowerCase()
+        : '';
+      const tituloFiltro = this.filtros.titulo
+        ? String(this.filtros.titulo).toLowerCase()
+        : '';
+
       const matchesTitle =
-        !this.filtros.titulo ||
-        (cancion?.titulo ?? '')
-          .toLowerCase()
-          .includes(this.filtros.titulo.toLowerCase());
+        !this.filtros.titulo || tituloCancion.includes(tituloFiltro);
 
       return matchesGenero && matchesRating && matchesTitle;
     });

@@ -83,6 +83,7 @@ export class TextBoxesComponent {
   @Input() cancion?: Cancion; //Canción que recibe de componente padre
   @Input() block: boolean = false; //Bloquea el formulario de edición y carga vista
   @Input() revision: boolean = false; //Bloquea el formulario de edición y carga vista
+  @Input() edicion: boolean = false;
   public lastDropEvent: DndDropEvent | null = null;
   private currentDraggableEvent?: Event;
   private currentDragEffectMsg?: string;
@@ -116,7 +117,11 @@ export class TextBoxesComponent {
     console.log(this.tonalidad);
     console.log(this.cancion);
   }
-
+  ngOnInit() {
+    if (this.edicion) {
+      this.revision = false;
+    }
+  }
   /*ngOnChanges(changes: SimpleChanges): void {
     if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
       this.calcularMaxWidth();
@@ -399,10 +404,13 @@ export class TextBoxesComponent {
     const result = await this.openDialog();
     // Espera la respuesta del diálogo
     console.log('EDITANDO CANCION', this.cancion);
-
     if (result) {
-      this.cancionService.editarCancion(this.cancion!);
-      //this.router.navigate(['/canciones']);
+      if (this.edicion) {
+        this.cancionService.editarCancion(this.cancion!);
+        //this.router.navigate(['/canciones']);
+      } else {
+        this.cancionService.revisarCancion(this.cancion!);
+      }
     }
   }
   openDialog(): Promise<boolean> {

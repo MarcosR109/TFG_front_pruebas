@@ -242,7 +242,7 @@
     </button>
   </div>
 </div>
-<div *ngIf="!block && !revision" class="submit-container">
+<div *ngIf="!block && !revision && !edicion" class="submit-container">
   <button
     [disabled]="this.cancion?.lineas?.length === 0"
     mat-raised-button
@@ -260,5 +260,15 @@
     (click)="editarCancion()"
   >
     Terminar revisión
+  </button>
+</div>
+<div *ngIf="!block && edicion" class="submit-container">
+  <button
+    [disabled]="this.cancion?.lineas?.length === 0"
+    mat-raised-button
+    color="primary"
+    (click)="editarCancion()"
+  >
+    Editar
   </button>
 </div>

@@ -27,6 +27,7 @@ export class CancionService {
     this.filtrosSubject.next(filtros);
     console.log(filtros);
   }
+
   public filtrar(canciones: any[], filtros: any): any[] {
     return canciones.filter((cancion) => {
       console.log('CANCIONES', canciones);
@@ -49,6 +50,16 @@ export class CancionService {
     });
   }
 
+  getUsuarios() {
+    return this.http.get<{ message: String; usuarios: any[] }>(
+      this.URL + 'admin/usuarios'
+    );
+  }
+  getCancionesAdmin() {
+    return this.http.get<{ message: String; canciones: any[] }>(
+      this.URL + 'canciones/lista/admin'
+    );
+  }
   enviarCancion(cancion: Cancion) {
     this.http.post(this.URL + 'canciones', cancion).subscribe((res) => {
       console.log(res);
@@ -61,6 +72,14 @@ export class CancionService {
         console.log(res);
       });
   }
+  revisarCancion(cancion: Cancion) {
+    this.http
+      .put(this.URL + 'canciones/' + cancion.id + ' /revisar', cancion)
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
+
   getCanciones() {
     return this.http.get<{ message: String; canciones: any[] }>(
       this.URL + 'canciones'
@@ -119,6 +138,9 @@ export class CancionService {
   }
   actualizarBadge() {
     return this.http.get<any>(this.URL + 'badge');
+  }
+  eliminarCancion(id: number) {
+    return this.http.delete(this.URL + 'canciones/' + id);
   }
 }
 
