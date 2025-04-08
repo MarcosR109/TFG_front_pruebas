@@ -35,6 +35,7 @@ import { AcordeshowComponent } from '../acordeshow/acordeshow.component';
 import { AcordeTransformPipe } from '../acorde-transform.pipe';
 import { AcordeTransformSettingsService } from '../acorde-transform-settings.service';
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
+import { RecomendacionesService } from '../recomendaciones.service';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -102,12 +103,14 @@ export class TextBoxesComponent {
   preferSostenidos: boolean = false; // Preferencia de sostenidos o bemoles
   notation: 'latin' | 'american' = 'american';
   semitones = 0; // Semitonos para transponer acordes
+  // Diccionario de grados de acordes
   constructor(
     private cdRef: ChangeDetectorRef,
     private cancionService: CancionService,
     public dialog: MatDialog,
     private router: Router,
-    private settingsService: AcordeTransformSettingsService
+    private settingsService: AcordeTransformSettingsService,
+    private recomendaciones: RecomendacionesService
   ) {
     this.settingsService.currentSettings.preferSostenidos;
   }
@@ -121,12 +124,10 @@ export class TextBoxesComponent {
     if (this.edicion) {
       this.revision = false;
     }
+    this.cancionService.getRecomendaciones(5).subscribe((res) => {
+      console.log(res);
+    });
   }
-  /*ngOnChanges(changes: SimpleChanges): void {
-    if (changes['lines'] && (this.lines?.length ?? 0) > 0) {
-      this.calcularMaxWidth();
-    }
-  }*/
   autoScrollContainer() {
     const container = document.querySelector('.scroll-container');
     if (container) {
@@ -341,6 +342,7 @@ export class TextBoxesComponent {
   trackByAcorde(index: number, item: Acorde) {
     return item.acorde; // O un identificador único
   }
+
   onDragStart(event: DragEvent, acorde: Acorde) {
     console.log(acorde);
     this.lastDropEvent = null;
@@ -367,6 +369,12 @@ export class TextBoxesComponent {
       linea.acordes[squareIndex].grado = event.data.grado;
       linea.acordes[squareIndex].effect = event.data.effect;
       linea.acordes[squareIndex].id = event.data.id;
+      this.recomendaciones.agregarGrado(
+        linea.n_linea,
+        squareIndex,
+        event.data.grado
+      ); // Agrega el grado a la lista
+      // Agrega el grado a la lista
     } else if (linea.acordes[squareIndex].acorde) {
       linea.acordes[squareIndex].variacion = event.data;
     }

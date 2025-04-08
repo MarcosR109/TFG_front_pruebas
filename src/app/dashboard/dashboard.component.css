@@ -88,3 +88,12 @@
     grid-template-columns: 1fr;
   }
 }
+/* En tu dashboard.component.css */
+.mat-row.usuario-seleccionado {
+  background-color: rgba(63, 81, 181, 0.1); /* Azul claro para selección */
+}
+
+/* Estilo para el checkbox deshabilitado (admin) */
+.mat-checkbox-disabled {
+  opacity: 0.5;
+}

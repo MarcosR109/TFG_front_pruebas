@@ -1,6 +1,12 @@
 <div *ngIf="!enviado" class="form-container">
   <div class="form-header">
-    <h1 class="mat-headline">Nueva Canción</h1>
+    <h1 class="mat-headline" *ngIf="!esEdicion && !esRevision">
+      Nueva Canción
+    </h1>
+    <h1 class="mat-headline" *ngIf="esRevision && !esEdicion">
+      Revisar Canción
+    </h1>
+    <h1 class="mat-headline" *ngIf="esEdicion">Editar Canción</h1>
     <p class="mat-subheading-2">Completa los detalles de la canción</p>
   </div>
 

@@ -34,17 +34,13 @@ import { AuthService } from '../auth/auth.service';
       <button mat-icon-button (click)="toggleMenu()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span class="spacer"></span>
-      <button mat-icon-button>
-        <mat-icon>search</mat-icon>
-      </button>
     </mat-toolbar>
     <!-- Menú lateral para pantallas grandes -->
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="side" [opened]="!isMobile || isMenuOpen">
         <div class="menu">
           <button
-            *ngIf="this.userRole === 2"
+            *ngIf="this.userRole === 3"
             mat-button
             [routerLink]="['/revisiones']"
             class="menu-item"
@@ -59,6 +55,15 @@ import { AuthService } from '../auth/auth.service';
             >
             <span>Revisiones</span>
           </button>
+          <button
+            *ngIf="userRole === 2"
+            mat-button
+            class="menu-item"
+            [routerLink]="['/dashboard']"
+          >
+            <mat-icon>space_dashboard</mat-icon>
+            <span>Panel</span>
+          </button>
           <button mat-button [routerLink]="['/home']" class="menu-item">
             <mat-icon>home</mat-icon>
             <span>Home</span>
@@ -68,7 +73,7 @@ import { AuthService } from '../auth/auth.service';
             <span>Buscar</span>
           </button>
           <button
-            *ngIf="isLoggedIn"
+            *ngIf="isLoggedIn && this.userRole === 1"
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"

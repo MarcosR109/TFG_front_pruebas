@@ -49,6 +49,12 @@ export class CancionService {
       );
     });
   }
+  public eliminarUsuario(id: number) {
+    return this.http.delete(this.URL + 'admin/usuarios/' + id);
+  }
+  cambiarRol(id: number, rol: number) {
+    return this.http.put(this.URL + 'admin/usuarios/' + id, { rol });
+  }
 
   getUsuarios() {
     return this.http.get<{ message: String; usuarios: any[] }>(
@@ -141,6 +147,22 @@ export class CancionService {
   }
   eliminarCancion(id: number) {
     return this.http.delete(this.URL + 'canciones/' + id);
+  }
+  getRecomendaciones(
+    actual: number,
+    previo?: number | null, // Parámetro opcional
+    limit: number = 3
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('actual', actual.toString())
+      .set('limit', limit.toString());
+
+    // Solo añadir previo si existe
+    if (previo !== undefined && previo !== null) {
+      params = params.set('previo', previo.toString());
+    }
+
+    return this.http.get(`${this.URL}canciones/recomendacion`, { params });
   }
 }
 

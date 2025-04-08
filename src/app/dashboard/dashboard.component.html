@@ -1,9 +1,13 @@
 <div class="dashboard-container">
   <!-- Filtros -->
-  <mat-card class="filtros-card">
+  <mat-card class="filtros-card" *ngIf="vistaActual === 'canciones'">
     <div class="filtros-header">
       <h2>Filtrar Canciones</h2>
-      <button mat-raised-button color="warn" (click)="limpiarFiltros()">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="limpiarFiltrosCanciones()"
+      >
         <mat-icon>clear</mat-icon>
         Limpiar
       </button>
@@ -14,8 +18,8 @@
         <mat-label>Buscar</mat-label>
         <input
           matInput
-          [(ngModel)]="filtros.busqueda"
-          (input)="aplicarFiltros()"
+          [(ngModel)]="filtrosCanciones.busqueda"
+          (input)="aplicarFiltrosCanciones()"
           placeholder="Título o Artista"
         />
         <mat-icon matSuffix>search</mat-icon>
@@ -24,8 +28,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Género</mat-label>
         <mat-select
-          [(ngModel)]="filtros.genero"
-          (selectionChange)="aplicarFiltros()"
+          [(ngModel)]="filtrosCanciones.genero"
+          (selectionChange)="aplicarFiltrosCanciones()"
         >
           <mat-option value="">Todos los géneros</mat-option>
           <mat-option
@@ -42,8 +46,8 @@
         <input
           matInput
           type="number"
-          [(ngModel)]="filtros.ratingMin"
-          (change)="aplicarFiltros()"
+          [(ngModel)]="filtrosCanciones.ratingMin"
+          (change)="aplicarFiltrosCanciones()"
           min="0"
           max="5"
           step="0.1"
@@ -51,6 +55,44 @@
       </mat-form-field>
     </div>
   </mat-card>
+
+  <!-- Filtros de Usuarios (solo visible en pestaña Usuarios) -->
+  <mat-card class="filtros-card" *ngIf="vistaActual === 'usuarios'">
+    <div class="filtros-header">
+      <h2>Filtrar Usuarios</h2>
+      <button mat-raised-button color="warn" (click)="limpiarFiltrosUsuarios()">
+        <mat-icon>clear</mat-icon>
+        Limpiar
+      </button>
+    </div>
+
+    <div class="filtros-content">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          [(ngModel)]="filtrosUsuarios.busqueda"
+          (input)="aplicarFiltrosUsuarios()"
+          placeholder="Nombre o Email"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Rol</mat-label>
+        <mat-select
+          [(ngModel)]="filtrosUsuarios.role_id"
+          (selectionChange)="aplicarFiltrosUsuarios()"
+        >
+          <mat-option value="">Todos los roles</mat-option>
+          <mat-option value="1">Usuario normal</mat-option>
+          <mat-option value="3">Revisor</mat-option>
+          <mat-option value="2">Administrador</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
   <mat-tab-group
     animationDuration="300ms"
     (selectedTabChange)="cambiarVista($event)"
@@ -184,17 +226,33 @@
         </div>
       </mat-card>
     </mat-tab>
+
     <mat-tab label="Usuarios">
       <!-- Nueva tabla para usuarios -->
+
       <mat-card class="lista-card">
         <div class="lista-header">
           <h2>
             <mat-icon>people</mat-icon>
             Lista de Usuarios
           </h2>
+          <button
+            *ngIf="selectListUsuarios.length > 0"
+            mat-raised-button
+            color="warn"
+            (click)="eliminarUsuariosSeleccionados()"
+            style="margin-left: auto; display: flex"
+          >
+            <mat-icon>delete</mat-icon>
+            Eliminar {{ selectListUsuarios.length }} usuarios
+          </button>
         </div>
 
-        <table mat-table [dataSource]="usuarios" class="mat-elevation-z1">
+        <table
+          mat-table
+          [dataSource]="usuariosFiltrados"
+          class="mat-elevation-z1"
+        >
           <!-- Columna Nombre -->
           <ng-container matColumnDef="nombre">
             <th mat-header-cell *matHeaderCellDef>Nombre</th>
@@ -211,22 +269,44 @@
           <ng-container matColumnDef="rol">
             <th mat-header-cell *matHeaderCellDef>Rol</th>
             <td mat-cell *matCellDef="let usuario">
-              <mat-chip>{{ usuario.role_id }}</mat-chip>
+              <mat-chip>{{ assertRol(usuario.role_id) }}</mat-chip>
             </td>
           </ng-container>
 
           <!-- Columna Acciones -->
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <ng-container matColumnDef="revisor">
+            <th mat-header-cell *matHeaderCellDef>Revisor</th>
             <td mat-cell *matCellDef="let usuario">
-              <button mat-icon-button color="primary">
-                <mat-icon>edit</mat-icon>
-              </button>
+              <mat-slide-toggle
+                *ngIf="usuario.role_id !== 2"
+                [checked]="usuario.role_id === 3"
+                (change)="cambiarRol(usuario)"
+              ></mat-slide-toggle>
             </td>
           </ng-container>
-
+          <ng-container matColumnDef="seleccionar">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox
+                [checked]="todasSeleccionadasUsuarios"
+                [indeterminate]="algunasSeleccionadasUsuarios"
+                (change)="toggleSeleccionTodasUsuarios($event.checked)"
+              ></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let usuario">
+              <mat-checkbox
+                *ngIf="usuario.role_id !== 2"
+                [(ngModel)]="usuario.seleccionado"
+                (change)="actualizarEstadoHeaderUsuarios()"
+                (click)="anadirAListaUsuarios(usuario)"
+              ></mat-checkbox>
+            </td>
+          </ng-container>
           <tr mat-header-row *matHeaderRowDef="columnasUsuarios"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnasUsuarios"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columnasUsuarios"
+            [class.usuario-seleccionado]="selectListUsuarios.includes(row.id)"
+          ></tr>
         </table>
       </mat-card>
     </mat-tab>

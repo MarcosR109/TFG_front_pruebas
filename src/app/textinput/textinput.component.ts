@@ -188,7 +188,10 @@ export class TextinputComponent {
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
-    if (!this.esRevision || !this.esEdicion) {
+    console.log('ES EDICION', this.esEdicion);
+    console.log('ES REVISION', this.esRevision);
+
+    if (!this.esRevision && !this.esEdicion) {
       this.text.forEach((line) => {
         if (this.bin) {
           let acordesV = [
