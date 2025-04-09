@@ -17,6 +17,7 @@ import { BadgeService } from '../badge.service';
 import { CancionService } from '../cancion.service';
 import { AuthService } from '../auth/auth.service';
 import { RouterLinkActive } from '@angular/router';
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -29,6 +30,7 @@ import { RouterLinkActive } from '@angular/router';
     MatToolbarModule,
     MatBadgeModule,
     RouterLinkActive,
+
   ],
   template: `
     <!-- Toolbar solo para móviles -->
@@ -76,13 +78,14 @@ import { RouterLinkActive } from '@angular/router';
             mat-button
             [routerLink]="['/canciones']"
             routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}"
             class="menu-item"
           >
             <mat-icon>search</mat-icon>
             <span>Buscar</span>
           </button>
           <button
-            *ngIf="isLoggedIn && this.userRole === 1"
+            *ngIf="isLoggedIn && this.userRole === 1 || this.userRole === 3"
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"
@@ -200,24 +203,60 @@ import { RouterLinkActive } from '@angular/router';
       flex: 1;
     }
 
-    @media (max-width: 768px) {
-      .mobile-toolbar {
-        display: flex;
-      }
-      mat-sidenav {
-        width: 200px; /* Ancho del menú lateral en móviles */
-        position: fixed;
-        top: 56px; /* Altura del toolbar */
-        bottom: 0;
-        left: 0;
-        z-index: 999;
-        transform: translateX(-100%);
-        transition: transform 0.1s ease;
-      }
-      mat-sidenav[opened] {
-        transform: translateX(0);
-      }
-    }
+    /* Estilos base */
+.sidenav-container {
+  height: 100vh;
+}
+
+mat-sidenav {
+  width: 80px;
+  background: linear-gradient(to bottom, #cce0ff, #6b88a6);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para móviles */
+@media (max-width: 768px) {
+  .mobile-toolbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+
+  .sidenav-container {
+    margin-top: 56px; /* Compensa la altura del toolbar */
+  }
+
+  mat-sidenav {
+    width: 200px;
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  mat-sidenav[opened] {
+    transform: translateX(0);
+  }
+
+  mat-sidenav-content {
+    margin-left: 0 !important;
+    transition: margin 0.3s ease;
+  }
+
+  mat-sidenav[opened] + mat-sidenav-content {
+    margin-left: 200px !important;
+  }
+}
   `,
 })
 export class HeaderComponent {
@@ -231,7 +270,7 @@ export class HeaderComponent {
   constructor(
     private badgeService: BadgeService,
     private cancionesService: CancionService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.badgeCount$ = this.badgeService.badgeCount$ || 0;
     this.checkScreenSize();
@@ -239,9 +278,6 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.cancionesService.actualizarBadge().subscribe((count) => {
-      this.badgeCount = count.count;
-    });
     this.subscription = interval(50000)
       .pipe(
         switchMap(() => this.cancionesService.actualizarBadge()), // Llama al backend cada 5s
@@ -260,7 +296,7 @@ export class HeaderComponent {
       this.isLoggedIn = status; // Actualiza el estado de login
     });
   }
-  login() {}
+  login() { }
 
   ngOnDestroy() {
     if (this.subscription) {

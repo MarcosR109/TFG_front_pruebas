@@ -1,54 +1,485 @@
-/* Contenedor general ocupando toda la pantalla */
+/* Estilos base */
+:root {
+  --primary-color: #6b88a6;
+  --secondary-color: #a6c5f3;
+  --text-color: #333;
+  --light-bg: #f9f9ff;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Hero Section */
 .hero-container {
   display: flex;
   height: 100vh;
   width: 100%;
   position: relative;
   overflow: hidden;
-  font-family: sans-serif;
 }
 
-/* Fondo degradado con forma diagonal */
 .hero-background {
   width: 50%;
-  background: linear-gradient(to bottom, #cce0ff, #6b88a6);
+  background: linear-gradient(to bottom, #cce0ff, var(--primary-color));
   clip-path: polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%);
 }
 
-/* Contenido alineado a la derecha */
 .hero-content {
   position: absolute;
-  right: 5%;
+  right: 50%;
   top: 50%;
   transform: translateY(-50%);
   max-width: 40%;
   text-align: right;
+  padding: 20px;
 }
 
 .hero-content h1 {
-  font-size: 4em;
-  font-weight: bold;
+  font-size: 3.5em;
+  font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+  color: var(--text-color);
 }
 
 .hero-content p {
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin-bottom: 1.5em;
-  color: #333;
+  color: var(--text-color);
 }
 
-.hero-content button {
-  background-color: #809fc9;
+/* Benefits Section */
+.benefits-section {
+  padding: 60px 20px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+
+.section-title p {
+  color: #666;
+  font-size: 1.1em;
+}
+
+.benefits-columns {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.benefit {
+  max-width: 280px;
+  padding: 30px 20px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.benefit:hover {
+  transform: translateY(-5px);
+}
+
+.benefit mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.benefit h3 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.benefit p {
+  font-size: 1em;
+  color: #555;
+}
+
+/* Features Section */
+.features-section {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 80px 0;
+  flex-wrap: wrap;
+}
+
+.feature-image {
+  flex: 1;
+  min-width: 300px;
+}
+
+.feature-image img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.feature-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.feature-content h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+}
+
+.feature-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 25px 0;
+}
+
+.feature-content li {
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.feature-content li:before {
+  content: "✓";
+  color: var(--primary-color);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Testimonials */
+.testimonials {
+  margin: 80px 0;
+}
+
+.testimonials h2 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 40px;
+}
+
+.testimonial-cards {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.testimonial-cards mat-card {
+  max-width: 350px;
+  padding: 30px;
+}
+
+.testimonial-cards mat-icon {
+  color: var(--secondary-color);
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.testimonial-cards p {
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.author img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author span {
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Ranking Section */
+.divider {
+  margin: 60px auto;
+  width: 80%;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.ranking-section {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.ranking-block {
+  text-align: left;
+  background-color: var(--light-bg);
+  padding: 30px;
+  border-radius: 12px;
+  min-width: 280px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.ranking-block h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.ranking-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ranking-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 70%;
+  overflow: hidden;
+}
+
+.bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  display: inline-block;
+}
+
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 6px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+  min-width: 90px;
+  justify-content: flex-end;
+  color: #a6c5f3;
+}
+
+mat-icon.small {
+  font-size: 16px;
+  color: var(--secondary-color);
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary-color), #3a5a78);
   color: white;
-  border: none;
-  padding: 0.75em 2em;
-  font-size: 1.15em;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 80px 20px;
+  text-align: center;
+  margin-top: 60px;
 }
 
-.hero-content button:hover {
-  background-color: #5f84b5;
+.cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: 2.2em;
+  margin-bottom: 15px;
+}
+
+.cta-content p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Hero Section - Versión mejorada */
+.hero-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #f8f9fa; /* Fondo de respaldo */
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.diagonal-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(135deg, #cce0ff, #6b88a6);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  width: 50%;
+  margin-left: auto;
+  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .hero-background {
+    height: 50vh;
+  }
+  
+  .diagonal-shape {
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+  }
+  
+  .hero-content {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    text-align: right;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .benefits-columns {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .benefit {
+    flex: 1 1 300px;
+    max-width: 300px;
+  }
+  
+  .testimonial-cards {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .ranking-section {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .ranking-block {
+    width: auto;
+    min-width: 300px;
+  }
+}
+
+/* Desktop (992px en adelante) */
+@media (min-width: 992px) {
+  .hero-container {
+    flex-direction: row;
+  }
+  
+  .hero-background {
+    height: 100vh;
+    width: 60%;
+  }
+  
+  .diagonal-shape {
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  }
+  
+  .hero-content {
+    width: 40%;
+  }
+  
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+  
+  .benefits-section,
+  .testimonials,
+  .cta-section {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+}
+
+/* Pantallas grandes (1200px en adelante) */
+@media (min-width: 1200px) {
+  .hero-content h1 {
+    font-size: 3.5rem;
+  }
+  
+  .benefit {
+    max-width: 350px;
+  }
+  
+  .testimonial-cards mat-card {
+    max-width: 400px;
+  }
+}
+
+/* Ajustes para botones */
+@media (max-width: 480px) {
+  button[mat-raised-button] {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* Ajustes para textos en móviles pequeños */
+@media (max-width: 360px) {
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .section-title h2 {
+    font-size: 1.5rem;
+  }
 }

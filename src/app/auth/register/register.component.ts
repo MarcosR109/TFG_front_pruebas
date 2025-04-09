@@ -207,7 +207,6 @@ export class RegisterComponent {
       this.auth.register(this.registerForm.value);
     } else {
       console.log('Formulario inválido');
-      // Marca todos los campos como touched para mostrar errores
       this.registerForm.markAllAsTouched();
     }
   }

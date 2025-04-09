@@ -83,6 +83,19 @@ import { AuthService } from '../auth.service';
                 Iniciar sesión
               </button>
             </div>
+            <!-- Mensajes de error generales -->
+  <div *ngIf="loginForm.errors" class="error-message">
+    <p *ngIf="loginForm.errors['invalidCredentials']">
+      Credenciales inválidas. Por favor, inténtalo de nuevo.
+    </p>
+    <p *ngIf="loginForm.errors['connectionError']">
+      Error de conexión: {{ loginForm.errors['connectionError'] }}
+    </p>
+    <p *ngIf="loginForm.errors['serverError']">
+      Error del servidor: {{ loginForm.errors['serverError'] }}
+    </p>
+  </div>
+
           </form>
         </mat-card-content>
 
@@ -127,6 +140,17 @@ import { AuthService } from '../auth.service';
         text-align: center;
         margin-bottom: 24px;
       }
+      .error-message {
+  color: #f44336; /* Rojo de Material Design */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #ffebee; /* Fondo rojo claro */
+  border-radius: 4px;
+}
+
+.error-message p {
+  margin: 5px 0;
+}
       @media (max-width: 768px) {
         .login-container {
           height: calc(100vh - 56px);
@@ -138,7 +162,7 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
   hidePassword = true;
   loginForm: FormGroup;
-
+  error: any;
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -148,9 +172,27 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value);
-      console.log('Formulario enviado:', this.loginForm.value);
-      // Aquí iría la lógica de autenticación
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => {
+          // Redirección ya manejada en el servicio
+        },
+        error: (error: any) => {
+          this.handleLoginError(error);
+        }
+      });
+    }
+  }
+
+  handleLoginError(error: any) {
+    if (error.status === 401) {
+      // Credenciales inválidas
+      this.loginForm.setErrors({ invalidCredentials: true });
+    } else if (error.status === 0) {
+      // Error de conexión
+      this.loginForm.setErrors({ connectionError: 'No se pudo conectar al servidor' });
+    } else {
+      // Otros errores
+      this.loginForm.setErrors({ serverError: 'Error en el servidor' });
     }
   }
 }

@@ -1,6 +1,8 @@
 <div class="hero-container">
-  <!-- Fondo diagonal -->
-  <div class="hero-background"></div>
+  <!-- Fondo diagonal - Versión mejorada -->
+  <div class="hero-background">
+    <div class="diagonal-shape"></div>
+  </div>
 
   <!-- Contenido -->
   <div class="hero-content">
@@ -14,6 +16,102 @@
       componer, estructurar y<br />
       visualizar tus canciones con acordes
     </p>
-    <button>Empieza ahora</button>
+    <button mat-raised-button *ngIf="!isLoggedIn" [routerLink]="['/register']" style="background-color: #a6c5f3;">Empieza ahora</button>
+    <button mat-raised-button *ngIf="isLoggedIn" [routerLink]="['/canciones/create']" style="background-color: #a6c5f3;">Empieza ahora</button>
+  
   </div>
 </div>
+
+<section class="benefits-section">
+  <div class="section-title">
+    <h2>Por qué elegir nuestra plataforma</h2>
+    <p>Todo lo que necesitas para tu creatividad musical</p>
+  </div>
+  
+  <div class="benefits-columns">
+    <div class="benefit">
+      <mat-icon>thumb_up</mat-icon>
+      <h3>Comodidad</h3>
+      <p>Crea y organiza tus canciones con una interfaz intuitiva y sin distracciones.</p>
+    </div>
+    <div class="benefit">
+      <mat-icon>speed</mat-icon>
+      <h3>Eficiencia</h3>
+      <p>Asigna acordes rápidamente y estructura tu canción en segundos.</p>
+    </div>
+    <div class="benefit">
+      <mat-icon>extension</mat-icon>
+      <h3>Versatilidad</h3>
+      <p>Desde simples acordes hasta progresiones avanzadas, adapta tu música con facilidad.</p>
+    </div>
+  </div>
+
+  <div class="testimonials">
+    <h2>Lo que dicen nuestros usuarios</h2>
+    <div class="testimonial-cards">
+      <mat-card>
+        <mat-card-content>
+            <mat-icon style="font-size: 16px;">format_quote</mat-icon>
+          <p>La mejor herramienta que he usado para organizar mis ideas musicales. ¡Totalmente recomendada!</p>
+          <div class="author">
+            <span>Carlos G. - Guitarrista</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-content>
+          <mat-icon style="font-size: 16px;">format_quote</mat-icon>
+          <p>Me ha ayudado a estructurar mis canciones de manera profesional. El editor es increíblemente intuitivo.</p>
+          <div class="author">
+                <span>María L. - Cantautora</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="ranking-section">
+    <div class="ranking-block">
+      <h2>Top Canciones</h2>
+      <ul class="ranking-list">
+        <li *ngFor="let cancion of top5">
+          <div class="song-info">
+            <span class="bullet"></span>
+            <span class="title">{{ cancion.titulo }}</span>
+          </div>
+          <div class="stars">
+            <mat-icon class="small" *ngFor="let star of [1, 2, 3, 4, 5]">
+              {{ getStarType(star, cancion.rating || 0) }}
+            </mat-icon>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="ranking-block">
+      <h2>Lo más nuevo</h2>
+      <ul class="ranking-list">
+        <li *ngFor="let cancion of topNuevas">
+          <div class="song-info">
+            <span class="bullet"></span>
+            <span class="title">{{ cancion.titulo }}</span>
+          </div>
+          <div class="stars">
+            <mat-icon class="small" *ngFor="let star of [1, 2, 3, 4, 5]">
+              {{ getStarType(star, cancion.rating || 0) }}
+            </mat-icon>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>¿Listo para comenzar?</h2>
+    <p>Regístrate ahora y obtén acceso inmediato a todas las herramientas</p>
+    <button *ngIf="!isLoggedIn" mat-raised-button style="background-color: #a6c5f3;" [routerLink]="['/register']">Crear cuenta gratuita</button>
+  </div>
+</section>

@@ -446,8 +446,10 @@ export class TextBoxesComponent {
     if (result) {
       if (this.edicion) {
         this.cancionService.editarCancion(this.cancion!);
+        this.cancionService.actualizarBadge();
         //this.router.navigate(['/canciones']);
       } else {
+        this.cancionService.actualizarBadge();
         this.cancionService.revisarCancion(this.cancion!);
       }
     }

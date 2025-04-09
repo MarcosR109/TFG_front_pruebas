@@ -164,6 +164,11 @@ export class CancionService {
 
     return this.http.get(`${this.URL}canciones/recomendacion`, { params });
   }
+  getLandingData(){
+    return this.http.get<{ top5: any[]; nuevas: any[] }>(
+      this.URL + 'landing'
+    );
+  }
 }
 
 //

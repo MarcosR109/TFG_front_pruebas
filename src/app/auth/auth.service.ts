@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Form } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root',
@@ -42,10 +42,11 @@ export class AuthService {
       }
     );
   }
-  login(user: FormData) {
+  
+  login(user: FormData): Observable<any> {
     console.log('FORM DATA', user);
-    this.http.post(`${this.API_URL}login`, user).subscribe(
-      (response: any) => {
+    return this.http.post(`${this.API_URL}login`, user).pipe(
+      tap((response: any) => {
         console.log('Login successful', response);
         if (response.access_token) {
           this.tokenService.saveToken(response.access_token);
@@ -54,10 +55,11 @@ export class AuthService {
           this.role.next(response.role);
         }
         this.router.navigate(['/home']);
-      },
-      (error) => {
-        console.error('Login failed', error);
-      }
+      }),
+      catchError((error) => {
+        console.log('Login failed', error);
+        return throwError(() => error); // Re-lanzamos el error para que lo capture el componente
+      })
     );
   }
 
