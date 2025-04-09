@@ -16,6 +16,7 @@ import {
 import { BadgeService } from '../badge.service';
 import { CancionService } from '../cancion.service';
 import { AuthService } from '../auth/auth.service';
+import { RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -27,6 +28,7 @@ import { AuthService } from '../auth/auth.service';
     RouterModule,
     MatToolbarModule,
     MatBadgeModule,
+    RouterLinkActive,
   ],
   template: `
     <!-- Toolbar solo para móviles -->
@@ -43,6 +45,7 @@ import { AuthService } from '../auth/auth.service';
             *ngIf="this.userRole === 3"
             mat-button
             [routerLink]="['/revisiones']"
+            routerLinkActive="active"
             class="menu-item"
           >
             <mat-icon
@@ -60,6 +63,7 @@ import { AuthService } from '../auth/auth.service';
             mat-button
             class="menu-item"
             [routerLink]="['/dashboard']"
+            routerLinkActive="active"
           >
             <mat-icon>space_dashboard</mat-icon>
             <span>Panel</span>
@@ -68,7 +72,12 @@ import { AuthService } from '../auth/auth.service';
             <mat-icon>home</mat-icon>
             <span>Home</span>
           </button>
-          <button mat-button [routerLink]="['/canciones']" class="menu-item">
+          <button
+            mat-button
+            [routerLink]="['/canciones']"
+            routerLinkActive="active"
+            class="menu-item"
+          >
             <mat-icon>search</mat-icon>
             <span>Buscar</span>
           </button>
@@ -77,6 +86,7 @@ import { AuthService } from '../auth/auth.service';
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"
+            routerLinkActive="active"
           >
             <mat-icon>library_music</mat-icon>
             <span>Guardadas</span>
@@ -85,6 +95,7 @@ import { AuthService } from '../auth/auth.service';
             *ngIf="isLoggedIn"
             mat-button
             [routerLink]="['/canciones/create']"
+            routerLinkActive="active"
             class="menu-item"
           >
             <mat-icon>add</mat-icon>
@@ -104,6 +115,7 @@ import { AuthService } from '../auth/auth.service';
             mat-button
             class="menu-item"
             [routerLink]="['/login']"
+            routerLinkActive="active"
           >
             <mat-icon>login</mat-icon>
             <span>Login</span>
@@ -113,6 +125,7 @@ import { AuthService } from '../auth/auth.service';
             mat-button
             class="menu-item"
             [routerLink]="['/register']"
+            routerLinkActive="active"
           >
             <mat-icon>how_to_reg</mat-icon>
             <span>Register</span>
@@ -127,6 +140,7 @@ import { AuthService } from '../auth/auth.service';
   styles: `
     .sidenav-container {
       height: 100vh;
+
     }
     mat-sidenav {
       width: 80px;
@@ -134,13 +148,24 @@ import { AuthService } from '../auth/auth.service';
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 16px;
+        background: linear-gradient(to bottom, #cce0ff, #6b88a6);
+        border:none;
+        align-items: center;
+        justify-content: center;
+    }
+    .active{
+      background:rgb(255, 255, 255);
+      border-radius: 0px;
+      color: white;
     }
     .menu {
       display: flex;
       flex-direction: column;
       gap: 16px;
       width: 100%;
+      height: 100%;
+    justify-self: center;
+    justify-content: center;
     }
     .menu-item {
       display: flex;

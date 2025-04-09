@@ -36,6 +36,7 @@ import { AcordeTransformPipe } from '../acorde-transform.pipe';
 import { AcordeTransformSettingsService } from '../acorde-transform-settings.service';
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
+import { find } from 'rxjs';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -102,8 +103,16 @@ export class TextBoxesComponent {
   intervaloBase: number = 100; // Base del intervalo en milisegundos
   preferSostenidos: boolean = false; // Preferencia de sostenidos o bemoles
   notation: 'latin' | 'american' = 'american';
-  semitones = 0; // Semitonos para transponer acordes
-  // Diccionario de grados de acordes
+  semitones = 0;
+  // Variables de estado
+  mostrarRecomendaciones: boolean = true;
+  recomendacion: any[] = [];
+  acordesRecomendados: any[] = [];
+  // Método para alternar visibilidad
+  toggleRecomendaciones() {
+    this.mostrarRecomendaciones = !this.mostrarRecomendaciones;
+  }
+
   constructor(
     private cdRef: ChangeDetectorRef,
     private cancionService: CancionService,
@@ -114,6 +123,7 @@ export class TextBoxesComponent {
   ) {
     this.settingsService.currentSettings.preferSostenidos;
   }
+  // Método para actualizar recomendaciones (llamar cuando cambien los acordes)
 
   ngAfterViewInit() {
     console.log(this.lines);
@@ -124,9 +134,6 @@ export class TextBoxesComponent {
     if (this.edicion) {
       this.revision = false;
     }
-    this.cancionService.getRecomendaciones(5).subscribe((res) => {
-      console.log(res);
-    });
   }
   autoScrollContainer() {
     const container = document.querySelector('.scroll-container');
@@ -365,20 +372,44 @@ export class TextBoxesComponent {
     console.log(linea);
     console.log(this.lines);
     if (event.data.acorde) {
+      this.acordesRecomendados = [];
       linea.acordes[squareIndex].acorde = event.data.acorde;
       linea.acordes[squareIndex].grado = event.data.grado;
       linea.acordes[squareIndex].effect = event.data.effect;
       linea.acordes[squareIndex].id = event.data.id;
-      this.recomendaciones.agregarGrado(
-        linea.n_linea,
+      this.recomendaciones.anadirAcorde(
+        event.data.id,
+        event.data.acorde,
+        event.data.variacion,
         squareIndex,
-        event.data.grado
-      ); // Agrega el grado a la lista
-      // Agrega el grado a la lista
+        event.data.grado,
+        linea.n_linea
+      );
+      this.actualizarRecomendaciones();
     } else if (linea.acordes[squareIndex].acorde) {
       linea.acordes[squareIndex].variacion = event.data;
     }
     console.log(linea);
+  }
+  findAcordeRecomendado(grado: number) {
+    if (this.tonalidadExpandida) {
+      console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
+      const acordeEncontrado = this.getAcordesDeTonalidad(
+        this.tonalidadExpandida
+      ).find((acorde) =>
+        acorde.grado == grado ? this.acordesRecomendados.push(acorde) : null
+      );
+    }
+  }
+
+  actualizarRecomendaciones() {
+    this.recomendaciones.getRecomendaciones().subscribe((res) => {
+      this.recomendacion = res.recomendaciones;
+      console.log('RECOMENDACIONES', this.recomendacion);
+      this.recomendacion.forEach((recomendacion) => {
+        this.findAcordeRecomendado(recomendacion.siguiente);
+      });
+    });
   }
   onDraggableCopied(event: DragEvent, acorde: Acorde) {
     console.log('draggable copied', JSON.stringify(event, null, 2));

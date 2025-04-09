@@ -90,9 +90,6 @@ import { AuthService } from '../auth.service';
           <a mat-button color="primary" routerLink="/register"
             >¿No tienes cuenta? Regístrate</a
           >
-          <a mat-button routerLink="/forgot-password"
-            >¿Olvidaste tu contraseña?</a
-          >
         </mat-card-actions>
       </mat-card>
     </div>

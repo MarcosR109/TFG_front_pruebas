@@ -1,0 +1,54 @@
+/* Contenedor general ocupando toda la pantalla */
+.hero-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+/* Fondo degradado con forma diagonal */
+.hero-background {
+  width: 50%;
+  background: linear-gradient(to bottom, #cce0ff, #6b88a6);
+  clip-path: polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%);
+}
+
+/* Contenido alineado a la derecha */
+.hero-content {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 40%;
+  text-align: right;
+}
+
+.hero-content h1 {
+  font-size: 4em;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 1em;
+}
+
+.hero-content p {
+  font-size: 1.5em;
+  margin-bottom: 1.5em;
+  color: #333;
+}
+
+.hero-content button {
+  background-color: #809fc9;
+  color: white;
+  border: none;
+  padding: 0.75em 2em;
+  font-size: 1.15em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-content button:hover {
+  background-color: #5f84b5;
+}

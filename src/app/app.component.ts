@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FooterComponent } from './footer/footer.component';
 import { RouterOutlet } from '@angular/router';
-import { HeroComponent } from './hero/hero.component';
 import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
 import { TextBoxesComponent } from './text-boxes/text-boxes.component';
@@ -22,7 +21,6 @@ import { JwtInterceptor } from './auth/interceptor.service';
     CommonModule,
     FooterComponent,
     RouterOutlet,
-    HeroComponent,
     SquareComponent,
     TextinputComponent,
     CancionComponent,
