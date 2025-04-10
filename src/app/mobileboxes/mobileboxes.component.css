@@ -1,11 +1,10 @@
 .mobile-panel {
   position: fixed;
   bottom: 0;
-  width: 100%;
   background: white;
   border-top: 2px solid #ccc;
   z-index: 1000;
-
+  width: 100%;
   .panel-header {
     display: flex;
     align-items: center;
@@ -19,7 +18,7 @@
     padding: 10px;
     overflow-y: auto;
     max-height: 60vh;
-
+    overflow-x: auto;
     .tonalidades-scroll,
     .acordes-scroll,
     .variaciones-scroll {
@@ -275,16 +274,6 @@ aside {
   height: 100%;
 }
 
-/* Estilos para la lista de tonalidades */
-.tonalidades-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px;
-  box-shadow: 10px;
-  order: 2; /* Esto asegura que las tonalidades estén a la derecha */
-}
-
 .tonalidad-box {
   background: #ddd;
   padding: 5px 10px;
@@ -318,19 +307,6 @@ aside {
   font-weight: bold;
 }
 /* Estilos para la lista de acordes */
-.acordes-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 10px;
-  margin-left: 10px; /* Cambié 'margin-right' a 'margin-left' */
-  border-left: 2px solid #aaa; /* Cambié de border-right a border-left */
-  overflow: hidden;
-  order: 1; /* Esto asegura que los acordes estén a la izquierda */
-  overflow-y: auto; /* Permite el scroll vertical */
-  max-height: 300px; /* Ajusta según lo necesario */
-  scrollbar-width: none; /* Oculta la barra en Firefox */
-}
 
 /* Animación de expansión */
 .acordes-container.ng-animating {
@@ -343,8 +319,8 @@ aside {
   margin: 4px;
   border-radius: 4px;
   cursor: pointer;
-  width: 60px;
-  height: 30px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -363,7 +339,6 @@ aside {
   border-radius: 10px;
   z-index: 1000;
   transition: bottom 0.3s ease-in-out, top 0.3s ease-in-out;
-
   bottom: 10px;
   &.arriba {
     top: 0px;
@@ -397,7 +372,6 @@ aside {
   border-radius: 4px;
   font-size: 14px;
   min-width: 50px;
-  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -501,4 +475,34 @@ aside {
   gap: 8px;
   margin-top: 16px;
   padding: 0 16px; /* Añadido para evitar que el botón toque los bordes */
+}
+
+/* Estilos para la lista de tonalidades */
+.tonalidades-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px;
+  box-shadow: 10px;
+  order: 2; /* Esto asegura que las tonalidades estén a la derecha */
+  overflow-x: scroll;
+  .tool-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    /* Espacio entre el título y la lista */
+  }
+}
+.acordes-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px;
+  margin-left: 10px; /* Cambié 'margin-right' a 'margin-left' */
+  overflow: hidden;
+  order: 1; /* Esto asegura que los acordes estén a la izquierda */
+  overflow-y: auto; /* Permite el scroll vertical */
+  max-height: 300px; /* Ajusta según lo necesario */
+  scrollbar-width: none;
+  overflow-x: scroll; /* Oculta la barra en Firefox */
 }

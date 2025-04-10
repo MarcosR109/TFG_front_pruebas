@@ -97,63 +97,58 @@
 <div class="mobile-panel" [class.open]="panelAbierto">
   <div class="panel-header" (click)="togglePanel()">
     <mat-icon>{{ panelAbierto ? "expand_more" : "expand_less" }}</mat-icon>
-    Herramientas
   </div>
 
   <div class="panel-content" *ngIf="panelAbierto">
     <!-- Acordes por tonalidad -->
-    <div class="acordes-movil">
-      <div class="tonalidades-container">
-        <div
-          *ngFor="let tonalidad of tonalidades"
-          class="tonalidad-box"
-          [class.seleccionada]="tonalidadExpandida === tonalidad"
-          (click)="seleccionarTonalidad(tonalidad)"
-        >
-          {{ tonalidad }}
-        </div>
-      </div>
-
+    <div class="tool-title">Acordes</div>
+    <div
+      class="acordes-container"
+      [@expandir]="tonalidadExpandida ? 'expandido' : 'colapsado'"
+    >
       <div
-        class="acordes-container"
-        [@expandir]="tonalidadExpandida ? 'expandido' : 'colapsado'"
+        *ngFor="
+          let acorde of getAcordesDeTonalidad(tonalidadExpandida);
+          trackBy: trackByAcorde
+        "
+        class="acorde-box"
+        [dndDraggable]="acorde"
       >
-        <div
-          *ngFor="
-            let acorde of getAcordesDeTonalidad(tonalidadExpandida);
-            trackBy: trackByAcorde
-          "
-          class="acorde-box"
-          [dndDraggable]="acorde"
+        {{ acorde.acorde }}
+      </div>
+    </div>
+    <div class="tool-title">Tonalidades</div>
+    <div class="tonalidades-container">
+      <div
+        *ngFor="let tonalidad of tonalidades"
+        class="tonalidad-box"
+        [class.seleccionada]="tonalidadExpandida === tonalidad"
+        (click)="seleccionarTonalidad(tonalidad)"
+      >
+        {{ tonalidad }}
+      </div>
+    </div>
+
+    <!-- Variaciones -->
+    <div *ngIf="!block">
+      <div class="tool-title">Variaciones</div>
+      <div class="variaciones-slider">
+        <button
+          *ngFor="let variacion of variaciones"
+          class="variacion-btn"
+          [dndDraggable]="variacion"
         >
-          {{ acorde.acorde }}
-        </div>
-      </div>
-
-      <!-- Variaciones -->
-      <div *ngIf="!block">
-        <div class="variaciones-slider">
-          <span style="display: block">Variaciones</span>
-
-          <button
-            *ngFor="let variacion of variaciones"
-            class="variacion-btn"
-            [dndDraggable]="variacion"
-          >
-            {{ variacion }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Herramientas -->
-      <div class="tools-row">
-        <button mat-icon-button (click)="modSemitono(-1)">-1</button>
-        <button mat-icon-button (click)="modSemitono(1)">+1</button>
-        <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
-        <button mat-icon-button (click)="togglePreferirSostenidos()">
-          ♯/♭
+          {{ variacion }}
         </button>
       </div>
+    </div>
+
+    <div class="tool-title">Herramientas</div>
+    <div class="tools-row">
+      <button mat-icon-button (click)="modSemitono(-1)">-1</button>
+      <button mat-icon-button (click)="modSemitono(1)">+1</button>
+      <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
+      <button mat-icon-button (click)="togglePreferirSostenidos()">♯/♭</button>
     </div>
   </div>
 </div>
