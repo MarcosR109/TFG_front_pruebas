@@ -40,7 +40,6 @@ export class RecomendacionesService {
   }
   getRecomendaciones(): Observable<any> {
     console.log(this.recomendaciones);
-
     if (this.recomendaciones) {
       return this.recomendaciones;
     }
@@ -85,7 +84,6 @@ export class RecomendacionesService {
         3
       );
     }
-    // Caso 3: Misma línea pero posición posterior en el compás
     if (
       linea === this.ultimoAcorde.linea &&
       posicion_en_compas > this.ultimoAcorde.posicion_en_compas!

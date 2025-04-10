@@ -14,41 +14,74 @@ import { AuthGuard } from './auth/authguard.service';
 import { GuestGuard } from './auth/guestguard.service';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'canciones', component: CancionesListComponent }, // Pública
+  { path: 'home', component: HomeComponent, data: { title: 'Home' } }, // Pública
+  {
+    path: 'canciones',
+    component: CancionesListComponent,
+    data: { title: 'Home' },
+  }, // Pública
   {
     path: 'canciones/mine',
     component: CancionesMineComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Tus canciones' },
   },
-  { path: 'canciones/show/:id', component: CancionComponent }, // Pública
-  { path: 'canciones/search/:query', component: CancioneslistfComponent }, // Pública
+  {
+    path: 'canciones/show/:id',
+    component: CancionComponent,
+    data: { title: 'Canción' },
+  }, // Pública
+  {
+    path: 'canciones/search/:query',
+    component: CancioneslistfComponent,
+    data: { title: 'Búsqueda' },
+  }, // Pública
   {
     path: 'canciones/create',
     component: CancionFormComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Crear canción' },
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Dashboard' },
   },
   {
     path: 'revisiones',
     component: RevisionesComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Revisiones' },
   },
-  { path: 'debug', component: CancionComponent, canActivate: [AuthGuard] },
+  {
+    path: 'debug',
+    component: CancionComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'Home' },
+  },
   {
     path: 'revisiones/:id',
     component: CancionFormComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Revisar canción' },
   },
   {
     path: 'revisiones/:id/:edicion',
     component: CancionFormComponent,
     canActivate: [AuthGuard],
+    data: { title: 'Crear canción' },
   },
-  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
-  { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [GuestGuard],
+    data: { title: 'Login' },
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [GuestGuard],
+    data: { title: 'Register' },
+  },
 ];

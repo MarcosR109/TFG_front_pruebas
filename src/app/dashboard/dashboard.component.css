@@ -85,15 +85,279 @@
 
 @media (max-width: 768px) {
   .dashboard-container {
-    grid-template-columns: 1fr;
+    padding: 0 8px;
+  }
+
+  /* Filtros Card */
+  .filtros-card {
+    margin-bottom: 16px !important;
+    width: 100% !important;
+  }
+
+  .filtros-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .filtros-header h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+
+  .filtros-content {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  mat-form-field {
+    width: 100% !important;
+  }
+
+  /* Tab Group */
+  mat-tab-group {
+    width: 100%;
+  }
+
+  mat-tab-header {
+    padding: 0 8px;
+  }
+
+  .mat-tab-label {
+    min-width: auto !important;
+    padding: 0 8px !important;
+    font-size: 0.8rem;
+  }
+
+  /* Lista Card */
+  .lista-card {
+    overflow-x: auto;
+    padding: 8px !important;
+  }
+
+  .lista-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .lista-header h2 {
+    font-size: 1.2rem;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 4px;
+  }
+
+  .contador {
+    font-size: 0.9rem;
+    margin-left: 0 !important;
+    margin-top: 4px;
+  }
+
+  /* Tabla */
+  table.mat-table {
+    min-width: 600px; /* Permite scroll horizontal en tablas muy grandes */
+    display: block;
+    overflow-x: auto;
+  }
+
+  .mat-header-row,
+  .mat-row {
+    padding: 0 8px;
+  }
+
+  .mat-cell,
+  .mat-header-cell {
+    padding: 0 8px !important;
+    font-size: 0.8rem;
+  }
+
+  /* Columnas específicas */
+  .mat-column-acciones {
+    min-width: 80px !important;
+  }
+
+  .mat-column-seleccionar {
+    min-width: 50px !important;
+  }
+
+  /* Botones */
+  button[mat-raised-button] {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  button[mat-icon-button] {
+    margin: 0 2px;
+  }
+
+  /* No results */
+  .no-results {
+    padding: 16px 0;
+    text-align: center;
+  }
+
+  .no-results mat-icon {
+    font-size: 2.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  .no-results h3 {
+    font-size: 1.1rem;
+  }
+
+  .no-results p {
+    font-size: 0.9rem;
   }
 }
-/* En tu dashboard.component.css */
-.mat-row.usuario-seleccionado {
-  background-color: rgba(63, 81, 181, 0.1); /* Azul claro para selección */
-}
 
-/* Estilo para el checkbox deshabilitado (admin) */
-.mat-checkbox-disabled {
-  opacity: 0.5;
+/* Media Query adicional para pantallas muy pequeñas */
+@media (max-width: 768px) {
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    overflow-x: hidden; /* Previene scroll horizontal en la página */
+    width: 100vw;
+    box-sizing: border-box;
+  }
+
+  /* Filtros - Apilados verticalmente */
+  .filtros-card {
+    width: 100% !important;
+    margin: 8px 0 !important;
+    box-sizing: border-box;
+  }
+
+  .filtros-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+    padding: 12px 8px !important;
+  }
+
+  .filtros-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .filtros-content {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 0 8px 12px !important;
+  }
+
+  mat-form-field {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Tab Group - Pestañas ajustadas */
+  mat-tab-group {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .mat-tab-label {
+    min-width: auto !important;
+    padding: 0 12px !important;
+    font-size: 0.8rem;
+  }
+
+  /* Lista Card - Contenedor de la tabla */
+  .lista-card {
+    padding: 12px 8px !important;
+    margin: 8px 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .lista-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+
+  .lista-header h2 {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contador {
+    font-size: 0.9rem;
+    margin-left: 0 !important;
+  }
+
+  /* Tabla - Scroll horizontal solo para la tabla */
+  .mat-table-container {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    margin: 0 -8px; /* Compensa el padding para usar todo el ancho */
+  }
+
+  table.mat-table {
+    min-width: 600px; /* Ancho mínimo para mantener estructura */
+    width: 100%;
+  }
+
+  .mat-header-row,
+  .mat-row {
+    padding: 0 8px;
+    min-height: 48px; /* Altura mínima para tacto */
+  }
+
+  .mat-cell,
+  .mat-header-cell {
+    padding: 0 8px !important;
+    font-size: 0.8rem;
+    min-width: 80px; /* Ancho mínimo por celda */
+  }
+
+  /* Columnas específicas */
+  .mat-column-acciones {
+    min-width: 90px !important;
+  }
+
+  .mat-column-seleccionar {
+    min-width: 50px !important;
+  }
+
+  /* Botones */
+  button[mat-raised-button] {
+    width: 100%;
+    margin: 4px 0 !important;
+  }
+
+  /* No results */
+  .no-results {
+    padding: 24px 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* Ajustes para pantallas muy pequeñas */
+  @media (max-width: 480px) {
+    .mat-tab-label {
+      padding: 0 8px !important;
+      font-size: 0.7rem;
+    }
+
+    .mat-cell,
+    .mat-header-cell {
+      font-size: 0.75rem;
+      padding: 0 4px !important;
+    }
+
+    button[mat-icon-button] {
+      transform: scale(0.8);
+      margin: 0 -4px;
+    }
+  }
 }

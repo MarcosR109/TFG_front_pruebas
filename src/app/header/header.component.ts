@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
 import {
@@ -17,6 +17,8 @@ import { BadgeService } from '../badge.service';
 import { CancionService } from '../cancion.service';
 import { AuthService } from '../auth/auth.service';
 import { RouterLinkActive } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -30,14 +32,14 @@ import { RouterLinkActive } from '@angular/router';
     MatToolbarModule,
     MatBadgeModule,
     RouterLinkActive,
-
   ],
   template: `
     <!-- Toolbar solo para móviles -->
-    <mat-toolbar color="primary" class="mobile-toolbar" *ngIf="isMobile">
-      <button mat-icon-button (click)="toggleMenu()">
+    <mat-toolbar class="mobile-toolbar">
+      <button *ngIf="isMobile" mat-icon-button (click)="toggleMenu()">
         <mat-icon>menu</mat-icon>
       </button>
+      <span>{{ this.currentTitle }}</span>
     </mat-toolbar>
     <!-- Menú lateral para pantallas grandes -->
     <mat-sidenav-container class="sidenav-container">
@@ -78,14 +80,14 @@ import { RouterLinkActive } from '@angular/router';
             mat-button
             [routerLink]="['/canciones']"
             routerLinkActive="active"
-              [routerLinkActiveOptions]="{exact: true}"
+            [routerLinkActiveOptions]="{ exact: true }"
             class="menu-item"
           >
             <mat-icon>search</mat-icon>
             <span>Buscar</span>
           </button>
           <button
-            *ngIf="isLoggedIn && this.userRole === 1 || this.userRole === 3"
+            *ngIf="(isLoggedIn && this.userRole === 1) || this.userRole === 3"
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"
@@ -135,7 +137,12 @@ import { RouterLinkActive } from '@angular/router';
           </button>
         </div>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <div
+        class="content-overlay"
+        [class.visible]="isMenuOpen"
+        (click)="closeMenu()"
+      ></div>
+      <mat-sidenav-content [class.blurred]="isMenuOpen" class="scrollable">
         <ng-content> <router-outlet></router-outlet></ng-content>
       </mat-sidenav-content>
     </mat-sidenav-container>
@@ -146,6 +153,7 @@ import { RouterLinkActive } from '@angular/router';
 
     }
     mat-sidenav {
+
       width: 80px;
       background: #f5f5f5;
       display: flex;
@@ -159,7 +167,7 @@ import { RouterLinkActive } from '@angular/router';
     .active{
       background:rgb(255, 255, 255);
       border-radius: 0px;
-      color: white;
+      color: black;
     }
     .menu {
       display: flex;
@@ -198,11 +206,15 @@ import { RouterLinkActive } from '@angular/router';
       left: 0;
       right: 0;
       z-index: 1000;
+      color:rgba(0, 0, 0, 0.57);
     }
     .spacer {
       flex: 1;
     }
-
+  mat-sidenav-content {
+    height: 100%;
+    overflow-y:auto;
+  }
     /* Estilos base */
 .sidenav-container {
   height: 100vh;
@@ -220,16 +232,19 @@ mat-sidenav {
 
 /* Estilos para móviles */
 @media (max-width: 768px) {
-  .mobile-toolbar {
+    .mobile-toolbar {
     display: flex;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+    background:  #cce0ff;
+ 
   }
 
   .sidenav-container {
+    
     margin-top: 56px; /* Compensa la altura del toolbar */
   }
 
@@ -256,6 +271,83 @@ mat-sidenav {
   mat-sidenav[opened] + mat-sidenav-content {
     margin-left: 200px !important;
   }
+  .mobile-toolbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #cce0ff;
+    padding:0;
+  }
+
+  .sidenav-container {
+    margin-top: 56px; /* Compensa la altura del toolbar */
+    position: relative;
+  }
+
+  mat-sidenav {
+    width: 200px;
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto de elevación */
+  }
+
+  mat-sidenav.mat-drawer-opened {
+    transform: translateX(0);
+  }
+
+  /* Efecto blur y overlay cuando el sidenav está abierto */
+  mat-sidenav.mat-drawer-opened ~ .mat-drawer-content {
+    transition: filter 0.3s ease;
+  }
+
+  mat-sidenav.mat-drawer-opened ~ .mat-drawer-content::after {
+    content: '';
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 998;
+    pointer-events: auto; /* Permite cerrar haciendo clic en el overlay */
+  }
+}
+mat-sidenav-content{
+  padding:0;
+}
+mat-sidenav-content.blurred {
+  filter: blur(2px);
+}
+.content-overlay {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.content-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+mat-sidenav-content.blurred {
+  filter: blur(2px);
 }
   `,
 })
@@ -267,10 +359,13 @@ export class HeaderComponent {
   private subscription!: Subscription;
   userRole!: number;
   isLoggedIn = false; // Variable para verificar si el usuario está logueado
+  currentTitle: string = '';
   constructor(
     private badgeService: BadgeService,
     private cancionesService: CancionService,
     private authService: AuthService,
+    private route: Router,
+    private activatedRoute: ActivatedRoute
   ) {
     this.badgeCount$ = this.badgeService.badgeCount$ || 0;
     this.checkScreenSize();
@@ -295,15 +390,32 @@ export class HeaderComponent {
     this.authService.authStatus.subscribe((status) => {
       this.isLoggedIn = status; // Actualiza el estado de login
     });
+    this.route.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map((route) => {
+          while (route.firstChild) route = route.firstChild;
+          return route;
+        }),
+        mergeMap((route) => route.data)
+      )
+      .subscribe((data) => {
+        this.currentTitle = data['title'] || 'Título Predeterminado';
+      });
   }
-  login() { }
+  login() {}
 
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe(); // Evita fugas de memoria
     }
   }
+  closeMenu() {
+    console.log('closeMenu()');
 
+    this.isMenuOpen = false;
+  }
   checkScreenSize() {
     this.isMobile = window.innerWidth <= 768;
   }

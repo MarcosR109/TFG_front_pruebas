@@ -145,7 +145,7 @@ mat-icon {
     border-bottom: none;
     display: flex;
     justify-content: space-between;
-    
+
     &:before {
       content: attr(data-label);
       font-weight: 500;
@@ -160,7 +160,7 @@ mat-icon {
   }
 
   /* Ajustar enlaces */
-  .song-link, 
+  .song-link,
   .artist-link {
     flex-direction: row-reverse;
     justify-content: flex-end;
@@ -186,7 +186,7 @@ mat-icon {
   .mat-cell {
     padding: 6px 8px;
     font-size: 0.9rem;
-    
+
     &:before {
       font-size: 0.8rem;
     }
@@ -222,7 +222,7 @@ mat-icon {
   /* Ajustar botones de acción */
   .mat-column-acciones {
     justify-content: center !important;
-    
+
     button {
       width: 100%;
     }
@@ -246,7 +246,7 @@ mat-icon {
   .main-container {
     grid-template-columns: 300px 1fr;
   }
-  
+
   .mat-cell {
     padding: 10px 12px;
   }
@@ -257,7 +257,7 @@ mat-icon {
   .main-container {
     max-width: 1400px;
   }
-  
+
   .mat-cell {
     padding: 16px 24px;
   }

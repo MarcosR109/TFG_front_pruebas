@@ -1,0 +1,159 @@
+<div class="grid-container">
+  <div class="scroll-container">
+    <div
+      *ngFor="let linea of lines; let index = index"
+      class="input-group"
+      [style.width]="maxWidth"
+    >
+      <div class="square-container" [style.width]="maxWidth">
+        <mat-card
+          class="square"
+          *ngFor="let acorde of linea.acordes; let squareIndex = index"
+        >
+          <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
+          <button
+            *ngIf="acorde.acorde && !block"
+            class="delete-button"
+            (click)="eliminarAcorde(linea.n_linea, squareIndex)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="15px"
+              viewBox="0 -960 960 960"
+              width="15px"
+              fill="#999999"
+            >
+              <path
+                d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+              />
+            </svg>
+          </button>
+          <!-- Contenido del acorde -->
+          <div class="square-content">
+            <app-acordeshow
+              *ngIf="acorde.acorde != 'aux'"
+              [chord]="acorde.acorde || ''"
+              [variacion]="acorde.variacion || ''"
+              [semitones]="this.semitones"
+            ></app-acordeshow>
+          </div>
+        </mat-card>
+      </div>
+      <!-- Campo de entrada de texto -->
+      <mat-form-field
+        *ngIf="!block"
+        appearance="outline"
+        class="input-field"
+        [style.width]="maxWidth"
+      >
+        <input
+          matInput
+          [(ngModel)]="linea.texto"
+          placeholder="Texto recibido"
+        />
+      </mat-form-field>
+
+      <!-- Texto plano cuando this.block es true -->
+      <div *ngIf="block" class="plaintext">
+        <p class="text-material-design">
+          {{ linea.texto }}
+        </p>
+      </div>
+
+      <div class="button-container" *ngIf="!block">
+        <button
+          mat-raised-button
+          class="add-line-btn"
+          color="secondary"
+          (click)="agregarLineaDebajo(index)"
+        >
+          +
+        </button>
+        <button
+          mat-raised-button
+          color="secondary"
+          class="delete-line-btn"
+          (click)="eliminarLinea(index)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 0 24 24"
+            width="20px"
+            fill="#000000"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path
+              d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Panel flotante inferior para herramientas/acordes -->
+
+<div class="mobile-panel" [class.open]="panelAbierto">
+  <div class="panel-header" (click)="togglePanel()">
+    <mat-icon>{{ panelAbierto ? "expand_more" : "expand_less" }}</mat-icon>
+    Herramientas
+  </div>
+
+  <div class="panel-content" *ngIf="panelAbierto">
+    <!-- Acordes por tonalidad -->
+    <div class="acordes-movil">
+      <div class="tonalidades-container">
+        <div
+          *ngFor="let tonalidad of tonalidades"
+          class="tonalidad-box"
+          [class.seleccionada]="tonalidadExpandida === tonalidad"
+          (click)="seleccionarTonalidad(tonalidad)"
+        >
+          {{ tonalidad }}
+        </div>
+      </div>
+
+      <div
+        class="acordes-container"
+        [@expandir]="tonalidadExpandida ? 'expandido' : 'colapsado'"
+      >
+        <div
+          *ngFor="
+            let acorde of getAcordesDeTonalidad(tonalidadExpandida);
+            trackBy: trackByAcorde
+          "
+          class="acorde-box"
+          [dndDraggable]="acorde"
+        >
+          {{ acorde.acorde }}
+        </div>
+      </div>
+
+      <!-- Variaciones -->
+      <div *ngIf="!block">
+        <div class="variaciones-slider">
+          <span style="display: block">Variaciones</span>
+
+          <button
+            *ngFor="let variacion of variaciones"
+            class="variacion-btn"
+            [dndDraggable]="variacion"
+          >
+            {{ variacion }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Herramientas -->
+      <div class="tools-row">
+        <button mat-icon-button (click)="modSemitono(-1)">-1</button>
+        <button mat-icon-button (click)="modSemitono(1)">+1</button>
+        <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
+        <button mat-icon-button (click)="togglePreferirSostenidos()">
+          ♯/♭
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

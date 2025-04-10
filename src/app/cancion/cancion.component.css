@@ -1,159 +1,159 @@
-.submit-container {
-  width: 100%; /* O un ancho específico si el contenido es estrecho */
-  display: flex;
-  justify-content: center;
-  margin-top: 20px; /* Espacio con el contenido */
-  margin-bottom: 20px; /* Espacio con el contenido */
-}
-
-.star {
-  cursor: pointer;
-  font-size: 24px;
-  color: gold;
-}
-.title-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.favorite-icon {
-  cursor: pointer;
-  font-size: 24px;
-  color: gray;
-  transition: color 0.3s ease;
-}
-.save-icon {
-  cursor: pointer;
-  font-size: 24px;
-  color: gray;
-  transition: color 0.3s ease;
-}
-
-.favorite-icon.favorito {
-  color: red;
-}
-button {
-  min-width: 200px;
-  height: 48px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 4px; /* Bordes Material Design */
-  margin-bottom: 20px; /* Espacio con el contenido */
-}
-
 .parent {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  padding: 20px; /* Espacio alrededor para que no toque los bordes */
-  background-color: #c0c0c0; /* Un gris claro para resaltar la card */
-  color: #000000; /* Mantiene el color del texto */
-}
-
-.div1 {
-  grid-area: 1 / 2 / 3 / 4;
-}
-.div2 {
-  grid-area: 2 / 2 / 6 / 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-
-.song-card {
-  padding: 16px;
-  display: flex;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  .card-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  .card-text {
-    display: flex;
-    flex-direction: column;
-
-    .title {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .artist {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .description {
-      font-size: 1rem;
-      color: #666;
-    }
-
-    .tags {
-      margin-top: 8px;
-    }
-  }
-
-  .rating {
-    display: flex;
-    align-items: center;
-    color: rgba(0, 0, 0, 0.2);
-  }
-
-  .star {
-    font-size: 24px;
-    cursor: pointer;
-  }
-}
-.div2 {
-  background: rgb(255, 255, 255);
-}
-.song-card {
-  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 24px;
   padding: 16px;
-  min-width: 300px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.favorite-icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  cursor: pointer;
-  color: gray;
-  transition: color 0.3s;
+.div1,
+.div2 {
+  width: 100%;
+  max-width: 800px;
+  /* Ajusta según necesites */
 }
-.save-icon {
-  position: absolute;
-  top: 8px;
-  right: 32px;
-  cursor: pointer;
-  color: gray;
-  transition: color 0.3s;
+.div2 {
+  background-color: var(
+    --mdc-elevated-card-container-color,
+    var(--mat-sys-surface-container-low)
+  );
+  border-color: var(
+    --mdc-elevated-card-container-color,
+    var(--mat-sys-surface-container-low)
+  );
+  border-radius: var(
+    --mdc-elevated-card-container-shape,
+    var(--mat-sys-corner-medium)
+  );
+  box-shadow: var(
+    --mdc-elevated-card-container-elevation,
+    var(--mat-sys-level1)
+  );
 }
-.save-icon.guardado {
-  color: black;
-}
-.favorite-icon.favorito {
-  color: red;
+.song-card {
+  align-items: start;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
 }
 
 .card-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
+  gap: 16px;
+}
+
+.card-text {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.artist {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+.tags {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
 .rating {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
   display: flex;
+  justify-content: center;
   gap: 4px;
+  color: #a6c5f3;
+}
+
+.favorite-icon,
+.save-icon {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-icon {
+  right: 16px;
+  top: 10%;
+  transform: translateY(-50%);
+}
+
+.save-icon {
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.favorite-icon:hover,
+.save-icon:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.favorito {
+  color: #f44336;
+}
+
+.guardado {
+  color: #2196f3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .artist {
+    font-size: 1.1rem;
+  }
+
+  .favorite-icon {
+    right: -30px;
+  }
+
+  .save-icon {
+    right: -60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .parent {
+    padding: 8px;
+    gap: 16px;
+  }
+
+  .song-card {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .favorite-icon,
+  .save-icon {
+    position: static;
+    transform: none;
+    margin: 0 8px;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }

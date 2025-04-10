@@ -163,7 +163,7 @@
         >
           <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
           <button
-            *ngIf="acorde.acorde != 'aux' && !block"
+            *ngIf="acorde.acorde && !block"
             class="delete-button"
             (click)="eliminarAcorde(linea.n_linea, squareIndex)"
           >

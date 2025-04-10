@@ -1,3 +1,48 @@
+.mobile-panel {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  border-top: 2px solid #ccc;
+  z-index: 1000;
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeeee;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .panel-content {
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 60vh;
+
+    .tonalidades-scroll,
+    .acordes-scroll,
+    .variaciones-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      padding: 8px 0;
+    }
+
+    .tools-row {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 12px;
+    }
+
+    .acorde-btn,
+    .variacion-btn {
+      min-width: 60px;
+      height: 60px;
+      font-size: 1rem;
+    }
+  }
+}
 .input-group {
   display: flex;
   flex-direction: column;
@@ -233,7 +278,7 @@ aside {
 /* Estilos para la lista de tonalidades */
 .tonalidades-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   padding: 10px;
   box-shadow: 10px;
@@ -253,6 +298,7 @@ aside {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
 }
 .plaintext {
   justify-content: start;
@@ -274,7 +320,7 @@ aside {
 /* Estilos para la lista de acordes */
 .acordes-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   padding: 10px;
   margin-left: 10px; /* Cambié 'margin-right' a 'margin-left' */

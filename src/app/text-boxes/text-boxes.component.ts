@@ -4,6 +4,8 @@ import {
   HostListener,
   SimpleChanges,
   ChangeDetectorRef,
+  Renderer2,
+  NgZone,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -94,7 +96,6 @@ export class TextBoxesComponent {
   maxWidth: string = '25rem'; // Ancho máximo de las líneas, se recalcula en un método al cargar
   tonalidades = Object.keys(ACORDES_POR_TONALIDAD); // Tonalidades disponibles
   tonalidadExpandida: string | null = null; // Tonalidad seleccionada en el menú
-  @HostListener('window:scroll', [])
   botonBloqueado = false;
   botonBorrarBloqueado = false;
   sliderOpen = false;
@@ -108,35 +109,53 @@ export class TextBoxesComponent {
   mostrarRecomendaciones: boolean = true;
   recomendacion: any[] = [];
   acordesRecomendados: any[] = [];
+  private externalContainer!: HTMLElement;
   // Método para alternar visibilidad
   toggleRecomendaciones() {
     this.mostrarRecomendaciones = !this.mostrarRecomendaciones;
   }
-
   constructor(
     private cdRef: ChangeDetectorRef,
     private cancionService: CancionService,
     public dialog: MatDialog,
     private router: Router,
     private settingsService: AcordeTransformSettingsService,
-    private recomendaciones: RecomendacionesService
+    private recomendaciones: RecomendacionesService,
+    private renderer: Renderer2,
+    private changeDetector: ChangeDetectorRef,
+    private ngZone: NgZone
   ) {
     this.settingsService.currentSettings.preferSostenidos;
   }
   // Método para actualizar recomendaciones (llamar cuando cambien los acordes)
 
   ngAfterViewInit() {
-    console.log(this.lines);
-    console.log(this.tonalidad);
-    console.log(this.cancion);
+    if (this.externalContainer) {
+      this.externalContainer.addEventListener(
+        'scroll',
+        this.handleScroll.bind(this),
+        { passive: true }
+      );
+      this.handleScroll(); // Llamada inicial
+    }
   }
   ngOnInit() {
     if (this.edicion) {
       this.revision = false;
     }
+    this.externalContainer = this.renderer.selectRootElement(
+      '.scrollable',
+      true
+    ) as HTMLElement;
+
+    if (!this.externalContainer) {
+      console.error('No se encontró el contenedor externo');
+      return;
+    }
   }
+
   autoScrollContainer() {
-    const container = document.querySelector('.scroll-container');
+    const container = this.renderer.selectRootElement('.scrollable', true);
     if (container) {
       container.scrollBy({
         top: this.velocidad,
@@ -210,7 +229,7 @@ export class TextBoxesComponent {
   }
 
   agregarLineaDebajo(index: number): void {
-    if (this.botonBloqueado) return; // Evita doble interacción
+    if (this.botonBloqueado) return;
     this.botonBloqueado = true;
     setTimeout(() => (this.botonBloqueado = false), 500); // Desbloquea después de 500ms
     let acordesV = [
@@ -312,13 +331,23 @@ export class TextBoxesComponent {
 
     console.log(this.lines);
   }
+  handleScroll() {
+    if (!this.externalContainer) return;
+    const scrollTop = this.externalContainer.scrollTop;
+    const scrollHeight = this.externalContainer.scrollHeight;
+    const clientHeight = this.externalContainer.clientHeight;
+    const threshold = 100; // 100px antes del final
+    this.menuArriba = scrollTop + clientHeight >= scrollHeight - threshold;
 
-  onScroll(): void {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const windowHeight = window.innerHeight;
-    const fullHeight = document.documentElement.scrollHeight;
-    // Si el usuario llega al final de la página, subimos el menú
-    this.menuArriba = scrollTop + windowHeight >= fullHeight - 10;
+    this.changeDetector.detectChanges();
+  }
+  ngOnDestroy() {
+    if (this.externalContainer) {
+      this.externalContainer.removeEventListener(
+        'scroll',
+        this.handleScroll.bind(this)
+      );
+    }
   }
   // Función para eliminar un acorde
   eliminarAcorde(n_linea: number, squareIndex: number) {
@@ -433,7 +462,6 @@ export class TextBoxesComponent {
   async enviarCancion() {
     const result = await this.openDialog();
     console.log(this.cancion);
-    // Espera la respuesta del diálogo
     if (result) {
       this.cancionService.enviarCancion(this.cancion!);
       //this.router.navigate(['/canciones']);

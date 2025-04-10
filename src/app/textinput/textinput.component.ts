@@ -22,6 +22,8 @@ import { generos } from '../generos';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 import { CancionService } from '../cancion.service';
+import { MobileService } from '../mobile.service';
+import { MobileboxesComponent } from '../mobileboxes/mobileboxes.component';
 @Component({
   selector: 'app-textinput',
   imports: [
@@ -40,6 +42,7 @@ import { CancionService } from '../cancion.service';
     FormsModule,
     MatAutocompleteModule,
     MatIconModule,
+    MobileboxesComponent,
   ],
   templateUrl: './textinput.component.html',
   styleUrl: './textinput.component.css',
@@ -90,7 +93,13 @@ export class TextinputComponent {
   revisable!: any;
   esRevision: boolean = false;
   esEdicion: boolean = false;
-  constructor(route: ActivatedRoute, cancionService: CancionService) {
+  esMovil: boolean = false;
+
+  constructor(
+    route: ActivatedRoute,
+    cancionService: CancionService,
+    private mobileService: MobileService
+  ) {
     let id = route.snapshot.params['id'];
     this.esEdicion = route.snapshot.params['edicion'] == 'true';
 
@@ -131,7 +140,12 @@ export class TextinputComponent {
     this.cancion.var = 'no';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.mobileService.isMobile$.subscribe((isMobile) => {
+      this.esMovil = isMobile;
+      console.log(this.esMovil);
+    });
+  }
 
   filtrarArtistas(event: any) {
     const filtro = event.target.value.toLowerCase();

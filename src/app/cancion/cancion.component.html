@@ -11,14 +11,6 @@
           >
             {{ esFavorito ? "favorite" : "favorite_border" }}
           </mat-icon>
-          <mat-icon
-            class="save-icon"
-            (click)="toggleGuardado()"
-            [ngClass]="{ guardado: estaGuardado }"
-            matTooltip="Guardar canción"
-          >
-            {{ estaGuardado ? "bookmark" : "bookmark_border" }}
-          </mat-icon>
           <h3 class="artist">{{ this.cancion.artista || "Anónimo" }}</h3>
           <p *ngIf="this.cancion.comentario != 'no'" class="description">
             {{ this.cancion.comentario }}
