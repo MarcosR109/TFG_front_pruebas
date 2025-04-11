@@ -8,13 +8,18 @@
       <div class="square-container" [style.width]="maxWidth">
         <mat-card
           class="square"
-          *ngFor="let acorde of linea.acordes; let squareIndex = index"
+          *ngFor="
+            let acorde of linea.acordes;
+            let squareIndex = index;
+            trackBy: trackByAcorde
+          "
+          (touchend)="pegarAcorde()"
         >
           <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
           <button
             *ngIf="acorde.acorde && !block"
             class="delete-button"
-            (click)="eliminarAcorde(linea.n_linea, squareIndex)"
+            (click)="eliminarAcorde($event, linea.n_linea, squareIndex)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +34,11 @@
             </svg>
           </button>
           <!-- Contenido del acorde -->
-          <div class="square-content">
+          <div
+            class="square-content"
+            [attr.data-linea]="linea.n_linea"
+            [attr.data-index]="squareIndex"
+          >
             <app-acordeshow
               *ngIf="acorde.acorde != 'aux'"
               [chord]="acorde.acorde || ''"
@@ -93,62 +102,122 @@
   </div>
 </div>
 <!-- Panel flotante inferior para herramientas/acordes -->
-
-<div class="mobile-panel" [class.open]="panelAbierto">
+<div class="mobile-tools-panel" [class.open]="panelAbierto">
   <div class="panel-header" (click)="togglePanel()">
     <mat-icon>{{ panelAbierto ? "expand_more" : "expand_less" }}</mat-icon>
+    <span>Herramientas</span>
+    <div class="header-actions">
+      <button
+        class="tool-btn"
+        (click)="$event.stopPropagation(); toggleNotation()"
+      >
+        {{ notation === "latin" ? "SP" : "LT" }}
+      </button>
+      <button
+        class="tool-btn"
+        (click)="$event.stopPropagation(); togglePreferirSostenidos()"
+      >
+        {{ preferirSostenidos ? "♯" : "♭" }}
+      </button>
+    </div>
   </div>
 
   <div class="panel-content" *ngIf="panelAbierto">
     <!-- Acordes por tonalidad -->
-    <div class="tool-title">Acordes</div>
-    <div
-      class="acordes-container"
-      [@expandir]="tonalidadExpandida ? 'expandido' : 'colapsado'"
-    >
-      <div
-        *ngFor="
-          let acorde of getAcordesDeTonalidad(tonalidadExpandida);
-          trackBy: trackByAcorde
-        "
-        class="acorde-box"
-        [dndDraggable]="acorde"
-      >
-        {{ acorde.acorde }}
+    <div class="acordes-section">
+      <h3 class="section-title">Acordes por tonalidad</h3>
+      <div class="tonalidades-scroll">
+        <div class="scroll-content">
+          <button
+            *ngFor="let tonalidad of tonalidades"
+            (click)="toggleTonalidad(tonalidad)"
+            class="tonalidad-box"
+            [class.seleccionada]="tonalidadExpandida === tonalidad"
+          >
+            {{ tonalidad }}
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="tool-title">Tonalidades</div>
-    <div class="tonalidades-container">
-      <div
-        *ngFor="let tonalidad of tonalidades"
-        class="tonalidad-box"
-        [class.seleccionada]="tonalidadExpandida === tonalidad"
-        (click)="seleccionarTonalidad(tonalidad)"
-      >
-        {{ tonalidad }}
+
+      <div class="acordes-container" *ngIf="tonalidadExpandida">
+        <div
+          *ngFor="let acorde of getAcordesDeTonalidad(tonalidadExpandida)"
+          class="acorde-box"
+          (touchstart)="onTouch($event, acorde)"
+        >
+          {{ acorde.acorde }}
+        </div>
       </div>
     </div>
 
     <!-- Variaciones -->
-    <div *ngIf="!block">
-      <div class="tool-title">Variaciones</div>
+    <div class="variaciones-section">
+      <h3 class="section-title">Variaciones</h3>
       <div class="variaciones-slider">
         <button
           *ngFor="let variacion of variaciones"
           class="variacion-btn"
-          [dndDraggable]="variacion"
+          (touchstart)="onTouchVariacion($event, variacion)"
         >
           {{ variacion }}
         </button>
       </div>
     </div>
-
-    <div class="tool-title">Herramientas</div>
+    <!-- Sección de velocidad y scroll automático -->
+    <!-- Panel de recomendaciones -->
+    <div class="recomendaciones-section">
+      <h3 class="section-title">Recomendados</h3>
+      <div class="recomendaciones-container">
+        <div
+          *ngFor="let acorde of acordesRecomendados"
+          class="acorde-recomendado"
+          (touchstart)="$event.stopPropagation(); onTouch($event, acorde)"
+        >
+          <app-acordeshow
+            [chord]="acorde.acorde || ''"
+            [variacion]="acorde.variacion || ''"
+            [semitones]="this.semitones"
+          ></app-acordeshow>
+        </div>
+      </div>
+    </div>
     <div class="tools-row">
-      <button mat-icon-button (click)="modSemitono(-1)">-1</button>
-      <button mat-icon-button (click)="modSemitono(1)">+1</button>
-      <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
-      <button mat-icon-button (click)="togglePreferirSostenidos()">♯/♭</button>
+      <button class="control-btn" (click)="substractVelocidad()">
+        <mat-icon>remove</mat-icon>
+      </button>
+      <button
+        class="control-btn play-btn"
+        *ngIf="!this.scrollId"
+        (click)="startAutoScroll()"
+      >
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button
+        class="control-btn stop-btn"
+        *ngIf="this.scrollId"
+        (click)="resetAutoScroll()"
+      >
+        <mat-icon>stop</mat-icon>
+      </button>
+      <button class="control-btn" (click)="addVelocidad()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <!-- Sección de transposición -->
+    <div class="tools-row">
+      <button class="transpose-btn" (click)="modSemitono(-1)">
+        <span>-1</span>
+      </button>
+      <button
+        class="transpose-btn reset-btn"
+        (click)="modSemitono(-this.semitones)"
+      >
+        <mat-icon>undo</mat-icon>
+      </button>
+      <button class="transpose-btn" (click)="modSemitono(+1)">
+        <span>+1</span>
+      </button>
     </div>
   </div>
 </div>

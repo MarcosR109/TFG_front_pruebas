@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   Renderer2,
   NgZone,
+  EventEmitter,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -38,7 +39,7 @@ import { AcordeTransformPipe } from '../acorde-transform.pipe';
 import { AcordeTransformSettingsService } from '../acorde-transform-settings.service';
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
-import { find } from 'rxjs';
+import { find, fromEvent } from 'rxjs';
 @Component({
   selector: 'app-mobileboxes',
   imports: [
@@ -87,24 +88,187 @@ export class MobileboxesComponent {
   // Variables de estado
   mostrarRecomendaciones: boolean = true;
   recomendacion: any[] = [];
-  acordesRecomendados: any[] = [];
+  acordesRecomendados: any[3] = [];
   preferirSostenidos: boolean = true;
   notacionLatina: boolean = false;
-  agregarLineaDebajo(index: number) {}
-  eliminarLinea(index: number) {}
-  eliminarAcorde(n_linea: number, squareIndex: number) {
-    const linea = this.lines?.find((line) => line.n_linea === n_linea);
-    if (linea) {
-      const acorde = linea.acordes[squareIndex];
-      console.log(acorde);
-      acorde.acorde = ''; // Limpiamos el acorde
-      acorde.variacion = ''; // Limpiamos la variación
+  acordeTouch: any;
+  variacionTouch: any;
+  emisor: EventEmitter<any> = new EventEmitter<any>();
+  pegadoFlag: boolean = false; // Bandera para indicar si se ha pegado un acorde
+  constructor(
+    private renderer: Renderer2,
+    private settingsService: AcordeTransformSettingsService,
+    private cd: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private cancionService: CancionService,
+    private dialog: MatDialog,
+    private router: Router,
+    private recomendaciones: RecomendacionesService
+  ) {
+    this.tonalidadExpandida = null;
+  }
+
+  anadirEventListener() {
+    const squares = document.querySelectorAll('.square');
+    squares.forEach((square) => {
+      fromEvent<TouchEvent>(square, 'touchend', {
+        passive: false,
+      } as AddEventListenerOptions).subscribe((event) => {
+        console.log('TOUCHEND', event);
+        let line = undefined;
+        let squareIndex = undefined;
+        if ((event.target as HTMLElement).children[0]?.attributes[2]) {
+          line = (event.target as HTMLElement).children[0]?.attributes[2].value;
+          console.log('N_LINEA', line);
+        }
+        if ((event.target as HTMLElement).children[0].attributes[3]) {
+          squareIndex = (event.target as HTMLElement).children[0].attributes[3]
+            .value;
+        }
+        if (!line && !squareIndex) {
+          console.log('ES UNA VARIACION');
+
+          line = (event.target as HTMLElement).children[1].attributes[2].value;
+          squareIndex = (event.target as HTMLElement).children[1].attributes[3]
+            .value;
+        }
+        console.log('SQUAREINDEX', squareIndex);
+        this.pegarAcorde(event, Number(line), Number(squareIndex));
+      });
+    });
+  }
+
+  ngAfterViewInit() {
+    this.anadirEventListener();
+  }
+
+  agregarLineaDebajo(index: number): void {
+    if (this.botonBloqueado) return;
+    this.botonBloqueado = true;
+    setTimeout(() => (this.botonBloqueado = false), 500); // Desbloquea después de 500ms
+    let acordesV = [
+      {
+        posicion_en_compas: 0,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 1,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 2,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 3,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+    ];
+    let acordesT = [
+      {
+        posicion_en_compas: 0,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 1,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+      {
+        posicion_en_compas: 2,
+        acorde: '',
+        variacion: '',
+        grado: 0,
+        effect: 'copy',
+        id: 169,
+      },
+    ];
+    if (this.bin) {
+      const nuevaLinea = {
+        n_linea: index + 1,
+        texto: '',
+        acordes: acordesV,
+      };
+      this.lines?.splice(index + 1, 0, nuevaLinea);
+      this.lines?.forEach((element, index) => {
+        element.n_linea = index; // Actualiza el número de línea con el índice
+      });
+    } else {
+      const nuevaLinea = {
+        n_linea: index + 1,
+        texto: '',
+        acordes: acordesT,
+      };
+      this.lines?.splice(index + 1, 0, nuevaLinea);
+      this.lines?.forEach((element, index) => {
+        element.n_linea = index; // Actualiza el número de línea con el índice
+      });
     }
   }
+
+  eliminarLinea(index: number) {
+    if (this.botonBorrarBloqueado) return; // Evita doble interacción
+    this.botonBorrarBloqueado = true;
+
+    setTimeout(() => (this.botonBorrarBloqueado = false), 100);
+
+    this.lines?.splice(index, 1);
+    this.lines?.forEach((linea, idx) => {
+      linea.n_linea = idx;
+    });
+
+    console.log(this.lines);
+  }
+  eliminarAcorde($event: any, n_linea: number, squareIndex: number) {
+    $event.preventDefault();
+    setTimeout(() => {
+      console.log('Eliminar acorde en línea:', n_linea, 'índice:', squareIndex);
+      // Evita el comportamiento por defecto del evento touch
+      const linea = this.lines?.find((line) => line.n_linea === n_linea);
+      if (linea) {
+        const acorde = linea.acordes[squareIndex];
+        console.log(acorde);
+        acorde.acorde = ''; // Limpiamos el acorde
+        acorde.variacion = ''; // Limpiamos la variación
+      }
+    }, 50);
+    this.anadirEventListener();
+    this.cd.detectChanges(); // Forzar la detección de cambios
+  }
+
   togglePanel() {
     this.panelAbierto = !this.panelAbierto;
   }
-
+  toggleTonalidad(tonalidad: string) {
+    if (this.tonalidadExpandida === tonalidad) {
+      this.tonalidadExpandida = null;
+    } else {
+      this.tonalidadExpandida = tonalidad;
+    }
+  }
   seleccionarTonalidad(tonalidad: string) {
     this.tonalidadExpandida = tonalidad;
   }
@@ -124,9 +288,9 @@ export class MobileboxesComponent {
     );
   }
 
-  insertarAcorde(acorde: { acorde: string }) {
-    console.log('Insertar acorde:', acorde);
-    // Lógica para insertar el acorde en el cuadrado activo
+  insertarAcorde(acorde: any) {
+    this.acordeTouch = acorde;
+    console.log(this.acordeTouch);
   }
 
   insertarVariacion(variacion: string) {
@@ -139,18 +303,147 @@ export class MobileboxesComponent {
     // Lógica para transponer todos los acordes
   }
 
-  toggleNotation() {
-    this.notacionLatina = !this.notacionLatina;
-    console.log(
-      'Cambiar a notación:',
-      this.notacionLatina ? 'latina' : 'americana'
-    );
-    // Actualizar acordes si es necesario
+  toggleNotation(): void {
+    console.log('NOTACIÓN EN TEXTBOXES', this.notation);
+    if (this.notation === 'latin') {
+      this.notation = 'american';
+    } else {
+      this.notation = 'latin';
+    }
+    this.settingsService.setNotation(this.notation);
   }
 
   togglePreferirSostenidos() {
     this.preferirSostenidos = !this.preferirSostenidos;
     console.log('Mostrar como:', this.preferirSostenidos ? '♯' : '♭');
     // Re-renderizar acordes si aplica
+  }
+
+  autoScrollContainer() {
+    const container = this.renderer.selectRootElement('.scrollable', true);
+    if (container) {
+      container.scrollBy({
+        top: this.velocidad,
+        behavior: 'smooth',
+      });
+    }
+  }
+
+  startAutoScroll() {
+    console.log('Auto scroll iniciado');
+    console.log(this.velocidad);
+
+    if (this.scrollId) {
+      clearInterval(this.scrollId);
+    }
+    this.scrollId = setInterval(
+      () => this.autoScrollContainer(),
+      this.intervaloBase / this.velocidad
+    );
+  }
+
+  resetAutoScroll() {
+    this.velocidad = 1;
+    clearInterval(this.scrollId);
+    this.scrollId = null;
+  }
+
+  addVelocidad() {
+    this.velocidad = Math.min(this.velocidad + 0.5, 10);
+    this.startAutoScroll();
+  }
+
+  substractVelocidad() {
+    if (this.scrollId) {
+      this.velocidad = Math.max(this.velocidad - 0.5, 0.5);
+      this.startAutoScroll();
+    }
+    if (this.velocidad == 0.5) {
+      this.resetAutoScroll();
+    }
+  }
+  onTouch($event: any, acorde: any) {
+    console.log('Acorde tocado:', acorde);
+    if (this.variacionTouch) {
+      this.variacionTouch = undefined;
+    }
+    $event.preventDefault(); // Evita el comportamiento por defecto del evento touch
+    this.anadirEventListener();
+    this.acordeTouch = acorde;
+  }
+  onTouchVariacion($event: any, variacion: any) {
+    if (this.acordeTouch) {
+      this.acordeTouch = undefined;
+    }
+    console.log('Variación tocada:', variacion);
+    $event.preventDefault(); // Evita el comportamiento por defecto del evento touch
+    this.anadirEventListener();
+    this.variacionTouch = variacion;
+  }
+  pegarAcorde(event?: any, linea?: number, squareIndex?: number) {
+    if (this.acordeTouch) {
+      this.acordesRecomendados = [];
+      if (linea === undefined || squareIndex === undefined) {
+        console.error('Error: linea o squareIndex no definidos en acorde');
+      }
+      this.lines?.forEach((line) => {
+        if (line.n_linea === linea) {
+          const acorde = line.acordes[squareIndex!];
+          acorde.acorde = this.acordeTouch.acorde; // Asigna el acorde al cuadrado
+          acorde.variacion = this.acordeTouch.variacion; // Asigna la variación al cuadrado
+          acorde.effect = 'copy';
+          acorde.grado = this.acordeTouch.grado; // Efecto de copia
+          console.log(acorde);
+          this.recomendaciones.anadirAcorde(
+            acorde.id!,
+            acorde.acorde!,
+            acorde.variacion!,
+            squareIndex!,
+            acorde.grado!,
+            linea!
+          );
+          this.pegadoFlag = true; // Marca que se ha pegado un acorde
+        }
+      });
+    }
+    if (this.variacionTouch) {
+      console.log(this.variacionTouch);
+      if (linea === undefined || squareIndex === undefined) {
+        console.error('Error: linea o squareIndex no definidos en variacion');
+      }
+      this.lines?.forEach((line) => {
+        if (line.n_linea === linea) {
+          const acorde = line.acordes[squareIndex!];
+          console.log(acorde);
+          if (acorde.acorde) {
+            acorde.variacion = this.variacionTouch; // Asigna la variación al cuadrado
+          }
+        }
+      });
+    }
+  }
+
+  findAcordeRecomendado(grado: number) {
+    if (this.tonalidadExpandida) {
+      console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
+      const acordeEncontrado = this.getAcordesDeTonalidad(
+        this.tonalidadExpandida
+      ).find((acorde) =>
+        acorde.grado == grado ? this.acordesRecomendados.push(acorde) : null
+      );
+    }
+  }
+
+  actualizarRecomendaciones() {
+    console.log('ACTUALIZAR RECO', this.acordesRecomendados);
+    console.log('THIS RECOMENDACION', this.recomendacion);
+
+    this.recomendaciones.getRecomendaciones().subscribe((res) => {
+      this.recomendacion = res.recomendaciones;
+      console.log('RECOMENDACIONES', this.recomendacion);
+      this.recomendacion.forEach((recomendacion) => {
+        this.findAcordeRecomendado(recomendacion.siguiente);
+      });
+    });
   }
 }
