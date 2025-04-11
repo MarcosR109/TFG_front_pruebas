@@ -420,6 +420,7 @@ export class TextBoxesComponent {
     }
     console.log(linea);
   }
+
   findAcordeRecomendado(grado: number) {
     if (this.tonalidadExpandida) {
       console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
