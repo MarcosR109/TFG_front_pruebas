@@ -456,3 +456,17 @@ aside {
   margin-top: 16px;
   padding: 0 16px; /* Añadido para evitar que el botón toque los bordes */
 }
+.probable {
+  background-color: #e3f2fd; /* azul claro */
+  border-left: 4px solid #cce0ff;
+}
+
+.poco-probable {
+  background-color: #fbe9e7; /* rojo claro suave */
+  border-left: 4px solid #ffd5c894; /* rojo más fuerte, sutil */
+}
+
+.improbable {
+  background-color: #fce4ec; /* rosa claro */
+  border-left: 4px solid #f8bbd0;
+}

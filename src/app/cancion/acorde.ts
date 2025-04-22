@@ -5,4 +5,5 @@ export interface Acorde {
   posicion_en_compas?: number;
   grado?: number;
   effect?: string;
+  probabilidad?: number;
 }

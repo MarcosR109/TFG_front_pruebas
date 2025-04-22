@@ -421,14 +421,17 @@ export class TextBoxesComponent {
     console.log(linea);
   }
 
-  findAcordeRecomendado(grado: number) {
+  findAcordeRecomendado(grado: number, probabilidad: number) {
     if (this.tonalidadExpandida) {
       console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
       const acordeEncontrado = this.getAcordesDeTonalidad(
         this.tonalidadExpandida
-      ).find((acorde) =>
-        acorde.grado == grado ? this.acordesRecomendados.push(acorde) : null
-      );
+      ).find((acorde) => {
+        if (acorde.grado == grado) {
+          acorde.probabilidad = probabilidad;
+          this.acordesRecomendados.push(acorde);
+        }
+      });
     }
   }
 
@@ -437,7 +440,10 @@ export class TextBoxesComponent {
       this.recomendacion = res.recomendaciones;
       console.log('RECOMENDACIONES', this.recomendacion);
       this.recomendacion.forEach((recomendacion) => {
-        this.findAcordeRecomendado(recomendacion.siguiente);
+        this.findAcordeRecomendado(
+          recomendacion.siguiente,
+          recomendacion.probabilidad
+        );
       });
     });
   }

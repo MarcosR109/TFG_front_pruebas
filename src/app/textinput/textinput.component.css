@@ -54,5 +54,6 @@
 
   .form-container {
     padding: 16px;
+    max-height: fit-content;
   }
 }

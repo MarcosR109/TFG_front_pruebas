@@ -172,6 +172,7 @@
           *ngFor="let acorde of acordesRecomendados"
           class="acorde-recomendado"
           (touchstart)="$event.stopPropagation(); onTouch($event, acorde)"
+          [ngClass]="acorde.probabilidad >= 0.5 ? 'probable' : 'poco-probable'"
         >
           <app-acordeshow
             [chord]="acorde.acorde || ''"

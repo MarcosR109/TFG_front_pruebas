@@ -162,7 +162,6 @@
   padding: 0 16px; /* Añadido para evitar que el botón toque los bordes */
 }
 /* Estilos generales del panel */
-/* Estilos generales del panel */
 .mobile-tools-panel {
   position: fixed;
   bottom: 0;
@@ -302,7 +301,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  height: 50px;
+  height: 46px;
 }
 
 /* Tonalidades y acordes */
@@ -325,6 +324,8 @@
   white-space: nowrap;
   border: none;
   outline: none;
+  height: 60px;
+  width: 80px;
 }
 
 .tonalidad-box.seleccionada {
@@ -381,7 +382,7 @@
   white-space: nowrap;
   font-size: 14px;
   min-width: 50px;
-  height: 35px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -408,4 +409,19 @@
   border: none;
   padding: 4px;
   z-index: 2;
+}
+
+.probable {
+  background-color: #e3f2fd; /* azul claro */
+  border-left: 4px solid #cce0ff;
+}
+
+.poco-probable {
+  background-color: #fbe9e7; /* rojo claro suave */
+  border-left: 4px solid #ffd5c894; /* rojo más fuerte, sutil */
+}
+
+.improbable {
+  background-color: #fce4ec; /* rosa claro */
+  border-left: 4px solid #f8bbd0;
 }

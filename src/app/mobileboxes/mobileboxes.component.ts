@@ -39,7 +39,7 @@ import { AcordeTransformPipe } from '../acorde-transform.pipe';
 import { AcordeTransformSettingsService } from '../acorde-transform-settings.service';
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
-import { find, fromEvent } from 'rxjs';
+import { finalize, find, fromEvent, take } from 'rxjs';
 @Component({
   selector: 'app-mobileboxes',
   imports: [
@@ -95,6 +95,7 @@ export class MobileboxesComponent {
   variacionTouch: any;
   emisor: EventEmitter<any> = new EventEmitter<any>();
   pegadoFlag: boolean = false; // Bandera para indicar si se ha pegado un acorde
+  private isFetching = false;
   constructor(
     private renderer: Renderer2,
     private settingsService: AcordeTransformSettingsService,
@@ -371,6 +372,7 @@ export class MobileboxesComponent {
     this.anadirEventListener();
     this.acordeTouch = acorde;
   }
+
   onTouchVariacion($event: any, variacion: any) {
     if (this.acordeTouch) {
       this.acordeTouch = undefined;
@@ -380,7 +382,9 @@ export class MobileboxesComponent {
     this.anadirEventListener();
     this.variacionTouch = variacion;
   }
+
   pegarAcorde(event?: any, linea?: number, squareIndex?: number) {
+    this.pegadoFlag = false;
     if (this.acordeTouch) {
       this.acordesRecomendados = [];
       if (linea === undefined || squareIndex === undefined) {
@@ -402,7 +406,7 @@ export class MobileboxesComponent {
             acorde.grado!,
             linea!
           );
-          this.pegadoFlag = true; // Marca que se ha pegado un acorde
+          this.pegadoFlag = true;
         }
       });
     }
@@ -421,29 +425,56 @@ export class MobileboxesComponent {
         }
       });
     }
+    if (this.pegadoFlag) {
+      console.log('PEGADO', this.pegadoFlag);
+
+      this.actualizarRecomendaciones();
+      this.pegadoFlag = false; // Reinicia la bandera después de pegar
+    }
   }
 
-  findAcordeRecomendado(grado: number) {
+  findAcordeRecomendado(grado: number, probabilidad: number) {
     if (this.tonalidadExpandida) {
-      console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
       const acordeEncontrado = this.getAcordesDeTonalidad(
         this.tonalidadExpandida
-      ).find((acorde) =>
-        acorde.grado == grado ? this.acordesRecomendados.push(acorde) : null
-      );
+      ).find((acorde) => {
+        if (acorde.grado == grado) {
+          acorde.probabilidad = probabilidad;
+          this.acordesRecomendados.push(acorde);
+        }
+      });
     }
   }
 
   actualizarRecomendaciones() {
-    console.log('ACTUALIZAR RECO', this.acordesRecomendados);
-    console.log('THIS RECOMENDACION', this.recomendacion);
+    if (this.isFetching || !this.pegadoFlag) {
+      return;
+    }
+    this.isFetching = true;
+    this.pegadoFlag = false;
+    this.recomendaciones
+      .getRecomendaciones()
+      .pipe(
+        take(1),
+        finalize(() => (this.isFetching = false))
+      )
+      .subscribe({
+        next: (res) => {
+          this.recomendacion = res.recomendaciones;
+          console.log('RECOMENDACIONES', this.recomendacion);
 
-    this.recomendaciones.getRecomendaciones().subscribe((res) => {
-      this.recomendacion = res.recomendaciones;
-      console.log('RECOMENDACIONES', this.recomendacion);
-      this.recomendacion.forEach((recomendacion) => {
-        this.findAcordeRecomendado(recomendacion.siguiente);
+          if (this.recomendacion.length > 0) {
+            this.recomendacion.forEach((recomendacion) => {
+              console.log('RECOMENDACION', recomendacion);
+              const probabilidad = recomendacion.probabilidad;
+              this.findAcordeRecomendado(recomendacion.siguiente, probabilidad);
+            });
+          }
+        },
+        error: (err) => {
+          console.error('Error al obtener recomendaciones', err);
+          this.isFetching = false;
+        },
       });
-    });
   }
 }
