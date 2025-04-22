@@ -470,3 +470,7 @@ aside {
   background-color: #fce4ec; /* rosa claro */
   border-left: 4px solid #f8bbd0;
 }
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #67bfff;
+}

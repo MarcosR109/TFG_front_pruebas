@@ -39,6 +39,7 @@ import { AcordeTransformSettingsService } from '../acorde-transform-settings.ser
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
 import { find } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -57,6 +58,7 @@ import { find } from 'rxjs';
     ConfirmComponent,
     AcordeshowComponent,
     AcordeTransformPipe,
+    MatProgressSpinnerModule,
   ],
   animations: [
     trigger('expandir', [
@@ -110,6 +112,7 @@ export class TextBoxesComponent {
   recomendacion: any[] = [];
   acordesRecomendados: any[] = [];
   private externalContainer!: HTMLElement;
+  loading: boolean = false; // Estado de carga
   // Método para alternar visibilidad
   toggleRecomendaciones() {
     this.mostrarRecomendaciones = !this.mostrarRecomendaciones;
@@ -436,8 +439,10 @@ export class TextBoxesComponent {
   }
 
   actualizarRecomendaciones() {
+    this.loading = true;
     this.recomendaciones.getRecomendaciones().subscribe((res) => {
       this.recomendacion = res.recomendaciones;
+      this.loading = false;
       console.log('RECOMENDACIONES', this.recomendacion);
       this.recomendacion.forEach((recomendacion) => {
         this.findAcordeRecomendado(

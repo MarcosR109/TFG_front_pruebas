@@ -26,7 +26,7 @@
     *ngIf="mostrarRecomendaciones"
     class="recomendaciones-content"
   >
-    <div class="recomendaciones-container">
+    <div class="recomendaciones-container" *ngIf="!loading">
       <div
         *ngFor="let acorde of acordesRecomendados"
         class="acorde-recomendado square-box"
@@ -39,6 +39,13 @@
           [semitones]="this.semitones"
         ></app-acordeshow>
       </div>
+    </div>
+    <div class="recomendaciones-container">
+      <mat-progress-spinner
+        mode="indeterminate"
+        diameter="40"
+        *ngIf="loading"
+      ></mat-progress-spinner>
     </div>
   </mat-card-content>
 </mat-card>

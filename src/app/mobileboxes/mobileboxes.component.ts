@@ -40,6 +40,7 @@ import { AcordeTransformSettingsService } from '../acorde-transform-settings.ser
 import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
 import { finalize, find, fromEvent, take } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-mobileboxes',
   imports: [
@@ -55,6 +56,7 @@ import { finalize, find, fromEvent, take } from 'rxjs';
     ConfirmComponent,
     AcordeshowComponent,
     AcordeTransformPipe,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './mobileboxes.component.html',
   styleUrl: './mobileboxes.component.css',
@@ -96,6 +98,7 @@ export class MobileboxesComponent {
   emisor: EventEmitter<any> = new EventEmitter<any>();
   pegadoFlag: boolean = false; // Bandera para indicar si se ha pegado un acorde
   private isFetching = false;
+  loading: boolean = false;
   constructor(
     private renderer: Renderer2,
     private settingsService: AcordeTransformSettingsService,
@@ -452,6 +455,7 @@ export class MobileboxesComponent {
     }
     this.isFetching = true;
     this.pegadoFlag = false;
+    this.loading = true;
     this.recomendaciones
       .getRecomendaciones()
       .pipe(
@@ -462,7 +466,7 @@ export class MobileboxesComponent {
         next: (res) => {
           this.recomendacion = res.recomendaciones;
           console.log('RECOMENDACIONES', this.recomendacion);
-
+          this.loading = false;
           if (this.recomendacion.length > 0) {
             this.recomendacion.forEach((recomendacion) => {
               console.log('RECOMENDACION', recomendacion);

@@ -332,7 +332,11 @@
   background: #b3b3b3;
   font-weight: bold;
 }
-
+.seleccionado {
+  border: 2px solid #7e57c2;
+  background-color: #ede7f6;
+  transition: all 0.2s ease-in-out;
+}
 .acordes-container {
   display: flex;
   flex-wrap: wrap;
@@ -424,4 +428,8 @@
 .improbable {
   background-color: #fce4ec; /* rosa claro */
   border-left: 4px solid #f8bbd0;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #67bfff;
 }

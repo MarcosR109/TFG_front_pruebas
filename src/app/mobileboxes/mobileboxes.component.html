@@ -167,7 +167,7 @@
     <!-- Panel de recomendaciones -->
     <div class="recomendaciones-section">
       <h3 class="section-title">Recomendados</h3>
-      <div class="recomendaciones-container">
+      <div class="recomendaciones-container" *ngIf="!loading">
         <div
           *ngFor="let acorde of acordesRecomendados"
           class="acorde-recomendado"
@@ -181,6 +181,11 @@
           ></app-acordeshow>
         </div>
       </div>
+      <mat-progress-spinner
+        mode="indeterminate"
+        diameter="40"
+        *ngIf="loading"
+      ></mat-progress-spinner>
     </div>
     <div class="tools-row">
       <button class="control-btn" (click)="substractVelocidad()">
