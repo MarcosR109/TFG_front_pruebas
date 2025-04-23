@@ -13,7 +13,12 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-canciones-mine',
-  imports: [CommonModule, MatIconModule, MatTableModule, RouterLink,    MatTableModule,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatTableModule,
+    RouterLink,
+    MatTableModule,
     RouterLink,
     MatIconModule,
     CommonModule,
@@ -23,7 +28,8 @@ import { MatTableDataSource } from '@angular/material/table';
     MatIconModule,
     MatIconButton,
     MatSortModule,
-    MatSort,],
+    MatSort,
+  ],
   templateUrl: './canciones-mine.component.html',
   styleUrl: './canciones-mine.component.css',
 })
@@ -40,14 +46,14 @@ export class CancionesMineComponent {
       const cancionesFav = res.cancionesfav.map((cancion: any) => ({
         ...cancion,
         es_favorita: true,
-        es_propia: true
+        es_propia: true,
       }));
 
       // Procesar canciones propias
       const cancionesPro = res.cancionespro.map((cancion: any) => ({
         ...cancion,
         es_favorita: false,
-        es_propia: true
+        es_propia: true,
       }));
 
       // Combinar y filtrar solo las públicas/no privadas
@@ -74,7 +80,7 @@ export class CancionesMineComponent {
       return;
     }
 
-    this.debug = data.sort((a:any, b:any) => {
+    this.debug = data.sort((a: any, b: any) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'titulo':
@@ -90,6 +96,15 @@ export class CancionesMineComponent {
       }
     });
     this.cancionesFiltradas = this.debug;
+  }
+  getStarType(star: number, rating: number): string {
+    if (star <= rating) {
+      return 'star'; // Estrella llena
+    } else if (star - 0.5 <= rating) {
+      return 'star_half'; // Media estrella
+    } else {
+      return 'star_border'; // Estrella vacía
+    }
   }
 }
 

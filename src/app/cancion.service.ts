@@ -37,9 +37,13 @@ export class CancionService {
         !filtros.titulo ||
         cancion.titulo.toLowerCase().includes(filtros.titulo.toLowerCase());
       const coincideArtista =
-        !filtros.artista || cancion.artista === filtros.artista;
+        !filtros.artista ||
+        cancion.artista === filtros.artista ||
+        cancion.artista.nombre === filtros.artista;
       const coincideGenero =
-        !filtros.genero || cancion.genero === filtros.genero;
+        !filtros.genero ||
+        cancion.genero === filtros.genero ||
+        cancion.genero.nombre === filtros.genero;
       const coincideRating =
         !filtros.calificacion || cancion.rating >= filtros.calificacion;
       console.log('Genero', coincideGenero);
@@ -117,7 +121,9 @@ export class CancionService {
     return this.http.post(this.URL + 'users/' + id + '/favoritos', {});
   }
   checkFavorito(id: number) {
-    return this.http.get(this.URL + 'users/' + id + '/favoritos');
+    return this.http.get<{ esFavorito: boolean }>(
+      this.URL + 'users/' + id + '/favoritos'
+    );
   }
   addGuardado(id: number) {
     return this.http.put(this.URL + 'users/' + id + '/guardados', {});

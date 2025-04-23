@@ -19,12 +19,14 @@
         matInput
         placeholder="Escribe el título..."
         [(ngModel)]="cancion.titulo"
+        required="true"
       />
       <input
         *ngIf="revisable"
         matInput
         placeholder="Escribe el título..."
         [(ngModel)]="revisable.titulo"
+        required="true"
       />
       <mat-icon matSuffix>title</mat-icon>
     </mat-form-field>
@@ -33,6 +35,7 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Letra</mat-label>
       <textarea
+        required="true"
         #textArea
         matInput
         placeholder="Escribe la letra..."
@@ -47,6 +50,7 @@
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Artista</mat-label>
         <input
+          required="true"
           type="text"
           matInput
           placeholder="Buscar artista..."
@@ -71,10 +75,8 @@
 
       <mat-form-field *ngIf="revisable" appearance="outline" class="form-col">
         <mat-label>Género</mat-label>
-        <mat-select
-          [(value)]="generoSeleccionado"
-          [(ngModel)]="generoSeleccionado"
-        >
+        <mat-select required="true">
+          [(value)]="generoSeleccionado" [(ngModel)]="generoSeleccionado" >
           <mat-option *ngFor="let genero of generos.generos" [value]="genero">
             {{ genero.nombre }}
           </mat-option>
@@ -84,6 +86,7 @@
       <mat-form-field *ngIf="!revisable" appearance="outline" class="form-col">
         <mat-label>Género</mat-label>
         <mat-select
+          required="true"
           [(value)]="generoSeleccionado"
           [(ngModel)]="generoSeleccionado"
         >
@@ -99,7 +102,7 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Tonalidad</mat-label>
-        <mat-select [(value)]="tonalidadSeleccionada">
+        <mat-select [(value)]="tonalidadSeleccionada" required="true">
           <mat-option *ngFor="let tono of tonalidades" [value]="tono">
             {{ tono.nombre }}
           </mat-option>
@@ -109,7 +112,7 @@
 
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Compás</mat-label>
-        <mat-select [(value)]="bin">
+        <mat-select [(value)]="bin" required="true">
           <mat-option [value]="true">Binario</mat-option>
           <mat-option [value]="false">Ternario</mat-option>
         </mat-select>
@@ -118,7 +121,7 @@
 
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Capo</mat-label>
-        <mat-select [(value)]="cancion.capo">
+        <mat-select [(value)]="cancion.capo" required="true">
           <mat-option [value]="0" selected>0 (Sin capo)</mat-option>
           <mat-option
             *ngFor="let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
@@ -132,7 +135,7 @@
 
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Privada</mat-label>
-        <mat-select [(value)]="cancion.privada">
+        <mat-select [(value)]="cancion.privada" required="true">
           <mat-option [value]="true" selected>Sí</mat-option>
           <mat-option [value]="false">No</mat-option>
         </mat-select>
@@ -151,6 +154,10 @@
       ></textarea>
       <mat-icon matSuffix>notes</mat-icon>
     </mat-form-field>
+  </div>
+  <div *ngIf="error" class="error-message">
+    <mat-icon>error</mat-icon>
+    <span>{{ error }}</span>
   </div>
 
   <div class="form-actions">

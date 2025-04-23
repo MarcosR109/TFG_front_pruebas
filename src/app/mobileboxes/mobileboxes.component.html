@@ -124,7 +124,7 @@
 
   <div class="panel-content" *ngIf="panelAbierto">
     <!-- Acordes por tonalidad -->
-    <div class="acordes-section">
+    <div class="acordes-section" *ngIf="block">
       <h3 class="section-title">Acordes por tonalidad</h3>
       <div class="tonalidades-scroll">
         <div class="scroll-content">
@@ -219,7 +219,7 @@
         class="transpose-btn reset-btn"
         (click)="modSemitono(-this.semitones)"
       >
-        <mat-icon>undo</mat-icon>
+        <mat-icon>sync</mat-icon>
       </button>
       <button class="transpose-btn" (click)="modSemitono(+1)">
         <span>+1</span>

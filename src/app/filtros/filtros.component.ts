@@ -85,7 +85,6 @@ export class FiltrosComponent {
       : [...this.generos];
   }
   sleepFiltro() {
-    // Esperar 200ms antes de aplicar el filtro, se lanza cuando alguien introduce un título
     setTimeout(() => {
       this.aplicarFiltros();
     }, 200);

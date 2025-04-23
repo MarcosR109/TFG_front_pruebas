@@ -94,7 +94,7 @@ export class TextinputComponent {
   esRevision: boolean = false;
   esEdicion: boolean = false;
   esMovil: boolean = false;
-
+  error!: any;
   constructor(
     route: ActivatedRoute,
     cancionService: CancionService,
@@ -102,9 +102,8 @@ export class TextinputComponent {
   ) {
     let id = route.snapshot.params['id'];
     this.esEdicion = route.snapshot.params['edicion'] == 'true';
-
     console.log(this.esEdicion);
-
+    this.cancion.privada = true;
     if (id) {
       cancionService.getCancion(id).subscribe((res) => {
         this.revisable = res.cancion;
@@ -186,6 +185,17 @@ export class TextinputComponent {
   }
 
   romperTexto(lines: string) {
+    /*if (
+      !this.cancion.titulo ||
+      !this.texto ||
+      this.cancion.privada == null ||
+      this.generoSeleccionado == null ||
+      this.tonalidadSeleccionada == null ||
+      this.cancion.capo == null
+    ) {
+      this.error = 'Porfavor completa todos los campos requeridos.';
+      return;
+    }*/
     this.text = lines.trim().split('\n');
     console.log(this.text);
     this.enviado = true;

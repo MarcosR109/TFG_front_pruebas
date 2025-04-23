@@ -168,6 +168,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
       background:rgb(255, 255, 255);
       border-radius: 0px;
       color: black;
+      height: 100%;
     }
     .menu {
       display: flex;
@@ -373,20 +374,31 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.subscription = interval(50000)
-      .pipe(
-        switchMap(() => this.cancionesService.actualizarBadge()), // Llama al backend cada 5s
-        catchError((err) => {
-          console.error('Error al actualizar badge:', err);
-          return []; // Devuelve un array vacío para evitar que se rompa la suscripción
-        })
-      )
-      .subscribe((res) => {
-        this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
-        console.log('Badge actualizado:', res.count);
-        this.badgeCount = res.count;
-      });
-    this.authService.$role.subscribe((role) => (this.userRole = role));
+    this.authService.$role.subscribe((role) => {
+      this.userRole = role;
+      console.log('Rol de usuario:', this.userRole);
+
+      if (this.userRole == 3) {
+        this.cancionesService.actualizarBadge().subscribe((res) => {
+          this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
+          console.log('Badge actualizado:', res.count);
+          this.badgeCount = res.count;
+        });
+        this.subscription = interval(60000)
+          .pipe(
+            switchMap(() => this.cancionesService.actualizarBadge()), // Llama al backend cada 5s
+            catchError((err) => {
+              console.error('Error al actualizar badge:', err);
+              return []; // Devuelve un array vacío para evitar que se rompa la suscripción
+            })
+          )
+          .subscribe((res) => {
+            this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
+            console.log('Badge actualizado:', res.count);
+            this.badgeCount = res.count;
+          });
+      }
+    });
     this.authService.authStatus.subscribe((status) => {
       this.isLoggedIn = status; // Actualiza el estado de login
     });

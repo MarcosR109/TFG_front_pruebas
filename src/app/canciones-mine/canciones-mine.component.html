@@ -34,16 +34,16 @@
           Título
         </th>
         <td mat-cell *matCellDef="let cancion">
-          <a
-            [routerLink]="['/canciones/show', cancion.id]"
-            class="song-link"
-          >
+          <a [routerLink]="['/canciones/show', cancion.id]" class="song-link">
             <mat-icon>music_note</mat-icon>
             {{ cancion.titulo }}
             <span *ngIf="cancion.es_favorita" class="favorite-badge">
               <mat-icon>favorite</mat-icon>
             </span>
-            <span *ngIf="cancion.es_propia && !cancion.es_favorita" class="own-badge">
+            <span
+              *ngIf="cancion.es_propia && !cancion.es_favorita"
+              class="own-badge"
+            >
               <mat-icon>person</mat-icon>
             </span>
           </a>
@@ -57,7 +57,7 @@
         </th>
         <td mat-cell *matCellDef="let cancion">
           <a
-          [routerLink]="['/canciones/search', cancion.artista.nombre]"
+            [routerLink]="['/canciones/search', cancion.artista.nombre]"
             class="artist-link"
           >
             <mat-icon>person</mat-icon>
@@ -85,8 +85,12 @@
           Rating
         </th>
         <td mat-cell *matCellDef="let cancion">
-          <mat-icon *ngFor="let star of [1,2,3,4,5]" [class.filled]="star <= cancion.rating">
-            {{ star <= cancion.rating ? 'star' : 'star_border' }}
+          <mat-icon
+            class="stars"
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            [class.filled]="star <= cancion.rating"
+          >
+            {{ getStarType(star, cancion.rating || 0) }}
           </mat-icon>
         </td>
       </ng-container>

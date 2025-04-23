@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { booleanAttribute, Component } from '@angular/core';
 import { Cancion } from './cancion';
 import { CommonModule, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -36,7 +36,7 @@ import { MatChipListbox, MatChipsModule } from '@angular/material/chips';
   styleUrl: './cancion.component.css',
 })
 export class CancionComponent {
-  cancion: Cancion = {};
+  cancion!: Cancion;
   public binary: boolean = true;
   public cargado: boolean = false;
   rating: number = 0;
@@ -55,7 +55,6 @@ export class CancionComponent {
         }
       );
     } else {
-      // Si ya es favorito, se quita
       this.cancionService.quitarFavorito(this.cancion.id!).subscribe(
         (data) => {
           console.log('Canción eliminada de favoritos', data);
@@ -126,26 +125,18 @@ export class CancionComponent {
         if (this.cancion.metrica != 'bin') {
           this.binary = false;
         }
+        this.cancionService.checkFavorito(this.cancion.id!).subscribe(
+          (data) => {
+            this.esFavorito = data.esFavorito;
+          },
+          (error) => {
+            console.error('Error al cargar favorito', error);
+          } // Si hay un error, no es favorito
+        );
       },
       (error) => {
         console.error('Error al cargar la canción', error);
         this.cargado = true;
-      }
-    );
-    this.cancionService.checkFavorito(this.cancion.id!).subscribe(
-      (data) => {
-        this.esFavorito = true;
-      },
-      (error) => {
-        console.error('Error al cargar favorito', error);
-      } // Si hay un error, no es favorito
-    );
-    this.cancionService.checkGuardado(this.cancion.id!).subscribe(
-      (data: any) => {
-        this.estaGuardado = true;
-      },
-      (error: any) => {
-        console.error('Error al cargar guardado', error);
       }
     );
   }

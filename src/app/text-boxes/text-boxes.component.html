@@ -1,4 +1,5 @@
 <mat-card
+  *ngIf="!block"
   class="recomendaciones-flotante"
   [class.recomendaciones-visible]="mostrarRecomendaciones"
 >
@@ -52,17 +53,49 @@
 
 <div *ngIf="block" class="slider-container" [class.open]="sliderOpen">
   <!-- Botón de despliegue dentro del slider -->
-  <button class="slider-toggle" (click)="toggleSlider()">
+  <button class="slider-toggle centered-chevron" (click)="toggleSlider()">
     <mat-icon *ngIf="!sliderOpen">chevron_left</mat-icon>
     <mat-icon *ngIf="sliderOpen">chevron_right</mat-icon>
   </button>
 
   <div class="slider-content">
-    <div class="button-row">
-      <button mat-icon-button (click)="toggleNotation()">SP/LT</button>
+    <div class="button-row centered">
+      <button
+        mat-icon-button
+        (click)="toggleNotation()"
+        style="margin-left: '200px'"
+      >
+        <span *ngIf="this.notation == 'latin'"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M600-280q-33 0-56.5-23.5T520-360v-40h80v40h120v-80H600q-33 0-56.5-23.5T520-520v-80q0-33 23.5-56.5T600-680h120q33 0 56.5 23.5T800-600v40h-80v-40H600v80h120q33 0 56.5 23.5T800-440v80q0 33-23.5 56.5T720-280H600ZM160-680h280v80H240v80h160v80H240v80h200v80H160v-400Z"
+            /></svg
+        ></span>
+        <span
+          *ngIf="this.notation == 'american'"
+          class="material-symbols-outlined"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M240-280q-33 0-56.5-23.5T160-360v-320h80v320h120v-320h80v320q0 33-23.5 56.5T360-280H240Zm360 0q-33 0-56.5-23.5T520-360v-40h80v40h120v-80H600q-33 0-56.5-23.5T520-520v-80q0-33 23.5-56.5T600-680h120q33 0 56.5 23.5T800-600v40h-80v-40H600v80h120q33 0 56.5 23.5T800-440v80q0 33-23.5 56.5T720-280H600Z"
+            />
+          </svg>
+        </span>
+      </button>
     </div>
-
-    <div class="button-row">
+    <div class="button-row centered">
       <button mat-icon-button (click)="togglePreferirSostenidos()">
         <mat-icon *ngIf="this.preferSostenidos">
           <svg
@@ -146,7 +179,7 @@
         <span>-1</span>
       </button>
       <button mat-icon-button (click)="modSemitono(-this.semitones)">
-        <mat-icon>undo</mat-icon>
+        <mat-icon>sync</mat-icon>
       </button>
       <button mat-icon-button (click)="modSemitono(+1)">
         <span>+1</span>
@@ -162,6 +195,9 @@
       class="input-group"
       [style.width]="maxWidth"
     >
+      <div class="copy-container">
+        dsadsadasdasdsad<mat-icon>content_copy</mat-icon>
+      </div>
       <div class="square-container" [style.width]="maxWidth">
         <mat-card
           class="square"
@@ -205,11 +241,7 @@
         class="input-field"
         [style.width]="maxWidth"
       >
-        <input
-          matInput
-          [(ngModel)]="linea.texto"
-          placeholder="Texto recibido"
-        />
+        <input matInput [(ngModel)]="linea.texto" placeholder="Letra" />
       </mat-form-field>
 
       <!-- Texto plano cuando this.block es true -->

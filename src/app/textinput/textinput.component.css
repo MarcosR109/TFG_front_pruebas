@@ -42,6 +42,12 @@
   gap: 8px;
 }
 
+.error-message {
+  background-color: #fce4ec; /* rosa claro */
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
 .result-container {
   margin-top: 32px;
 }

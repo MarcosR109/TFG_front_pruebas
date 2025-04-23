@@ -1,9 +1,21 @@
 <div class="parent">
   <div class="div1">
-    <mat-card class="song-card" width="100%" heigth="100%">
-      <div class="card-content">
-        <div class="card-text">
-          <h2 class="title">{{ this.cancion.titulo }}</h2>
+    <mat-card class="song-card">
+      <div class="card-header">
+        <div class="header-text">
+          <h2 class="title">{{ cancion.titulo }}</h2>
+          <h3 class="artist">{{ cancion.artista || "Anónimo" }}</h3>
+          <p *ngIf="cancion.comentario != 'no'" class="description">
+            {{ cancion.comentario }}
+          </p>
+          <div class="tags">
+            <mat-chip-listbox>
+              <mat-chip *ngIf="cancion.capo">Capo: {{ cancion.capo }}</mat-chip>
+              <mat-chip>{{ cancion.tonalidad }}</mat-chip>
+            </mat-chip-listbox>
+          </div>
+        </div>
+        <div class="rating-fav">
           <mat-icon
             class="favorite-icon"
             (click)="toggleFavorito()"
@@ -11,23 +23,11 @@
           >
             {{ esFavorito ? "favorite" : "favorite_border" }}
           </mat-icon>
-          <h3 class="artist">{{ this.cancion.artista || "Anónimo" }}</h3>
-          <p *ngIf="this.cancion.comentario != 'no'" class="description">
-            {{ this.cancion.comentario }}
-          </p>
-          <div class="tags">
-            <mat-chip-listbox>
-              <mat-chip *ngIf="this.cancion.capo">
-                Capo: {{ this.cancion.capo }}</mat-chip
-              >
-              <mat-chip>{{ this.cancion.tonalidad }}</mat-chip>
-            </mat-chip-listbox>
+          <div class="rating">
+            <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]">
+              {{ getStarType(star, cancion.rating || 0) }}
+            </mat-icon>
           </div>
-        </div>
-        <div class="rating">
-          <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]">
-            {{ getStarType(star, cancion.rating || 0) }}
-          </mat-icon>
         </div>
       </div>
     </mat-card>
