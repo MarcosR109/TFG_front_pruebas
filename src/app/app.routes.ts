@@ -18,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'canciones',
     component: CancionesListComponent,
-    data: { title: 'Home' },
+    data: { title: 'Búsqueda' },
   }, // Pública
   {
     path: 'canciones/mine',

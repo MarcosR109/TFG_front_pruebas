@@ -76,18 +76,12 @@ export class CancionService {
     });
   }
   editarCancion(cancion: Cancion) {
-    this.http
-      .put(this.URL + 'canciones/' + cancion.id + ' /editar', cancion)
-      .subscribe((res) => {
-        console.log(res);
-      });
+  return  this.http
+      .put(this.URL + 'canciones/' + cancion.id + ' /editar', cancion);
   }
   revisarCancion(cancion: Cancion) {
-    this.http
-      .put(this.URL + 'canciones/' + cancion.id + ' /revisar', cancion)
-      .subscribe((res) => {
-        console.log(res);
-      });
+    return this.http
+      .put(this.URL + 'canciones/' + cancion.id + ' /revisar', cancion);
   }
 
   getCanciones() {

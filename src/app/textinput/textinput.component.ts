@@ -103,7 +103,6 @@ export class TextinputComponent {
     let id = route.snapshot.params['id'];
     this.esEdicion = route.snapshot.params['edicion'] == 'true';
     console.log(this.esEdicion);
-    this.cancion.privada = true;
     if (id) {
       cancionService.getCancion(id).subscribe((res) => {
         this.revisable = res.cancion;
@@ -135,7 +134,7 @@ export class TextinputComponent {
     this.text = [];
     this.cancion.capo = 0;
     this.cancion.rating = 0;
-    this.cancion.comentario = 'no';
+    this.cancion.comentario = 'No';
     this.cancion.var = 'no';
   }
 

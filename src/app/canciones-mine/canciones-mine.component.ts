@@ -46,7 +46,7 @@ export class CancionesMineComponent {
       const cancionesFav = res.cancionesfav.map((cancion: any) => ({
         ...cancion,
         es_favorita: true,
-        es_propia: true,
+        es_propia:false,
       }));
 
       // Procesar canciones propias
@@ -55,11 +55,11 @@ export class CancionesMineComponent {
         es_favorita: false,
         es_propia: true,
       }));
-
-      // Combinar y filtrar solo las públicas/no privadas
       this.cancionesCombinadas = [...cancionesFav, ...cancionesPro];
 
       this.cancionesFiltradas = [...this.cancionesCombinadas];
+      console.log(this.cancionesCombinadas);
+      
     });
 
     this.cancionService.cancionesFiltradas$.subscribe((filtros) => {

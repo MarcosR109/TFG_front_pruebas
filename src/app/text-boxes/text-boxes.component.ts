@@ -511,12 +511,17 @@ export class TextBoxesComponent {
     console.log('EDITANDO CANCION', this.cancion);
     if (result) {
       if (this.edicion) {
-        this.cancionService.editarCancion(this.cancion!);
-        this.cancionService.actualizarBadge();
-        //this.router.navigate(['/canciones']);
+        this.cancionService.editarCancion(this.cancion!).subscribe((res:any) => {
+          console.log(res);
+          this.router.navigate(['/canciones/show', res.cancion.id]);
+        });
+          
       } else {
         this.cancionService.actualizarBadge();
-        this.cancionService.revisarCancion(this.cancion!);
+        this.cancionService.revisarCancion(this.cancion!).subscribe((res:any) => {
+          console.log(res);
+          this.router.navigate(['/canciones/show', res.cancion.id]);
+        });
       }
     }
   }
