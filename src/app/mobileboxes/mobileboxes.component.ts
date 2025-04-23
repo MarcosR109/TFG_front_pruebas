@@ -449,6 +449,7 @@ export class MobileboxesComponent {
     }
   }
 
+  copiarLinea(index: number) {}
   actualizarRecomendaciones() {
     if (this.isFetching || !this.pegadoFlag) {
       return;

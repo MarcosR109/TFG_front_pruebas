@@ -40,6 +40,7 @@ import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
 import { find } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-text-boxes',
   standalone: true,
@@ -59,6 +60,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AcordeshowComponent,
     AcordeTransformPipe,
     MatProgressSpinnerModule,
+    MatTooltipModule,
   ],
   animations: [
     trigger('expandir', [
@@ -114,6 +116,7 @@ export class TextBoxesComponent {
   private externalContainer!: HTMLElement;
   loading: boolean = false; // Estado de carga
   // Método para alternar visibilidad
+  acordesCopy!: any;
   toggleRecomendaciones() {
     this.mostrarRecomendaciones = !this.mostrarRecomendaciones;
   }
@@ -334,6 +337,20 @@ export class TextBoxesComponent {
 
     console.log(this.lines);
   }
+  copiarLinea(index: number) {
+    this.acordesCopy = this.cancion?.lineas?.[index].acordes;
+    console.log(this.acordesCopy); // Obtener la línea a copiar
+  }
+  pegarLinea(index: number) {
+    if (this.acordesCopy) {
+      if (this.cancion && this.cancion.lineas && this.cancion.lineas[index]) {
+        const nuevosAcordes = JSON.parse(JSON.stringify(this.acordesCopy)); // Copia profunda
+        console.log(nuevosAcordes);
+
+        this.cancion.lineas[index].acordes = nuevosAcordes;
+      }
+    }
+  }
   handleScroll() {
     if (!this.externalContainer) return;
     const scrollTop = this.externalContainer.scrollTop;
@@ -478,6 +495,15 @@ export class TextBoxesComponent {
       this.cancionService.enviarCancion(this.cancion!);
       //this.router.navigate(['/canciones']);
     }
+  }
+  async showInfo() {
+    const result = await this.showDialogInfo();
+  }
+  showDialogInfo(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: { title: 'Recomendaciones armónicas' },
+    });
+    return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
   }
   async editarCancion() {
     const result = await this.openDialog();

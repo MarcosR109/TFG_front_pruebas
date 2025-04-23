@@ -1,0 +1,18 @@
+.info-dialog {
+  background: linear-gradient(to bottom, #cce0ff, #6b88a6);
+  padding: 16px;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  max-width: 300px;
+
+  .icon-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 12px;
+
+    mat-icon {
+      font-size: 32px;
+    }
+  }
+}
