@@ -109,22 +109,47 @@
   color: #f44336;
 }
 
+.centered-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre spinner y texto */
+}
+
+.spinner-container p {
+  margin: 0; /* Elimina el margen por defecto del párrafo */
+  font-size: 16px;
+  color: #555;
+}
+
+/* Opcional: ajustar alineación vertical del spinner */
+.mat-spinner {
+  display: inline-block;
+  vertical-align: middle;
+}
 /* Media Queries para Responsive */
 @media (max-width: 768px) {
   .parent {
     padding: 12px;
     gap: 16px;
   }
-  
+
   .song-card {
     padding: 16px;
   }
-  
+
   .card-header {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .rating-fav {
     flex-direction: row;
     align-items: center;
@@ -133,11 +158,11 @@
     margin-left: 0;
     margin-top: 12px;
   }
-  
+
   .title {
     font-size: 1.5rem;
   }
-  
+
   .artist {
     font-size: 1.1rem;
   }
@@ -148,27 +173,27 @@
     padding: 8px;
     gap: 12px;
   }
-  
+
   .song-card {
     padding: 12px;
   }
-  
+
   .title {
     font-size: 1.3rem;
   }
-  
+
   .artist {
     font-size: 1rem;
   }
-  
+
   .description {
     font-size: 0.9rem;
   }
-  
+
   .rating {
     font-size: 0.9rem;
   }
-  
+
   .tags mat-chip {
     font-size: 0.8rem;
     padding: 4px 8px;

@@ -1,4 +1,4 @@
-<div class="parent">
+<div class="parent" *ngIf="!isLoading">
   <div class="div1">
     <mat-card class="song-card">
       <div class="card-header">
@@ -42,5 +42,12 @@
         [block]="true"
       ></app-text-boxes>
     </ng-container>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="centered-container">
+  <div class="spinner-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando canción...</p>
   </div>
 </div>

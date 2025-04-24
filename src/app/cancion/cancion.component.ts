@@ -118,7 +118,7 @@ export class CancionComponent {
         this.cancion;
         this.cargado = true;
         this.rating = this.cancion.rating || 0;
-        this.isLoading = false;
+        //this.isLoading = false;
         if (this.cancion.metrica != 'bin') {
           this.binary = false;
         }
@@ -130,6 +130,7 @@ export class CancionComponent {
             console.error('Error al cargar favorito', error);
           } // Si hay un error, no es favorito
         );
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error al cargar la canción', error);
