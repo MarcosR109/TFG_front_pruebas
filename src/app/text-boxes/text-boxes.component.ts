@@ -492,13 +492,7 @@ export class TextBoxesComponent {
     const result = await this.openDialog();
     console.log(this.cancion);
     if (result) {
-      this.cancionService.enviarCancion(this.cancion!).subscribe((res) => {
-        console.log(res);
-        this.cancionService.actualizarBadge();
-        this.cancionService.revisarCancion(this.cancion!);
-        this.cancionService.eliminarCancion(this.cancion!);
-        this.router.navigate(['/canciones']);
-      }
+      this.cancionService.enviarCancion(this.cancion!);
       //this.router.navigate(['/canciones']);
     }
   }

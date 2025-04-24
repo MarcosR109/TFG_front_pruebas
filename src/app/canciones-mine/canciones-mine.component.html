@@ -105,6 +105,10 @@
           >
             <mat-icon>search</mat-icon>
           </button>
+          <button *ngIf="cancion.es_propia"    [routerLink]="['/revisiones', cancion.id, true]" mat-icon-button>
+            <mat-icon>edit</mat-icon>
+          
+        </button>
         </td>
       </ng-container>
 
