@@ -203,10 +203,8 @@ export class RegisterComponent {
       this.registerForm.valid &&
       !this.registerForm.hasError('passwordMismatch')
     ) {
-      console.log('Formulario enviado:', this.registerForm.value);
       this.auth.register(this.registerForm.value);
     } else {
-      console.log('Formulario inválido');
       this.registerForm.markAllAsTouched();
     }
   }

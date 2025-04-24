@@ -39,7 +39,7 @@ export class RecomendacionesService {
     return;
   }
   getRecomendaciones(): Observable<any> {
-    console.log(this.recomendaciones);
+    this.recomendaciones;
     if (this.recomendaciones) {
       return this.recomendaciones;
     }
@@ -66,18 +66,12 @@ export class RecomendacionesService {
     if (this.ultimoAcorde === null) {
       this.acordeActual = nuevoAcorde;
       this.ultimoAcorde = nuevoAcorde;
-      console.log('Primer acorde registrado:', this.acordeActual);
       return this.actualizarRecomendaciones(this.acordeActual.grado, null, 3);
     }
     // Caso 2: Acorde en nueva línea (mayor número de línea)
     if (linea > this.ultimoAcorde.linea!) {
       this.ultimoAcorde = this.acordeActual;
       this.acordeActual = nuevoAcorde;
-      console.log(
-        'Nueva línea - Acorde actual actualizado:',
-        this.acordeActual
-      );
-      console.log('ULTIMO ACORDE', this.ultimoAcorde);
       return this.actualizarRecomendaciones(
         this.acordeActual.grado,
         this.ultimoAcorde?.grado,
@@ -91,10 +85,6 @@ export class RecomendacionesService {
       // El acorde actual pasa a ser el último
       this.ultimoAcorde = this.acordeActual;
       this.acordeActual = nuevoAcorde;
-      console.log('Progresión en misma línea:', {
-        ultimo: this.ultimoAcorde,
-        actual: this.acordeActual,
-      });
       if (this.ultimoAcorde)
         return this.actualizarRecomendaciones(
           this.acordeActual.grado,

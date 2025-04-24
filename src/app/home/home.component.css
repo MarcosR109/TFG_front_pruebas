@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: var(--text-color);
   margin: 0;
   line-height: 1.6;
@@ -87,7 +87,7 @@ body {
   padding: 30px 20px;
   border-radius: 10px;
   background: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
 }
 
@@ -131,7 +131,7 @@ body {
 .feature-image img {
   width: 100%;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .feature-content {
@@ -238,7 +238,7 @@ body {
   padding: 30px;
   border-radius: 12px;
   min-width: 280px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .ranking-block h2 {
@@ -278,13 +278,28 @@ body {
   display: inline-block;
 }
 
-.title {
+.title-link {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 6px;
+  text-decoration: none;
+  color: #000000;
+  flex-grow: 1; /* Ocupa el espacio disponible */
 }
 
+.title-link:hover {
+  text-decoration: underline 1.5px;
+  text-decoration-color: #a6c5f3;
+  color: #000000;
+}
+
+.bullet {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #a6c5f3;
+  border-radius: 50%;
+}
 .stars {
   display: flex;
   gap: 2px;
@@ -370,11 +385,11 @@ mat-icon.small {
   .hero-background {
     height: 50vh;
   }
-  
+
   .diagonal-shape {
     clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
   }
-  
+
   .hero-content {
     position: absolute;
     right: 5%;
@@ -383,32 +398,32 @@ mat-icon.small {
     width: 50%;
     text-align: right;
   }
-  
+
   .hero-content h1 {
     font-size: 2.5rem;
   }
-  
+
   .benefits-columns {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
   }
-  
+
   .benefit {
     flex: 1 1 300px;
     max-width: 300px;
   }
-  
+
   .testimonial-cards {
     flex-direction: row;
     justify-content: center;
   }
-  
+
   .ranking-section {
     flex-direction: row;
     justify-content: center;
   }
-  
+
   .ranking-block {
     width: auto;
     min-width: 300px;
@@ -420,24 +435,24 @@ mat-icon.small {
   .hero-container {
     flex-direction: row;
   }
-  
+
   .hero-background {
     height: 100vh;
     width: 60%;
   }
-  
+
   .diagonal-shape {
     clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
   }
-  
+
   .hero-content {
     width: 40%;
   }
-  
+
   .hero-content h1 {
     font-size: 3rem;
   }
-  
+
   .benefits-section,
   .testimonials,
   .cta-section {
@@ -451,11 +466,11 @@ mat-icon.small {
   .hero-content h1 {
     font-size: 3.5rem;
   }
-  
+
   .benefit {
     max-width: 350px;
   }
-  
+
   .testimonial-cards mat-card {
     max-width: 400px;
   }
@@ -474,11 +489,11 @@ mat-icon.small {
   .hero-content h1 {
     font-size: 1.8rem;
   }
-  
+
   .hero-content p {
     font-size: 1rem;
   }
-  
+
   .section-title h2 {
     font-size: 1.5rem;
   }

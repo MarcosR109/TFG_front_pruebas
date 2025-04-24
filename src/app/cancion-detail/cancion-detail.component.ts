@@ -19,7 +19,7 @@ export class CancionDetailComponent {
       if (data.cancion.metrica != 'bin') {
         this.bin = false;
       }
-      console.log(this.cancion);
+      this.cancion;
     });
   }
 }

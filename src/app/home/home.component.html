@@ -16,9 +16,22 @@
       componer, estructurar y<br />
       visualizar tus canciones con acordes
     </p>
-    <button mat-raised-button *ngIf="!isLoggedIn" [routerLink]="['/register']" style="background-color: #a6c5f3;">Empieza ahora</button>
-    <button mat-raised-button *ngIf="isLoggedIn" [routerLink]="['/canciones/create']" style="background-color: #a6c5f3;">Empieza ahora</button>
-  
+    <button
+      mat-raised-button
+      *ngIf="!isLoggedIn"
+      [routerLink]="['/register']"
+      style="background-color: #a6c5f3"
+    >
+      Empieza ahora
+    </button>
+    <button
+      mat-raised-button
+      *ngIf="isLoggedIn"
+      [routerLink]="['/canciones/create']"
+      style="background-color: #a6c5f3"
+    >
+      Empieza ahora
+    </button>
   </div>
 </div>
 
@@ -27,12 +40,15 @@
     <h2>Por qué elegir nuestra plataforma</h2>
     <p>Todo lo que necesitas para tu creatividad musical</p>
   </div>
-  
+
   <div class="benefits-columns">
     <div class="benefit">
       <mat-icon>thumb_up</mat-icon>
       <h3>Comodidad</h3>
-      <p>Crea y organiza tus canciones con una interfaz intuitiva y sin distracciones.</p>
+      <p>
+        Crea y organiza tus canciones con una interfaz intuitiva y sin
+        distracciones.
+      </p>
     </div>
     <div class="benefit">
       <mat-icon>speed</mat-icon>
@@ -42,7 +58,10 @@
     <div class="benefit">
       <mat-icon>extension</mat-icon>
       <h3>Versatilidad</h3>
-      <p>Desde simples acordes hasta progresiones avanzadas, adapta tu música con facilidad.</p>
+      <p>
+        Desde simples acordes hasta progresiones avanzadas, adapta tu música con
+        facilidad.
+      </p>
     </div>
   </div>
 
@@ -51,8 +70,11 @@
     <div class="testimonial-cards">
       <mat-card>
         <mat-card-content>
-            <mat-icon style="font-size: 16px;">format_quote</mat-icon>
-          <p>La mejor herramienta que he usado para organizar mis ideas musicales. ¡Totalmente recomendada!</p>
+          <mat-icon style="font-size: 16px">format_quote</mat-icon>
+          <p>
+            La mejor herramienta que he usado para organizar mis ideas
+            musicales. ¡Totalmente recomendada!
+          </p>
           <div class="author">
             <span>Carlos G. - Guitarrista</span>
           </div>
@@ -60,10 +82,13 @@
       </mat-card>
       <mat-card>
         <mat-card-content>
-          <mat-icon style="font-size: 16px;">format_quote</mat-icon>
-          <p>Me ha ayudado a estructurar mis canciones de manera profesional. El editor es increíblemente intuitivo.</p>
+          <mat-icon style="font-size: 16px">format_quote</mat-icon>
+          <p>
+            Me ha ayudado a estructurar mis canciones de manera profesional. El
+            editor es increíblemente intuitivo.
+          </p>
           <div class="author">
-                <span>María L. - Cantautora</span>
+            <span>María L. - Cantautora</span>
           </div>
         </mat-card-content>
       </mat-card>
@@ -79,7 +104,12 @@
         <li *ngFor="let cancion of top5">
           <div class="song-info">
             <span class="bullet"></span>
-            <span class="title">{{ cancion.titulo }}</span>
+            <a
+              class="title-link"
+              [routerLink]="['/canciones/show', cancion.id]"
+            >
+              {{ cancion.titulo }}
+            </a>
           </div>
           <div class="stars">
             <mat-icon class="small" *ngFor="let star of [1, 2, 3, 4, 5]">
@@ -92,10 +122,15 @@
     <div class="ranking-block">
       <h2>Lo más nuevo</h2>
       <ul class="ranking-list">
-        <li *ngFor="let cancion of topNuevas">
+        <li *ngFor="let cancion of topNuevas; trackby: cancion?.id">
           <div class="song-info">
             <span class="bullet"></span>
-            <span class="title">{{ cancion.titulo }}</span>
+            <a
+              class="title-link"
+              [routerLink]="['/canciones/show', cancion.id]"
+            >
+              {{ cancion.titulo }}
+            </a>
           </div>
           <div class="stars">
             <mat-icon class="small" *ngFor="let star of [1, 2, 3, 4, 5]">
@@ -112,6 +147,13 @@
   <div class="cta-content">
     <h2>¿Listo para comenzar?</h2>
     <p>Regístrate ahora y obtén acceso inmediato a todas las herramientas</p>
-    <button *ngIf="!isLoggedIn" mat-raised-button style="background-color: #a6c5f3;" [routerLink]="['/register']">Crear cuenta gratuita</button>
+    <button
+      *ngIf="!isLoggedIn"
+      mat-raised-button
+      style="background-color: #a6c5f3"
+      [routerLink]="['/register']"
+    >
+      Crear cuenta gratuita
+    </button>
   </div>
 </section>

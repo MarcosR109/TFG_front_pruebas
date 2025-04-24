@@ -123,25 +123,23 @@ export class MobileboxesComponent {
       fromEvent<TouchEvent>(square, 'touchend', {
         passive: false,
       } as AddEventListenerOptions).subscribe((event) => {
-        console.log('TOUCHEND', event);
         let line = undefined;
         let squareIndex = undefined;
         if ((event.target as HTMLElement).children[0]?.attributes[2]) {
           line = (event.target as HTMLElement).children[0]?.attributes[2].value;
-          console.log('N_LINEA', line);
         }
         if ((event.target as HTMLElement).children[0].attributes[3]) {
           squareIndex = (event.target as HTMLElement).children[0].attributes[3]
             .value;
         }
         if (!line && !squareIndex) {
-          console.log('ES UNA VARIACION');
+          ('ES UNA VARIACION');
 
           line = (event.target as HTMLElement).children[1].attributes[2].value;
           squareIndex = (event.target as HTMLElement).children[1].attributes[3]
             .value;
         }
-        console.log('SQUAREINDEX', squareIndex);
+
         this.pegarAcorde(event, Number(line), Number(squareIndex));
       });
     });
@@ -249,17 +247,16 @@ export class MobileboxesComponent {
       linea.n_linea = idx;
     });
 
-    console.log(this.lines);
+    this.lines;
   }
   eliminarAcorde($event: any, n_linea: number, squareIndex: number) {
     $event.preventDefault();
     setTimeout(() => {
-      console.log('Eliminar acorde en línea:', n_linea, 'índice:', squareIndex);
       // Evita el comportamiento por defecto del evento touch
       const linea = this.lines?.find((line) => line.n_linea === n_linea);
       if (linea) {
         const acorde = linea.acordes[squareIndex];
-        console.log(acorde);
+        acorde;
         acorde.acorde = ''; // Limpiamos el acorde
         acorde.variacion = ''; // Limpiamos la variación
       }
@@ -299,21 +296,19 @@ export class MobileboxesComponent {
 
   insertarAcorde(acorde: any) {
     this.acordeTouch = acorde;
-    console.log(this.acordeTouch);
+    this.acordeTouch;
   }
 
   insertarVariacion(variacion: string) {
-    console.log('Insertar variación:', variacion);
     // Lógica para aplicar variación al acorde activo
   }
 
   modSemitono(delta: number) {
-    console.log(`Transponer ${delta > 0 ? '+' : ''}${delta} semitono(s)`);
+    `Transponer ${delta > 0 ? '+' : ''}${delta} semitono(s)`;
     // Lógica para transponer todos los acordes
   }
 
   toggleNotation(): void {
-    console.log('NOTACIÓN EN TEXTBOXES', this.notation);
     if (this.notation === 'latin') {
       this.notation = 'american';
     } else {
@@ -324,7 +319,6 @@ export class MobileboxesComponent {
 
   togglePreferirSostenidos() {
     this.preferirSostenidos = !this.preferirSostenidos;
-    console.log('Mostrar como:', this.preferirSostenidos ? '♯' : '♭');
     // Re-renderizar acordes si aplica
   }
 
@@ -339,8 +333,8 @@ export class MobileboxesComponent {
   }
 
   startAutoScroll() {
-    console.log('Auto scroll iniciado');
-    console.log(this.velocidad);
+    ('Auto scroll iniciado');
+    this.velocidad;
 
     if (this.scrollId) {
       clearInterval(this.scrollId);
@@ -372,7 +366,6 @@ export class MobileboxesComponent {
     }
   }
   onTouch($event: any, acorde: any) {
-    console.log('Acorde tocado:', acorde);
     if (this.variacionTouch) {
       this.variacionTouch = undefined;
     }
@@ -386,12 +379,10 @@ export class MobileboxesComponent {
       this.acordeTouch = undefined;
     }
 
-    console.log('Variación tocada:', variacion);
     $event.preventDefault(); // Evita el comportamiento por defecto del evento touch
     this.anadirEventListener();
     this.variacionTouch = variacion;
-    console.log('Comp', this.variacionTouch == variacion);
-    console.log(this.variacionTouch);
+    this.variacionTouch;
   }
 
   pegarAcorde(event?: any, linea?: number, squareIndex?: number) {
@@ -408,7 +399,7 @@ export class MobileboxesComponent {
           acorde.variacion = this.acordeTouch.variacion; // Asigna la variación al cuadrado
           acorde.effect = 'copy';
           acorde.grado = this.acordeTouch.grado; // Efecto de copia
-          console.log(acorde);
+          acorde;
           this.recomendaciones.anadirAcorde(
             acorde.id!,
             acorde.acorde!,
@@ -422,14 +413,14 @@ export class MobileboxesComponent {
       });
     }
     if (this.variacionTouch) {
-      console.log(this.variacionTouch);
+      this.variacionTouch;
       if (linea === undefined || squareIndex === undefined) {
         console.error('Error: linea o squareIndex no definidos en variacion');
       }
       this.lines?.forEach((line) => {
         if (line.n_linea === linea) {
           const acorde = line.acordes[squareIndex!];
-          console.log(acorde);
+          acorde;
           if (acorde.acorde) {
             acorde.variacion = this.variacionTouch; // Asigna la variación al cuadrado
           }
@@ -437,8 +428,6 @@ export class MobileboxesComponent {
       });
     }
     if (this.pegadoFlag) {
-      console.log('PEGADO', this.pegadoFlag);
-
       this.actualizarRecomendaciones();
       this.pegadoFlag = false; // Reinicia la bandera después de pegar
     }
@@ -459,13 +448,13 @@ export class MobileboxesComponent {
 
   copiarLinea(index: number) {
     this.acordesCopy = this.cancion?.lineas?.[index].acordes;
-    console.log(this.acordesCopy); // Obtener la línea a copiar
+    this.acordesCopy; // Obtener la línea a copiar
   }
   pegarLinea(index: number) {
     if (this.acordesCopy) {
       if (this.cancion && this.cancion.lineas && this.cancion.lineas[index]) {
         const nuevosAcordes = JSON.parse(JSON.stringify(this.acordesCopy)); // Copia profunda
-        console.log(nuevosAcordes);
+        nuevosAcordes;
 
         this.cancion.lineas[index].acordes = nuevosAcordes;
       }
@@ -487,11 +476,9 @@ export class MobileboxesComponent {
       .subscribe({
         next: (res) => {
           this.recomendacion = res.recomendaciones;
-          console.log('RECOMENDACIONES', this.recomendacion);
           this.loading = false;
           if (this.recomendacion.length > 0) {
             this.recomendacion.forEach((recomendacion) => {
-              console.log('RECOMENDACION', recomendacion);
               const probabilidad = recomendacion.probabilidad;
               this.findAcordeRecomendado(recomendacion.siguiente, probabilidad);
             });

@@ -9,13 +9,17 @@
     <!-- Cabecera -->
     <div class="results-header">
       <h2>
-        <mat-icon>search</mat-icon>
-        <span *ngIf="cancionesFiltradas.length > 0">
+        <mat-icon *ngIf="!isLoading">search</mat-icon>
+        <span *ngIf="cancionesFiltradas.length > 0 && !isLoading">
           Canciones encontradas: {{ cancionesFiltradas.length }}
         </span>
-        <span *ngIf="cancionesFiltradas.length === 0">
+        <span *ngIf="cancionesFiltradas.length === 0 && !isLoading">
           No se encontraron canciones
         </span>
+        <div *ngIf="isLoading" class="loading-spinner">
+          <mat-spinner diameter="40"></mat-spinner>
+          <span>Cargando canciones...</span>
+        </div>
       </h2>
     </div>
 

@@ -50,14 +50,15 @@ import { filter, map, mergeMap } from 'rxjs/operators';
             mat-button
             [routerLink]="['/revisiones']"
             routerLinkActive="active"
-            class="menu-item"
+            class="menu-item "
           >
             <mat-icon
               mat-badge
               [matBadge]="badgeCount"
               matBadgePosition="after"
               matBadgeOverlap="false"
-              matBadgeColor="primary"
+              matBadgeColor="accent"
+              class="my-custom-badge-accent"
               >notifications</mat-icon
             >
             <span>Revisiones</span>
@@ -220,7 +221,18 @@ import { filter, map, mergeMap } from 'rxjs/operators';
 .sidenav-container {
   height: 100vh;
 }
-
+.mat-badge-content {
+    background:  #a6c5f3 !important;
+}
+.my-custom-badge-accent.mat-badge-accent .mat-badge-content {
+    background:  #a6c5f3 !important;
+    background-color: #a6c5f3 !important;
+    color: white;
+}
+::ng-deep .mat-badge-content { 
+  padding: 0px 4px !important;
+    background: #a6c5f3 !important; 
+}
 mat-sidenav {
   width: 80px;
   background: linear-gradient(to bottom, #cce0ff, #6b88a6);
@@ -376,12 +388,10 @@ export class HeaderComponent {
   ngOnInit() {
     this.authService.$role.subscribe((role) => {
       this.userRole = role;
-      console.log('Rol de usuario:', this.userRole);
 
       if (this.userRole == 3) {
         this.cancionesService.actualizarBadge().subscribe((res) => {
           this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
-          console.log('Badge actualizado:', res.count);
           this.badgeCount = res.count;
         });
         this.subscription = interval(60000)
@@ -394,7 +404,6 @@ export class HeaderComponent {
           )
           .subscribe((res) => {
             this.badgeService.actualizarBadge(res.count || 0); // Actualiza el servicio
-            console.log('Badge actualizado:', res.count);
             this.badgeCount = res.count;
           });
       }
@@ -424,7 +433,7 @@ export class HeaderComponent {
     }
   }
   closeMenu() {
-    console.log('closeMenu()');
+    ('closeMenu()');
 
     this.isMenuOpen = false;
   }

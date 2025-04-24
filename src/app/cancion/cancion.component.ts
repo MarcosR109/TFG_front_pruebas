@@ -43,11 +43,11 @@ export class CancionComponent {
   public blockRating = false;
   esFavorito!: boolean;
   estaGuardado!: boolean;
+  isLoading: boolean = true;
   toggleFavorito() {
     if (!this.esFavorito) {
       this.cancionService.addFavorito(this.cancion.id!).subscribe(
         (data) => {
-          console.log('Canción añadida a favoritos', data);
           this.esFavorito = true;
         },
         (error) => {
@@ -57,7 +57,6 @@ export class CancionComponent {
     } else {
       this.cancionService.quitarFavorito(this.cancion.id!).subscribe(
         (data) => {
-          console.log('Canción eliminada de favoritos', data);
           this.esFavorito = false;
         },
         (error) => {
@@ -72,8 +71,7 @@ export class CancionComponent {
       this.rating = value;
       this.cancionService.addRating(this.rating, this.cancion.id!).subscribe(
         (data) => {
-          console.log('Rating actualizado', data);
-          console.log(this.rating); // Emite el nuevo rating
+          this.rating; // Emite el nuevo rating
           this.blockRating = true; // Bloquea el rating
         },
         (error) => {
@@ -87,7 +85,6 @@ export class CancionComponent {
     if (!this.estaGuardado) {
       this.cancionService.addGuardado(this.cancion.id!).subscribe(
         (data) => {
-          console.log('Canción añadida a guardados', data);
           this.estaGuardado = true;
         },
         (error) => {
@@ -98,7 +95,6 @@ export class CancionComponent {
       // Si ya es favorito, se quita
       this.cancionService.quitarGuardado(this.cancion.id!).subscribe(
         (data) => {
-          console.log('Canción eliminada de guardados', data);
           this.estaGuardado = false;
         },
         (error) => {
@@ -119,9 +115,10 @@ export class CancionComponent {
     this.cancionService.getCancion(this.rute.snapshot.params['id']).subscribe(
       (data) => {
         this.cancion = data.cancion;
-        console.log(this.cancion);
+        this.cancion;
         this.cargado = true;
         this.rating = this.cancion.rating || 0;
+        this.isLoading = false;
         if (this.cancion.metrica != 'bin') {
           this.binary = false;
         }

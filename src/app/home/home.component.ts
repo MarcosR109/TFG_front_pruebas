@@ -12,30 +12,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,MatIcon,MatCardModule,MatButtonModule,RouterLink],
+  imports: [CommonModule, MatIcon, MatCardModule, MatButtonModule, RouterLink],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent {
   top5: any[] = [];
   topNuevas: any[] = [];
   isLoggedIn: boolean = false;
-  constructor(private cancionService: CancionService,private authService:AuthService) {
-
-  }
+  constructor(
+    private cancionService: CancionService,
+    private authService: AuthService
+  ) {}
   ngOnInit() {
     this.cancionService.getLandingData().subscribe((res: any) => {
       this.top5 = res.top5;
       this.topNuevas = res.nuevas;
-      console.log(this.top5);
-      console.log(this.topNuevas);
+      this.top5;
+      this.topNuevas;
     });
     this.authService.authStatus.subscribe((status) => {
       this.isLoggedIn = status;
-      console.log('Estado de autenticación:', status);
-    }
-    );
-
+    });
   }
   getStarType(star: number, rating: number): string {
     if (star <= rating) {

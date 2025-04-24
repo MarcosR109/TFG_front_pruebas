@@ -75,7 +75,11 @@
 
       <mat-form-field *ngIf="revisable" appearance="outline" class="form-col">
         <mat-label>Género</mat-label>
-        <mat-select required="true"  [value]="generoSeleccionado" [(ngModel)]="generoSeleccionado" >
+        <mat-select
+          required="true"
+          [value]="generoSeleccionado"
+          [(ngModel)]="generoSeleccionado"
+        >
           <mat-option *ngFor="let genero of generos.generos" [value]="genero">
             {{ genero.nombre }}
           </mat-option>
@@ -134,7 +138,7 @@
 
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Privada</mat-label>
-        <mat-select [value]="cancion.privada==true" required="true">
+        <mat-select [value]="cancion.privada == true" required="true">
           <mat-option [value]="true" selected>Sí</mat-option>
           <mat-option [value]="false">No</mat-option>
         </mat-select>
@@ -162,7 +166,7 @@
   <div class="form-actions">
     <button
       mat-raised-button
-      color="primary"
+      style="background-color: #a6c5f3"
       (click)="romperTexto(textArea.value); textArea.value = ''"
     >
       <mat-icon>send</mat-icon>

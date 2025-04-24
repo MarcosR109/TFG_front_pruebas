@@ -20,19 +20,16 @@ export class CancionService {
   setCanciones(canciones: any[]) {
     this.canciones = [...canciones];
     this.filtrosSubject.next({}); // Emitir filtros vacíos para mostrar todos
-    console.log(this.canciones);
+    this.canciones;
   }
 
   actualizarFiltros(filtros: any) {
     this.filtrosSubject.next(filtros);
-    console.log(filtros);
+    filtros;
   }
 
   public filtrar(canciones: any[], filtros: any): any[] {
     return canciones.filter((cancion) => {
-      console.log('CANCIONES', canciones);
-      console.log('FILTROS', filtros);
-
       const coincideTitulo =
         !filtros.titulo ||
         cancion.titulo.toLowerCase().includes(filtros.titulo.toLowerCase());
@@ -46,7 +43,6 @@ export class CancionService {
         cancion.genero.nombre === filtros.genero;
       const coincideRating =
         !filtros.calificacion || cancion.rating >= filtros.calificacion;
-      console.log('Genero', coincideGenero);
 
       return (
         coincideTitulo && coincideArtista && coincideGenero && coincideRating
@@ -71,9 +67,7 @@ export class CancionService {
     );
   }
   enviarCancion(cancion: Cancion) {
-    return this.http.post(this.URL + 'canciones', cancion).subscribe((res) => {
-      console.log(res);
-    });
+    return this.http.post(this.URL + 'canciones', cancion);
   }
   editarCancion(cancion: Cancion) {
     return this.http.put(
@@ -136,7 +130,6 @@ export class CancionService {
     return this.http.delete(this.URL + 'users/' + id + '/favoritos');
   }
   buscarPorArtista(artista: string) {
-    console.log('BUSCANDO POR ARTISTA', artista);
     return this.http.get<{ message: string; canciones: Cancion[] }>(
       this.URL + 'canciones/' + artista + '/lista'
     );

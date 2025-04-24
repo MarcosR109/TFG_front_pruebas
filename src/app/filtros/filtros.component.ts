@@ -68,7 +68,7 @@ export class FiltrosComponent {
   seleccionarArtista(artista: any) {
     this.artistaSeleccionado = artista;
     this.inputTextoArtista = artista.nombre;
-    console.log(this.inputTextoArtista);
+    this.inputTextoArtista;
     this.filtrosForm.patchValue({
       artista: artista.nombre,
     });
@@ -93,7 +93,7 @@ export class FiltrosComponent {
   seleccionarGenero(genero: any) {
     this.generoSeleccionado = genero;
     this.inputTextoGenero = genero.nombre;
-    console.log(this.inputTextoGenero);
+    this.inputTextoGenero;
     this.filtrosForm.patchValue({
       genero: genero.nombre,
     });
@@ -105,7 +105,7 @@ export class FiltrosComponent {
     //     ?.valueChanges.pipe(debounceTime(400), distinctUntilChanged())
     //     .subscribe(() => this.aplicarFiltros());
     // }
-    console.log(this.filtrosForm.value);
+    this.filtrosForm.value;
     this.filtrosForm.patchValue({
       artista: this.artistaSeleccionado?.nombre,
       genero: this.generoSeleccionado?.nombre,

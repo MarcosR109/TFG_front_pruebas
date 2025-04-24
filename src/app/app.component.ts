@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { FooterComponent } from './footer/footer.component';
 import { RouterOutlet } from '@angular/router';
 import { SquareComponent } from './square/square.component';
 import { TextinputComponent } from './textinput/textinput.component';
@@ -19,7 +18,6 @@ import { JwtInterceptor } from './auth/interceptor.service';
   imports: [
     HeaderComponent,
     CommonModule,
-    FooterComponent,
     RouterOutlet,
     SquareComponent,
     TextinputComponent,

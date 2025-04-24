@@ -102,11 +102,11 @@ export class TextinputComponent {
   ) {
     let id = route.snapshot.params['id'];
     this.esEdicion = route.snapshot.params['edicion'] == 'true';
-    console.log(this.esEdicion);
+    this.esEdicion;
     if (id) {
       cancionService.getCancion(id).subscribe((res) => {
         this.revisable = res.cancion;
-        console.log(this.revisable);
+        this.revisable;
         this.cancion = this.revisable;
         this.texto = (this.cancion.lineas ?? [])
           .map((linea) => linea.texto + '\n')
@@ -115,7 +115,7 @@ export class TextinputComponent {
           this.tonalidades.find(
             (tonalidad) => tonalidad.nombre === this.cancion.tonalidad
           ) || null;
-        console.log(this.tonalidadSeleccionada);
+        this.tonalidadSeleccionada;
         this.cancion.metrica = this.cancion.metrica == 'bin' ? 'bin' : 'ter';
         this.metricaInicial = this.cancion.metrica == 'bin' ? 'bin' : 'ter';
         this.bin = this.cancion.metrica == 'bin' ? true : false;
@@ -126,7 +126,7 @@ export class TextinputComponent {
         this.generoSeleccionado = this.generos.generos.find(
           (genero: any) => genero.nombre === this.cancion.genero
         ) || { id: 1, nombre: 'Pop' };
-        console.log(this.generoSeleccionado);
+        this.generoSeleccionado;
         this.lineas = this.cancion.lineas || []; // Inicializa lineas si es undefined
       });
       this.esRevision = true;
@@ -141,7 +141,7 @@ export class TextinputComponent {
   ngOnInit() {
     this.mobileService.isMobile$.subscribe((isMobile) => {
       this.esMovil = isMobile;
-      console.log(this.esMovil);
+      this.esMovil;
     });
   }
 
@@ -174,13 +174,13 @@ export class TextinputComponent {
         }); //Meter un acorde en la cuarta posición de cada línea
       });
     }
-    console.log(lineas);
+    lineas;
     if (this.cancion.metrica == 'ter' && this.metricaInicial == 'bin') {
       lineas.forEach((linea) => {
         linea.acordes.pop(); //Eliminar el acorde de la cuarta posición de cada línea
       });
     }
-    console.log('Cambiando métrica de la canción');
+    ('Cambiando métrica de la canción');
   }
 
   romperTexto(lines: string) {
@@ -196,7 +196,7 @@ export class TextinputComponent {
       return;
     }
     this.text = lines.trim().split('\n');
-    console.log(this.text);
+    this.text;
     this.enviado = true;
     this.cancion.artista_id = this.artistaSeleccionado?.id;
     this.cancion.tonalidade_id = this.tonalidadSeleccionada?.id;
@@ -205,14 +205,12 @@ export class TextinputComponent {
     this.cancion.genero_id = this.generoSeleccionado?.id;
     this.cancion.genero = this.generoSeleccionado?.nombre;
     this.cancion.metrica = this.bin ? 'bin' : 'ter';
-    console.log(this.artistaSeleccionado);
-    console.log(this.tonalidadSeleccionada);
-    console.log(this.cancion);
+    this.artistaSeleccionado;
+    this.tonalidadSeleccionada;
+    this.cancion;
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
-    console.log('ES EDICION', this.esEdicion);
-    console.log('ES REVISION', this.esRevision);
 
     if (!this.esRevision && !this.esEdicion) {
       this.text.forEach((line) => {
@@ -297,6 +295,6 @@ export class TextinputComponent {
         }
       });
     }
-    console.log(this.cancion);
+    this.cancion;
   }
 }

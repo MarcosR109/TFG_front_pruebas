@@ -128,7 +128,7 @@ export class DashboardComponent {
         this.usuariosFiltrados = usuarios.usuarios;
         this.usuarios = usuarios.usuarios;
         this.aplicarFiltrosUsuarios();
-        console.log(this.usuarios);
+        this.usuarios;
       },
       error: (error: any) => {
         console.error('Error al cargar los usuarios:', error);
@@ -145,7 +145,6 @@ export class DashboardComponent {
     const nuevoRol = usuario.role_id === 1 ? 3 : 1;
     this.cancionService.cambiarRol(usuario.id, nuevoRol).subscribe({
       next: (res) => {
-        console.log('Rol cambiado:', res);
         this.cargarUsuarios();
         this.aplicarFiltrosUsuarios();
       },
@@ -163,7 +162,7 @@ export class DashboardComponent {
       next: (canciones) => {
         this.canciones = canciones.canciones;
         this.aplicarFiltrosCanciones();
-        console.log(this.canciones);
+        this.canciones;
         this.cancionesFiltradas = this.canciones;
       },
       error: (error) => {
@@ -196,8 +195,7 @@ export class DashboardComponent {
         return coincideBusqueda && coincideGenero && coincideRating;
       });
     }, 1000);
-    console.log(this.filtrosCanciones);
-    console.log('Canciones filtradas:', this.cancionesFiltradas);
+    this.filtrosCanciones;
   }
 
   toggleSeleccionTodas(seleccionar: boolean): void {
@@ -216,12 +214,11 @@ export class DashboardComponent {
 
     if (index !== -1) {
       this.selectList.splice(index, 1);
-      console.log(`Canción ${id} removida de la lista`);
+      `Canción ${id} removida de la lista`;
     } else {
       this.selectList.push(id);
-      console.log(`Canción ${id} agregada a la lista`);
+      `Canción ${id} agregada a la lista`;
     }
-    console.log('Lista actual:', this.selectList);
   }
 
   anadirTodas() {
@@ -229,10 +226,9 @@ export class DashboardComponent {
       const id = c.id;
       if (!this.selectList.includes(id)) {
         this.selectList.push(id);
-        console.log(`Canción ${id} agregada a la lista`);
+        `Canción ${id} agregada a la lista`;
       }
     });
-    console.log('Lista actual:', this.selectList);
   }
 
   removerTodas() {
@@ -241,10 +237,9 @@ export class DashboardComponent {
       const index = this.selectList.indexOf(id);
       if (index !== -1) {
         this.selectList.splice(index, 1);
-        console.log(`Canción ${id} removida de la lista`);
+        `Canción ${id} removida de la lista`;
       }
     });
-    console.log('Lista actual:', this.selectList);
   }
 
   actualizarEstadoHeader(): void {
@@ -279,12 +274,11 @@ export class DashboardComponent {
 
     if (index !== -1) {
       this.selectListUsuarios.splice(index, 1);
-      console.log(`Usuario ${id} removido de la lista`);
+      `Usuario ${id} removido de la lista`;
     } else {
       this.selectListUsuarios.push(id);
-      console.log(`Usuario ${id} agregado a la lista`);
+      `Usuario ${id} agregado a la lista`;
     }
-    console.log('Lista de usuarios actual:', this.selectListUsuarios);
   }
 
   // Método para añadir todos los usuarios válidos
@@ -293,16 +287,15 @@ export class DashboardComponent {
       const id = u.id;
       if (u.role_id !== 2 && !this.selectListUsuarios.includes(id)) {
         this.selectListUsuarios.push(id);
-        console.log(`Usuario ${id} agregado a la lista`);
+        `Usuario ${id} agregado a la lista`;
       }
     });
-    console.log('Lista de usuarios actual:', this.selectListUsuarios);
   }
 
   // Método para remover todos los usuarios
   removerTodasUsuarios() {
     this.selectListUsuarios = [];
-    console.log('Todos los usuarios removidos de la lista');
+    ('Todos los usuarios removidos de la lista');
   }
 
   // Método para actualizar el estado del checkbox del header
@@ -328,7 +321,7 @@ export class DashboardComponent {
   }
   aplicarFiltrosUsuarios() {
     setTimeout(() => {
-      console.log(this.filtrosUsuarios);
+      this.filtrosUsuarios;
 
       this.usuariosFiltrados = this.usuarios.filter((usuario: any) => {
         const textoBusqueda = this.filtrosUsuarios.busqueda.toLowerCase();
@@ -343,7 +336,7 @@ export class DashboardComponent {
 
         return coincideBusqueda && coincideRol;
       });
-      console.log(this.usuariosFiltrados);
+      this.usuariosFiltrados;
     }, 1000);
   }
 
@@ -370,10 +363,9 @@ export class DashboardComponent {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Eliminando usuarios:', this.selectListUsuarios);
         this.selectListUsuarios.forEach((id: any) => {
           this.cancionService.eliminarUsuario(id).subscribe((res) => {
-            console.log(res);
+            res;
             this.usuarios = this.usuarios.filter((u: any) => u.id !== id);
             this.selectListUsuarios = [];
             this.toggleSeleccionTodasUsuarios(false);
@@ -397,10 +389,9 @@ export class DashboardComponent {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Eliminando canciones:', this.selectList);
         this.selectList.forEach((id: any) => {
           this.cancionService.eliminarCancion(id).subscribe((res) => {
-            console.log(res);
+            res;
             this.cancionesFiltradas = this.cancionesFiltradas.filter(
               (c: any) => c.id !== id
             );

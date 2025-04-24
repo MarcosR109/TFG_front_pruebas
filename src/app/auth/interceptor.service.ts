@@ -22,8 +22,8 @@ export class JwtInterceptor implements HttpInterceptor {
         Authorization: 'Bearer ' + accessToken,
       },
     });
-    console.log('INTERCEPTOR');
-    console.log(req);
+    ('INTERCEPTOR');
+    req;
     return next.handle(req);
   }
 }

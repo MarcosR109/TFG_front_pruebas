@@ -11,6 +11,7 @@ import { MatCard } from '@angular/material/card';
 import { MatIconButton } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-canciones-mine',
   imports: [
@@ -29,6 +30,7 @@ import { MatTableDataSource } from '@angular/material/table';
     MatIconButton,
     MatSortModule,
     MatSort,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './canciones-mine.component.html',
   styleUrl: './canciones-mine.component.css',
@@ -37,7 +39,7 @@ export class CancionesMineComponent {
   cancionesFiltradas: CancionFoo[] = [];
   debug: any[] = [];
   cancionesCombinadas: CancionFoo[] = [];
-
+  isLoading: boolean = true;
   constructor(private cancionService: CancionService) {}
 
   ngOnInit() {
@@ -46,7 +48,7 @@ export class CancionesMineComponent {
       const cancionesFav = res.cancionesfav.map((cancion: any) => ({
         ...cancion,
         es_favorita: true,
-        es_propia:false,
+        es_propia: false,
       }));
 
       // Procesar canciones propias
@@ -58,8 +60,8 @@ export class CancionesMineComponent {
       this.cancionesCombinadas = [...cancionesFav, ...cancionesPro];
 
       this.cancionesFiltradas = [...this.cancionesCombinadas];
-      console.log(this.cancionesCombinadas);
-      
+      this.cancionesCombinadas;
+      this.isLoading = false;
     });
 
     this.cancionService.cancionesFiltradas$.subscribe((filtros) => {
@@ -76,7 +78,7 @@ export class CancionesMineComponent {
     const data = this.cancionesFiltradas.slice();
     if (!sort.active || sort.direction === '') {
       this.debug = data;
-      console.log(this.debug);
+      this.debug;
       return;
     }
 

@@ -171,8 +171,8 @@ export class TextBoxesComponent {
   }
 
   startAutoScroll() {
-    console.log('Auto scroll iniciado');
-    console.log(this.velocidad);
+    ('Auto scroll iniciado');
+    this.velocidad;
 
     if (this.scrollId) {
       clearInterval(this.scrollId);
@@ -211,11 +211,10 @@ export class TextBoxesComponent {
       ...(this.lines?.map((linea) => linea.texto?.length || 0) || [])
     );
     this.maxWidth = `${maxLength * 10}px`; // Ajusta el factor según necesidad
-    console.log(`Ancho máximo calculado: ${this.maxWidth}`);
+    `Ancho máximo calculado: ${this.maxWidth}`;
   }
 
   togglePreferirSostenidos(): void {
-    console.log('Preferir sostenidos', this.preferSostenidos);
     const current = this.settingsService.currentSettings.preferSostenidos;
     this.settingsService.setPreferSostenidos(!current);
     this.preferSostenidos = !this.preferSostenidos;
@@ -225,7 +224,6 @@ export class TextBoxesComponent {
     this.semitones += semitones;
   }
   toggleNotation(): void {
-    console.log('NOTACIÓN EN TEXTBOXES', this.notation);
     if (this.notation === 'latin') {
       this.notation = 'american';
     } else {
@@ -335,17 +333,17 @@ export class TextBoxesComponent {
       linea.n_linea = idx;
     });
 
-    console.log(this.lines);
+    this.lines;
   }
   copiarLinea(index: number) {
     this.acordesCopy = this.cancion?.lineas?.[index].acordes;
-    console.log(this.acordesCopy); // Obtener la línea a copiar
+    this.acordesCopy; // Obtener la línea a copiar
   }
   pegarLinea(index: number) {
     if (this.acordesCopy) {
       if (this.cancion && this.cancion.lineas && this.cancion.lineas[index]) {
         const nuevosAcordes = JSON.parse(JSON.stringify(this.acordesCopy)); // Copia profunda
-        console.log(nuevosAcordes);
+        nuevosAcordes;
 
         this.cancion.lineas[index].acordes = nuevosAcordes;
       }
@@ -374,7 +372,7 @@ export class TextBoxesComponent {
     const linea = this.lines?.find((line) => line.n_linea === n_linea);
     if (linea) {
       const acorde = linea.acordes[squareIndex];
-      console.log(acorde);
+      acorde;
       acorde.acorde = ''; // Limpiamos el acorde
       acorde.variacion = ''; // Limpiamos la variación
     }
@@ -400,26 +398,21 @@ export class TextBoxesComponent {
   }
 
   onDragStart(event: DragEvent, acorde: Acorde) {
-    console.log(acorde);
+    acorde;
     this.lastDropEvent = null;
     this.currentDraggableEvent = event;
   }
 
   onDragged($event: DragEvent, effect: string) {
-    console.log($event, null, 2);
-    console.log(`Drag ended with effect "${effect}"!`);
+    `Drag ended with effect "${effect}"!`;
   }
 
   onDragEnd(event: DragEvent) {
     this.currentDraggableEvent = event;
-    console.log(`Drag ended!`, event, null);
   }
   onDrop(event: DndDropEvent, linea: Linea, squareIndex: number) {
-    console.log('Acorde soltado:', event.data.acorde);
-    console.log('Variación soltada:', event.data);
-    console.log('Drop event:', event);
-    console.log(linea);
-    console.log(this.lines);
+    linea;
+    this.lines;
     if (event.data.acorde) {
       this.acordesRecomendados = [];
       linea.acordes[squareIndex].acorde = event.data.acorde;
@@ -438,12 +431,11 @@ export class TextBoxesComponent {
     } else if (linea.acordes[squareIndex].acorde) {
       linea.acordes[squareIndex].variacion = event.data;
     }
-    console.log(linea);
+    linea;
   }
 
   findAcordeRecomendado(grado: number, probabilidad: number) {
     if (this.tonalidadExpandida) {
-      console.log('TONALIDAD EXPANDIDA', this.tonalidadExpandida);
       const acordeEncontrado = this.getAcordesDeTonalidad(
         this.tonalidadExpandida
       ).find((acorde) => {
@@ -460,7 +452,6 @@ export class TextBoxesComponent {
     this.recomendaciones.getRecomendaciones().subscribe((res) => {
       this.recomendacion = res.recomendaciones;
       this.loading = false;
-      console.log('RECOMENDACIONES', this.recomendacion);
       this.recomendacion.forEach((recomendacion) => {
         this.findAcordeRecomendado(
           recomendacion.siguiente,
@@ -469,31 +460,17 @@ export class TextBoxesComponent {
       });
     });
   }
-  onDraggableCopied(event: DragEvent, acorde: Acorde) {
-    console.log('draggable copied', JSON.stringify(event, null, 2));
-  }
-
-  onDraggableLinked(event: DragEvent, acorde: Acorde) {
-    console.log('draggable linked', JSON.stringify(event, null, 2));
-  }
-
-  onDraggableMoved(event: DragEvent, acorde: Acorde) {
-    console.log('draggable moved', JSON.stringify(event, null, 2));
-  }
-
-  onDragCanceled(event: DragEvent, acorde: Acorde) {
-    console.log('drag cancelled', JSON.stringify(event, null, 2));
-  }
   /*onDragover(event: DragEvent, acorde: Acorde) {
-    console.log(acorde);
-    console.log('dragover', JSON.stringify(event, null, 2));
+    (acorde);
+    ('dragover', JSON.stringify(event, null, 2));
   }*/
   async enviarCancion() {
     const result = await this.openDialog();
-    console.log(this.cancion);
+    this.cancion;
     if (result) {
-      this.cancionService.enviarCancion(this.cancion!);
-      //this.router.navigate(['/canciones']);
+      this.cancionService.enviarCancion(this.cancion!).subscribe((res: any) => {
+        this.router.navigate(['/canciones/show/' + res.cancion.id]);
+      });
     }
   }
   async showInfo() {
@@ -508,15 +485,15 @@ export class TextBoxesComponent {
   async editarCancion() {
     const result = await this.openDialog();
     // Espera la respuesta del diálogo
-    console.log('EDITANDO CANCION', this.cancion);
     if (result) {
       if (this.edicion) {
         this.cancionService.editarCancion(this.cancion!);
         this.cancionService.actualizarBadge();
-        //this.router.navigate(['/canciones']);
+        this.router.navigate(['/canciones']);
       } else {
         this.cancionService.actualizarBadge();
         this.cancionService.revisarCancion(this.cancion!);
+        this.router.navigate(['/canciones']);
       }
     }
   }

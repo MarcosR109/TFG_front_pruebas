@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCard } from '@angular/material/card';
 import { MatIconButton } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-canciones-list',
   imports: [
@@ -24,6 +25,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
     MatIconButton,
     MatSortModule,
     MatSort,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './canciones-list.component.html',
   styleUrl: './canciones-list.component.css',
@@ -33,6 +35,7 @@ export class CancionesListComponent {
 
   debug: any[] = [];
   cancionesInit!: Cancion[];
+  isLoading: boolean = true;
   constructor(private cancionService: CancionService) {}
 
   ngOnInit() {
@@ -40,6 +43,7 @@ export class CancionesListComponent {
       this.cancionesInit = res.canciones;
       this.cancionService.setCanciones(this.cancionesInit);
       this.cancionesFiltradas = [...this.cancionesInit];
+      this.isLoading = false;
     });
 
     this.cancionService.cancionesFiltradas$.subscribe((filtros) => {
@@ -55,7 +59,7 @@ export class CancionesListComponent {
     const data = this.cancionesFiltradas.slice();
     if (!sort.active || sort.direction === '') {
       this.debug = data;
-      console.log(this.debug);
+      this.debug;
       return;
     }
     this.debug = data.sort((a, b) => {

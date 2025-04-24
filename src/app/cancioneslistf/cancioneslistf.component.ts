@@ -75,7 +75,7 @@ export class CancioneslistfComponent {
 
   aplicarFiltros() {
     this.filteredCanciones = this.cancionesList.filter((cancion: any) => {
-      console.log(cancion);
+      cancion;
 
       // Asegurarse de que género es string y manejar null/undefined correctamente
       const generoCancion = cancion?.genero?.nombre
@@ -84,8 +84,6 @@ export class CancioneslistfComponent {
       const generoFiltro = this.filtros.genero
         ? String(this.filtros.genero).toLowerCase()
         : '';
-      console.log('GENERO CANCION', generoCancion);
-      console.log('GENERO FILTRO', generoFiltro);
 
       const matchesGenero =
         !this.filtros.genero || generoCancion.includes(generoFiltro);
@@ -124,7 +122,7 @@ export class CancioneslistfComponent {
             this.searchType = 'titulo';
             this.cancionesList = data.canciones;
             this.filteredCanciones = [...this.cancionesList];
-            console.log(this.cancionesList);
+            this.cancionesList;
           } else {
             this.esArtista = false;
             this.buscarPorArtista();
@@ -161,7 +159,6 @@ export class CancioneslistfComponent {
     const data = this.cancionesList.slice();
     if (!sort.active || sort.direction === '') {
       this.debug = data;
-      console.log("SORTNOACTIVE O DIRECTION '' ", this.debug);
       return;
     }
     this.debug = data.sort((a, b) => {
