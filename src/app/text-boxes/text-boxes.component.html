@@ -4,6 +4,15 @@
   [class.recomendaciones-visible]="mostrarRecomendaciones"
 >
   <mat-card-header class="recomendaciones-header">
+    <button
+      class="recomendaciones-chevron"
+      mat-icon-button
+      (click)="toggleRecomendaciones()"
+    >
+      <mat-icon>{{
+        mostrarRecomendaciones ? "chevron_right" : "chevron_left"
+      }}</mat-icon>
+    </button>
     <div class="hoverpesao">
       <mat-icon
         #tooltip="matTooltip"
@@ -23,11 +32,6 @@
           /></svg
       ></mat-icon>
     </div>
-    <button mat-icon-button (click)="toggleRecomendaciones()">
-      <mat-icon>{{
-        mostrarRecomendaciones ? "chevron_right" : "chevron_left"
-      }}</mat-icon>
-    </button>
   </mat-card-header>
 
   <mat-card-content
@@ -101,15 +105,13 @@
           </svg>
         </span>
       </button>
-    </div>
-    <div class="button-row centered">
       <button mat-icon-button (click)="togglePreferirSostenidos()">
         <mat-icon *ngIf="this.preferSostenidos">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            height="24px"
+            height="20px"
             viewBox="0 -960 960 960"
-            width="24px"
+            width="20px"
             fill="#000000"
           >
             <path
@@ -119,8 +121,8 @@
         </mat-icon>
         <mat-icon *ngIf="!this.preferSostenidos">
           <svg
-            height="24px"
-            width="24px"
+            height="20px"
+            width="20px"
             version="1.1"
             id="_x32_"
             xmlns="http://www.w3.org/2000/svg"
@@ -158,8 +160,8 @@
 
     <div>
       <div class="button-row">
-        <button mat-icon-button (click)="addVelocidad()">
-          <mat-icon>add</mat-icon>
+        <button mat-icon-button (click)="substractVelocidad()">
+          <mat-icon>remove</mat-icon>
         </button>
         <button
           mat-icon-button
@@ -175,21 +177,21 @@
         >
           <mat-icon>stop</mat-icon>
         </button>
-        <button mat-icon-button (click)="substractVelocidad()">
-          <mat-icon>remove</mat-icon>
+        <button mat-icon-button (click)="addVelocidad()">
+          <mat-icon>add</mat-icon>
         </button>
       </div>
     </div>
 
     <div class="button-row">
       <button mat-icon-button (click)="modSemitono(-1)">
-        <span>-1</span>
+        <span style="font-size: 20px">-1</span>
       </button>
       <button mat-icon-button (click)="modSemitono(-this.semitones)">
-        <mat-icon>sync</mat-icon>
+        <mat-icon style="display: flex; font-size: 20px">sync</mat-icon>
       </button>
       <button mat-icon-button (click)="modSemitono(+1)">
-        <span>+1</span>
+        <span style="font-size: 20px">+1</span>
       </button>
     </div>
   </div>
@@ -202,7 +204,6 @@
       class="input-group"
       [style.width]="maxWidth"
     >
-      <div class="copy-container"></div>
       <div class="square-container" [style.width]="maxWidth">
         <mat-card
           class="square"
@@ -258,6 +259,7 @@
 
       <div class="button-container" *ngIf="!block">
         <button
+          title="Agrega una línea debajo."
           mat-raised-button
           class="add-line-btn"
           color="secondary"
@@ -266,6 +268,7 @@
           +
         </button>
         <button
+          title="Elimina la línea superior."
           mat-raised-button
           color="secondary"
           class="delete-line-btn"
@@ -285,6 +288,7 @@
           </svg>
         </button>
         <button
+          title="Copiar los acordes de la línea superior."
           mat-raised-button
           class="copy-line-btn"
           (click)="copiarLinea(index)"
@@ -302,8 +306,10 @@
           </svg>
         </button>
         <button
+          title="Pegar los acordes del portapapeles."
           mat-raised-button
           class="copy-line-btn"
+          style="z-index: -100"
           (click)="pegarLinea(index)"
         >
           <svg
@@ -326,7 +332,7 @@
   <div class="contenedor">
     <mat-icon
       #tooltip="matTooltip"
-      matTooltip="Aquí puedes ver las recomendaciones de acordes"
+      matTooltip="Selecciona una tonalidad y arrastra los acordes al compás que quieras"
       [matTooltipPosition]="'below'"
       matTooltipHideDelay="100"
       aria-label="Button that displays a tooltip that hides when scrolled out of the container"
@@ -371,6 +377,26 @@
   </div>
 </aside>
 <div *ngIf="!block" class="variaciones-container" [class.arriba]="menuArriba">
+  <div class="variaciones-tooltip">
+    <mat-icon
+      class="variaciones-icon"
+      #tooltip="matTooltip"
+      matTooltip="Arrastra una variación al acorde que quieras"
+      [matTooltipPosition]="'below'"
+      matTooltipHideDelay="100"
+      aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+      ><svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#000000"
+      >
+        <path
+          d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+        /></svg
+    ></mat-icon>
+  </div>
   <div class="variaciones-slider">
     <button
       *ngFor="let variacion of variaciones"
@@ -385,7 +411,7 @@
   <button
     [disabled]="this.cancion?.lineas?.length === 0"
     mat-raised-button
-    color="primary"
+    style="background-color: #a6c5f3"
     (click)="enviarCancion()"
   >
     Enviar canción
@@ -395,7 +421,7 @@
   <button
     [disabled]="this.cancion?.lineas?.length === 0"
     mat-raised-button
-    color="primary"
+    style="background-color: #a6c5f3"
     (click)="editarCancion()"
   >
     Terminar revisión
@@ -405,7 +431,7 @@
   <button
     [disabled]="this.cancion?.lineas?.length === 0"
     mat-raised-button
-    color="primary"
+    style="background-color: #a6c5f3"
     (click)="editarCancion()"
   >
     Editar

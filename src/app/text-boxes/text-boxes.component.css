@@ -342,6 +342,15 @@ aside {
   }
 }
 
+.variaciones-icon {
+  z-index: 10000;
+}
+.variaciones-icon svg {
+  z-index: 10000;
+}
+.variaciones-tooltip {
+  margin: 8px;
+}
 .variaciones-slider {
   display: flex;
   gap: 8px;
@@ -389,7 +398,7 @@ aside {
 }*/
 .recomendaciones-flotante {
   position: fixed;
-  right: 0;
+  right: -5px;
   top: 15%;
   transform: translateY(-50%);
   width: 60px;
@@ -415,7 +424,10 @@ aside {
       display: none;
       color: black;
     }
-
+    .hoverpesao {
+      right: 10px;
+      margin-right: 32px;
+    }
     button mat-icon {
       color: black !important;
     }

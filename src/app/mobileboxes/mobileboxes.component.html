@@ -55,11 +55,7 @@
         class="input-field"
         [style.width]="maxWidth"
       >
-        <input
-          matInput
-          [(ngModel)]="linea.texto"
-          placeholder="Texto recibido"
-        />
+        <input matInput [(ngModel)]="linea.texto" placeholder="Letra" />
       </mat-form-field>
 
       <!-- Texto plano cuando this.block es true -->
@@ -114,6 +110,24 @@
             />
           </svg>
         </button>
+        <button
+          title="Pegar los acordes del portapapeles."
+          mat-raised-button
+          class="copy-line-btn"
+          (click)="pegarLinea(index)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h167q11-35 43-57.5t70-22.5q40 0 71.5 22.5T594-840h166q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560h-80v120H280v-120h-80v560Zm280-560q17 0 28.5-11.5T520-800q0-17-11.5-28.5T480-840q-17 0-28.5 11.5T440-800q0 17 11.5 28.5T480-760Z"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -124,11 +138,41 @@
     <mat-icon>{{ panelAbierto ? "expand_more" : "expand_less" }}</mat-icon>
     <span>Herramientas</span>
     <div class="header-actions">
+      <mat-chip *ngIf="acordeTouch" class="chipi">
+        {{ acordeTouch?.acorde || "Acorde" }}
+      </mat-chip>
       <button
         class="tool-btn"
         (click)="$event.stopPropagation(); toggleNotation()"
       >
-        {{ notation === "latin" ? "SP" : "LT" }}
+        <span *ngIf="this.notation == 'latin'"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="16px"
+            fill="#000000"
+          >
+            <path
+              d="M600-280q-33 0-56.5-23.5T520-360v-40h80v40h120v-80H600q-33 0-56.5-23.5T520-520v-80q0-33 23.5-56.5T600-680h120q33 0 56.5 23.5T800-600v40h-80v-40H600v80h120q33 0 56.5 23.5T800-440v80q0 33-23.5 56.5T720-280H600ZM160-680h280v80H240v80h160v80H240v80h200v80H160v-400Z"
+            /></svg
+        ></span>
+        <span
+          *ngIf="this.notation == 'american'"
+          class="material-symbols-outlined"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="16px"
+            fill="#000000"
+          >
+            <path
+              d="M240-280q-33 0-56.5-23.5T160-360v-320h80v320h120v-320h80v320q0 33-23.5 56.5T360-280H240Zm360 0q-33 0-56.5-23.5T520-360v-40h80v40h120v-80H600q-33 0-56.5-23.5T520-520v-80q0-33 23.5-56.5T600-680h120q33 0 56.5 23.5T800-600v40h-80v-40H600v80h120q33 0 56.5 23.5T800-440v80q0 33-23.5 56.5T720-280H600Z"
+            />
+          </svg>
+        </span>
       </button>
       <button
         class="tool-btn"
@@ -141,8 +185,39 @@
 
   <div class="panel-content" *ngIf="panelAbierto">
     <!-- Acordes por tonalidad -->
-    <div class="acordes-section" *ngIf="block">
-      <h3 class="section-title">Acordes por tonalidad</h3>
+    <div class="acordes-section" *ngIf="!block">
+      <h3 class="section-title">
+        Acordes por tonalidad
+        <mat-icon
+          class="variaciones-icon"
+          #tooltip="matTooltip"
+          matTooltip="Selecciona un acorde y añádelo al compás que quieras."
+          [matTooltipPosition]="'below'"
+          matTooltipHideDelay="100"
+          aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+          (click)="tooltip.toggle(); $event.stopPropagation()"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+            /></svg
+        ></mat-icon>
+      </h3>
+      <div class="acordes-container" *ngIf="tonalidadExpandida">
+        <div
+          *ngFor="let acorde of getAcordesDeTonalidad(tonalidadExpandida)"
+          class="acorde-box"
+          (touchstart)="onTouch($event, acorde)"
+          [class.seleccionada]="acordeTouch?.acorde == acorde.acorde"
+        >
+          {{ acorde.acorde }}
+        </div>
+      </div>
       <div class="tonalidades-scroll">
         <div class="scroll-content">
           <button
@@ -155,26 +230,39 @@
           </button>
         </div>
       </div>
-
-      <div class="acordes-container" *ngIf="tonalidadExpandida">
-        <div
-          *ngFor="let acorde of getAcordesDeTonalidad(tonalidadExpandida)"
-          class="acorde-box"
-          (touchstart)="onTouch($event, acorde)"
-        >
-          {{ acorde.acorde }}
-        </div>
-      </div>
     </div>
 
     <!-- Variaciones -->
     <div class="variaciones-section">
-      <h3 class="section-title">Variaciones</h3>
+      <h3 class="section-title">
+        Variaciones
+        <mat-icon
+          class="variaciones-icon"
+          #tooltipVariaciones="matTooltip"
+          matTooltip="Selecciona una variación y añádela al acorde que quieras"
+          [matTooltipPosition]="'below'"
+          matTooltipHideDelay="100"
+          aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+          (click)="tooltipVariaciones.toggle(); $event.stopPropagation()"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+            /></svg
+        ></mat-icon>
+      </h3>
+
       <div class="variaciones-slider">
         <button
-          *ngFor="let variacion of variaciones"
+          *ngFor="let variacion of variaciones; trackby: trackByAcorde"
           class="variacion-btn"
           (touchstart)="onTouchVariacion($event, variacion)"
+          [class.btn-seleccionada]="variacionTouch == variacion"
         >
           {{ variacion }}
         </button>
@@ -183,13 +271,35 @@
     <!-- Sección de velocidad y scroll automático -->
     <!-- Panel de recomendaciones -->
     <div class="recomendaciones-section">
-      <h3 class="section-title">Recomendados</h3>
+      <h3 class="section-title" #tooltip>
+        Recomendados
+        <mat-icon
+          class="icon"
+          #tooltipReco="matTooltip"
+          matTooltip="Selecciona un acorde recomendado"
+          [matTooltipPosition]="'below'"
+          matTooltipHideDelay="100"
+          aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+          (click)="tooltipReco.toggle(); $event.stopPropagation()"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#000000"
+          >
+            <path
+              d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+            /></svg
+        ></mat-icon>
+      </h3>
       <div class="recomendaciones-container" *ngIf="!loading">
         <div
           *ngFor="let acorde of acordesRecomendados"
           class="acorde-recomendado"
           (touchstart)="$event.stopPropagation(); onTouch($event, acorde)"
           [ngClass]="acorde.probabilidad >= 0.5 ? 'probable' : 'poco-probable'"
+          [class.seleccionada]="acordeTouch?.acorde == acorde.acorde"
         >
           <app-acordeshow
             [chord]="acorde.acorde || ''"

@@ -71,7 +71,7 @@ export class CancionService {
     );
   }
   enviarCancion(cancion: Cancion) {
-    this.http.post(this.URL + 'canciones', cancion).subscribe((res) => {
+    return this.http.post(this.URL + 'canciones', cancion).subscribe((res) => {
       console.log(res);
     });
   }

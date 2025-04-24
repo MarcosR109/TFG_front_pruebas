@@ -41,6 +41,8 @@ import { AcordeTransposePipe } from '../acorde-transpose.pipe';
 import { RecomendacionesService } from '../recomendaciones.service';
 import { finalize, find, fromEvent, take } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-mobileboxes',
   imports: [
@@ -57,6 +59,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AcordeshowComponent,
     AcordeTransformPipe,
     MatProgressSpinnerModule,
+    MatChipsModule,
+    MatTooltipModule,
   ],
   templateUrl: './mobileboxes.component.html',
   styleUrl: './mobileboxes.component.css',
@@ -99,6 +103,7 @@ export class MobileboxesComponent {
   pegadoFlag: boolean = false; // Bandera para indicar si se ha pegado un acorde
   private isFetching = false;
   loading: boolean = false;
+  acordesCopy!: any;
   constructor(
     private renderer: Renderer2,
     private settingsService: AcordeTransformSettingsService,
@@ -380,10 +385,13 @@ export class MobileboxesComponent {
     if (this.acordeTouch) {
       this.acordeTouch = undefined;
     }
+
     console.log('Variación tocada:', variacion);
     $event.preventDefault(); // Evita el comportamiento por defecto del evento touch
     this.anadirEventListener();
     this.variacionTouch = variacion;
+    console.log('Comp', this.variacionTouch == variacion);
+    console.log(this.variacionTouch);
   }
 
   pegarAcorde(event?: any, linea?: number, squareIndex?: number) {
@@ -449,7 +457,20 @@ export class MobileboxesComponent {
     }
   }
 
-  copiarLinea(index: number) {}
+  copiarLinea(index: number) {
+    this.acordesCopy = this.cancion?.lineas?.[index].acordes;
+    console.log(this.acordesCopy); // Obtener la línea a copiar
+  }
+  pegarLinea(index: number) {
+    if (this.acordesCopy) {
+      if (this.cancion && this.cancion.lineas && this.cancion.lineas[index]) {
+        const nuevosAcordes = JSON.parse(JSON.stringify(this.acordesCopy)); // Copia profunda
+        console.log(nuevosAcordes);
+
+        this.cancion.lineas[index].acordes = nuevosAcordes;
+      }
+    }
+  }
   actualizarRecomendaciones() {
     if (this.isFetching || !this.pegadoFlag) {
       return;

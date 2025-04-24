@@ -185,7 +185,7 @@ export class TextinputComponent {
   }
 
   romperTexto(lines: string) {
-    /*if (
+    if (
       !this.cancion.titulo ||
       !this.texto ||
       this.cancion.privada == null ||
@@ -195,7 +195,7 @@ export class TextinputComponent {
     ) {
       this.error = 'Porfavor completa todos los campos requeridos.';
       return;
-    }*/
+    }
     this.text = lines.trim().split('\n');
     console.log(this.text);
     this.enviado = true;

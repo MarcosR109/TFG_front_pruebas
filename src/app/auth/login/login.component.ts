@@ -84,18 +84,17 @@ import { AuthService } from '../auth.service';
               </button>
             </div>
             <!-- Mensajes de error generales -->
-  <div *ngIf="loginForm.errors" class="error-message">
-    <p *ngIf="loginForm.errors['invalidCredentials']">
-      Credenciales inválidas. Por favor, inténtalo de nuevo.
-    </p>
-    <p *ngIf="loginForm.errors['connectionError']">
-      Error de conexión: {{ loginForm.errors['connectionError'] }}
-    </p>
-    <p *ngIf="loginForm.errors['serverError']">
-      Error del servidor: {{ loginForm.errors['serverError'] }}
-    </p>
-  </div>
-
+            <div *ngIf="loginForm.errors" class="error-message">
+              <p *ngIf="loginForm.errors['invalidCredentials']">
+                Credenciales inválidas. Por favor, inténtalo de nuevo.
+              </p>
+              <p *ngIf="loginForm.errors['connectionError']">
+                Error de conexión: {{ loginForm.errors['connectionError'] }}
+              </p>
+              <p *ngIf="loginForm.errors['serverError']">
+                Error del servidor: {{ loginForm.errors['serverError'] }}
+              </p>
+            </div>
           </form>
         </mat-card-content>
 
@@ -141,16 +140,16 @@ import { AuthService } from '../auth.service';
         margin-bottom: 24px;
       }
       .error-message {
-  color: #f44336; /* Rojo de Material Design */
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #ffebee; /* Fondo rojo claro */
-  border-radius: 4px;
-}
+        color: #f44336; /* Rojo de Material Design */
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #ffebee; /* Fondo rojo claro */
+        border-radius: 4px;
+      }
 
-.error-message p {
-  margin: 5px 0;
-}
+      .error-message p {
+        margin: 5px 0;
+      }
       @media (max-width: 768px) {
         .login-container {
           height: calc(100vh - 56px);
@@ -178,7 +177,7 @@ export class LoginComponent {
         },
         error: (error: any) => {
           this.handleLoginError(error);
-        }
+        },
       });
     }
   }
@@ -189,7 +188,9 @@ export class LoginComponent {
       this.loginForm.setErrors({ invalidCredentials: true });
     } else if (error.status === 0) {
       // Error de conexión
-      this.loginForm.setErrors({ connectionError: 'No se pudo conectar al servidor' });
+      this.loginForm.setErrors({
+        connectionError: 'No se pudo conectar al servidor',
+      });
     } else {
       // Otros errores
       this.loginForm.setErrors({ serverError: 'Error en el servidor' });
