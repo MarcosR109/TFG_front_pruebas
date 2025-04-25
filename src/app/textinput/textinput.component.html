@@ -142,7 +142,7 @@
           <mat-option [value]="true" selected>Sí</mat-option>
           <mat-option [value]="false">No</mat-option>
         </mat-select>
-        <mat-icon matSuffix>filter_none</mat-icon>
+        <mat-icon matSuffix>visibility_off</mat-icon>
       </mat-form-field>
     </div>
 
@@ -158,16 +158,31 @@
       <mat-icon matSuffix>notes</mat-icon>
     </mat-form-field>
   </div>
-  <div *ngIf="error" class="error-message">
+  <div *ngIf="error.message" class="error-message">
     <mat-icon>error</mat-icon>
-    <span>{{ error }}</span>
+    <div class="error-content">
+      <span class="error-title">{{ error.message }}</span>
+      <span *ngIf="error.titulo" class="error-detail">{{ error.titulo }}</span>
+      <span *ngIf="error.texto" class="error-detail">{{ error.texto }}</span>
+      <span *ngIf="error.artista" class="error-detail">{{
+        error.artista
+      }}</span>
+      <span *ngIf="error.genero" class="error-detail">{{ error.genero }}</span>
+      <span *ngIf="error.privada" class="error-detail">{{
+        error.tonalidad
+      }}</span>
+      <span *ngIf="error.capo" class="error-detail">{{ error.capo }}</span>
+      <span *ngIf="error.privada" class="error-detail">{{
+        error.privada
+      }}</span>
+    </div>
   </div>
 
   <div class="form-actions">
     <button
       mat-raised-button
       style="background-color: #a6c5f3"
-      (click)="romperTexto(textArea.value); textArea.value = ''"
+      (click)="romperTexto(textArea.value)"
     >
       <mat-icon>send</mat-icon>
       Procesar Canción

@@ -89,17 +89,28 @@ export class TextinputComponent {
   artistasFiltrados = this.artistas.artistas;
   inputTexto = ''; // Para mostrar el valor en el input
   generos = generos;
-  generoSeleccionado = { id: 1, nombre: 'Pop' };
+  generoSeleccionado!: { id: number; nombre: string } | null;
   revisable!: any;
   esRevision: boolean = false;
   esEdicion: boolean = false;
   esMovil: boolean = false;
-  error!: any;
+  error!: {
+    titulo?: string;
+    texto?: string;
+    privada?: string;
+    genero?: string;
+    tonalidad?: string;
+    capo?: string;
+    artista?: string;
+    message?: string;
+  };
+  titulo: any;
   constructor(
     route: ActivatedRoute,
     cancionService: CancionService,
     private mobileService: MobileService
   ) {
+    this.error = {};
     let id = route.snapshot.params['id'];
     this.esEdicion = route.snapshot.params['edicion'] == 'true';
     this.esEdicion;
@@ -184,6 +195,7 @@ export class TextinputComponent {
   }
 
   romperTexto(lines: string) {
+    this.error = {};
     console.log(this.texto);
     console.log();
 
@@ -194,7 +206,27 @@ export class TextinputComponent {
     console.log('Tonalidad seleccionada:', this.tonalidadSeleccionada);
     console.log('Capo:', this.cancion.capo);
     console.log('Artista seleccionado:', this.artistaSeleccionado?.nombre);
-
+    if (this.cancion.titulo == null) {
+      this.error.titulo = 'Porfavor introduce un título';
+    }
+    if (this.texto.length <= 0) {
+      this.error.texto = 'Porfavor introduce una letra';
+    }
+    if (this.cancion.privada == null) {
+      this.error.privada = 'Porfavor escoge si es privada o pública';
+    }
+    if (this.generoSeleccionado?.id == null) {
+      this.error.genero = 'Porfavor escoge un género';
+    }
+    if (this.tonalidadSeleccionada?.id == null) {
+      this.error.tonalidad = 'Porfavor escoge una tonalidad';
+    }
+    if (this.cancion.capo == null) {
+      this.error.capo = 'Porfavor introduce un capo';
+    }
+    if (this.artistaSeleccionado?.nombre == null) {
+      this.error.artista = 'Porfavor escoge un artista';
+    }
     if (
       !this.cancion.titulo ||
       !this.texto ||
@@ -204,7 +236,7 @@ export class TextinputComponent {
       this.cancion.capo == null ||
       this.artistaSeleccionado?.nombre == null
     ) {
-      this.error = 'Porfavor completa todos los campos requeridos.';
+      this.error.message = 'Porfavor completa todos los campos requeridos.';
       return;
     }
     this.text = lines.trim().split('\n');

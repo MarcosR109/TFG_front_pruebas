@@ -350,7 +350,7 @@ export class TextBoxesComponent {
     }
   }
   handleScroll() {
-    if (!this.externalContainer) return;
+    if (!this.externalContainer || (this.lines?.length ?? 0) < 5) return;
     const scrollTop = this.externalContainer.scrollTop;
     const scrollHeight = this.externalContainer.scrollHeight;
     const clientHeight = this.externalContainer.clientHeight;
