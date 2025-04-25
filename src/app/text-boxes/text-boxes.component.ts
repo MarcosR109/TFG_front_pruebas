@@ -487,12 +487,12 @@ export class TextBoxesComponent {
     // Espera la respuesta del diálogo
     if (result) {
       if (this.edicion) {
-        this.cancionService.editarCancion(this.cancion!);
+        this.cancionService.editarCancion(this.cancion!).subscribe();
         this.cancionService.actualizarBadge();
         this.router.navigate(['/canciones']);
       } else {
         this.cancionService.actualizarBadge();
-        this.cancionService.revisarCancion(this.cancion!);
+        this.cancionService.revisarCancion(this.cancion!).subscribe();
         this.router.navigate(['/canciones']);
       }
     }

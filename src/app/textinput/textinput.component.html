@@ -136,7 +136,11 @@
         <mat-icon matSuffix>filter_none</mat-icon>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-col">
+      <mat-form-field
+        appearance="outline"
+        class="form-col"
+        *ngIf="!esRevision || esEdicion"
+      >
         <mat-label>Privada</mat-label>
         <mat-select [(ngModel)]="cancion.privada" required="true">
           <mat-option [value]="true" selected>Sí</mat-option>
