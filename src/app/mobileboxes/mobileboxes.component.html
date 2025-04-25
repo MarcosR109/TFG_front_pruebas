@@ -138,8 +138,8 @@
     <mat-icon>{{ panelAbierto ? "expand_more" : "expand_less" }}</mat-icon>
     <span>Herramientas</span>
     <div class="header-actions">
-      <mat-chip *ngIf="acordeTouch" class="chipi">
-        {{ acordeTouch?.acorde || "Acorde" }}
+      <mat-chip *ngIf="acordeTouch || variacionTouch" class="chipi">
+        {{ acordeTouch?.acorde || variacionTouch }}
       </mat-chip>
       <button
         class="tool-btn"
