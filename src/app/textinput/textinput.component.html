@@ -138,7 +138,7 @@
 
       <mat-form-field appearance="outline" class="form-col">
         <mat-label>Privada</mat-label>
-        <mat-select [value]="cancion.privada == true" required="true">
+        <mat-select [(ngModel)]="cancion.privada" required="true">
           <mat-option [value]="true" selected>Sí</mat-option>
           <mat-option [value]="false">No</mat-option>
         </mat-select>

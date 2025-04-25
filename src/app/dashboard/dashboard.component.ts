@@ -76,6 +76,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
+  isLoading: boolean = true;
   canciones: Cancion[] = [];
 
   todasSeleccionadas = false;
@@ -117,6 +118,9 @@ export class DashboardComponent {
   cambiarVista(event: MatTabChangeEvent): void {
     this.vistaActual = event.index === 0 ? 'canciones' : 'usuarios';
     if (this.vistaActual === 'usuarios' && this.usuarios.length === 0) {
+      console.log(this.isLoading);
+
+      this.isLoading = true;
       this.cargarUsuarios();
     }
   }
@@ -129,6 +133,7 @@ export class DashboardComponent {
         this.usuarios = usuarios.usuarios;
         this.aplicarFiltrosUsuarios();
         this.usuarios;
+        this.isLoading = false;
       },
       error: (error: any) => {
         console.error('Error al cargar los usuarios:', error);
@@ -164,6 +169,7 @@ export class DashboardComponent {
         this.aplicarFiltrosCanciones();
         this.canciones;
         this.cancionesFiltradas = this.canciones;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error al cargar las canciones:', error);
@@ -366,7 +372,11 @@ export class DashboardComponent {
         this.selectListUsuarios.forEach((id: any) => {
           this.cancionService.eliminarUsuario(id).subscribe((res) => {
             res;
-            this.usuarios = this.usuarios.filter((u: any) => u.id !== id);
+
+            this.usuariosFiltrados = this.usuariosFiltrados.filter(
+              (u: any) => u.id !== id
+            );
+
             this.selectListUsuarios = [];
             this.toggleSeleccionTodasUsuarios(false);
           });

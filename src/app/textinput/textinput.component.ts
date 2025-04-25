@@ -184,13 +184,25 @@ export class TextinputComponent {
   }
 
   romperTexto(lines: string) {
+    console.log(this.texto);
+    console.log();
+
+    console.log('Título:', this.cancion.titulo);
+    console.log('Texto:', this.texto);
+    console.log('Privada:', this.cancion.privada);
+    console.log('Género seleccionado:', this.generoSeleccionado);
+    console.log('Tonalidad seleccionada:', this.tonalidadSeleccionada);
+    console.log('Capo:', this.cancion.capo);
+    console.log('Artista seleccionado:', this.artistaSeleccionado?.nombre);
+
     if (
       !this.cancion.titulo ||
       !this.texto ||
       this.cancion.privada == null ||
       this.generoSeleccionado == null ||
       this.tonalidadSeleccionada == null ||
-      this.cancion.capo == null
+      this.cancion.capo == null ||
+      this.artistaSeleccionado?.nombre == null
     ) {
       this.error = 'Porfavor completa todos los campos requeridos.';
       return;

@@ -219,7 +219,14 @@
           ></tr>
         </table>
 
-        <div *ngIf="cancionesFiltradas.length === 0" class="no-results">
+        <div *ngIf="isLoading" class="centered-spinner no-results">
+          <mat-spinner diameter="60"></mat-spinner>
+          <h3>Buscando canciones...</h3>
+        </div>
+        <div
+          *ngIf="cancionesFiltradas.length === 0 && !isLoading"
+          class="no-results"
+        >
           <mat-icon>search_off</mat-icon>
           <h3>No se encontraron canciones</h3>
           <p>Prueba ajustando los filtros de búsqueda</p>
@@ -308,6 +315,10 @@
             [class.usuario-seleccionado]="selectListUsuarios.includes(row.id)"
           ></tr>
         </table>
+        <div *ngIf="isLoading" class="centered-spinner no-results">
+          <mat-spinner diameter="60"></mat-spinner>
+          <h3>Buscando usuarios...</h3>
+        </div>
       </mat-card>
     </mat-tab>
   </mat-tab-group>

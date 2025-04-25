@@ -44,6 +44,7 @@ export class CancionComponent {
   esFavorito!: boolean;
   estaGuardado!: boolean;
   isLoading: boolean = true;
+  hoverRating: number = 0; // Variable para almacenar el rating al pasar el ratón
   toggleFavorito() {
     if (!this.esFavorito) {
       this.cancionService.addFavorito(this.cancion.id!).subscribe(

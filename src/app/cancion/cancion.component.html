@@ -5,7 +5,7 @@
         <div class="header-text">
           <h2 class="title">{{ cancion.titulo }}</h2>
           <h3 class="artist">{{ cancion.artista || "Anónimo" }}</h3>
-          <p *ngIf="cancion.comentario != 'no'" class="description">
+          <p *ngIf="cancion.comentario != 'No'" class="description">
             {{ cancion.comentario }}
           </p>
           <div class="tags">
@@ -23,9 +23,20 @@
           >
             {{ esFavorito ? "favorite" : "favorite_border" }}
           </mat-icon>
-          <div class="rating">
-            <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]">
-              {{ getStarType(star, cancion.rating || 0) }}
+          <div class="rating" *ngIf="!blockRating">
+            <mat-icon
+              *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+              (click)="rate(i + 1)"
+              (mouseenter)="hoverRating = i + 1"
+              (mouseleave)="hoverRating = 0"
+              [class.active]="(hoverRating || cancion.rating || 0) >= star"
+            >
+              {{ getStarType(star, hoverRating || cancion.rating || 0) }}
+            </mat-icon>
+          </div>
+          <div class="rating" *ngIf="blockRating">
+            <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+              {{ getStarType(star, rating || 0) }}
             </mat-icon>
           </div>
         </div>

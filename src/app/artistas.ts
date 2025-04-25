@@ -203,7 +203,6 @@ export const artistas: Artistas = {
     { id: 177, nombre: 'The Weeknd' },
     { id: 178, nombre: 'Sia' },
     { id: 179, nombre: '21 Pilots' },
-    { id: 180, nombre: 'Anónimo' },
-    
+    { id: 180, nombre: 'Anónimo/Desconocido' },
   ],
 };
