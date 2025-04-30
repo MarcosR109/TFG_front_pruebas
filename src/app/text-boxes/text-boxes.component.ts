@@ -117,6 +117,7 @@ export class TextBoxesComponent {
   loading: boolean = false; // Estado de carga
   // Método para alternar visibilidad
   acordesCopy!: any;
+  container!: any;
   toggleRecomendaciones() {
     this.mostrarRecomendaciones = !this.mostrarRecomendaciones;
   }
@@ -159,11 +160,20 @@ export class TextBoxesComponent {
       return;
     }
   }
-
+  ngOnDestroy() {
+    console.log('Destruyendo componente...');
+    if (this.externalContainer) {
+      this.externalContainer.removeEventListener(
+        'scroll',
+        this.handleScroll.bind(this)
+      );
+    }
+    this.velocidad = 0;
+  }
   autoScrollContainer() {
-    const container = this.renderer.selectRootElement('.scrollable', true);
-    if (container) {
-      container.scrollBy({
+    this.container = this.renderer.selectRootElement('.scrollable', true);
+    if (this.container) {
+      this.container.scrollBy({
         top: this.velocidad,
         behavior: 'smooth',
       });
@@ -359,22 +369,16 @@ export class TextBoxesComponent {
 
     this.changeDetector.detectChanges();
   }
-  ngOnDestroy() {
-    if (this.externalContainer) {
-      this.externalContainer.removeEventListener(
-        'scroll',
-        this.handleScroll.bind(this)
-      );
-    }
-  }
+
   // Función para eliminar un acorde
   eliminarAcorde(n_linea: number, squareIndex: number) {
     const linea = this.lines?.find((line) => line.n_linea === n_linea);
     if (linea) {
       const acorde = linea.acordes[squareIndex];
       acorde;
-      acorde.acorde = ''; // Limpiamos el acorde
+      acorde.acorde = 'aux'; // Limpiamos el acorde
       acorde.variacion = ''; // Limpiamos la variación
+      acorde.id = 169; // Limpiamos el id
     }
   }
   seleccionarTonalidad(tonalidad: string) {

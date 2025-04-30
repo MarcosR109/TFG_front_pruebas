@@ -32,7 +32,18 @@
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+.plaintext {
+  white-space: pre; /* Conserva espacios y saltos de línea */
+  width: 100%;
+  text-align: left; /* Alinea el texto a la izquierda */
+}
 
+.plaintext .text-material-design {
+  white-space: pre; /* Conserva espacios y saltos de línea */
+  text-align: left;
+  margin: 0; /* Elimina márgenes por defecto */
+  padding: 0;
+}
 .acorde-input input {
   width: 100% !important; /* Asegura que el input no exceda el contenedor */
   text-align: center;
@@ -257,7 +268,7 @@ aside {
 }
 
 .tonalidad-box {
-  background: #ddd;
+  background: #dfdfdf;
   padding: 5px 10px;
   margin: 2px;
   border-radius: 4px;
@@ -284,7 +295,7 @@ aside {
   word-wrap: break-word; /* Permite que el texto se ajuste a la pantalla */
 }
 .tonalidad-box.seleccionada {
-  background: #b3b3b3;
+  background: #eeeeee;
   font-weight: bold;
 }
 /* Estilos para la lista de acordes */
@@ -294,7 +305,7 @@ aside {
   align-items: flex-start;
   padding: 10px;
   margin-left: 10px; /* Cambié 'margin-right' a 'margin-left' */
-  border-left: 2px solid #aaa; /* Cambié de border-right a border-left */
+  border-left: 2px solid #eeeeee; /* Cambié de border-right a border-left */
   overflow: hidden;
   order: 1; /* Esto asegura que los acordes estén a la izquierda */
   overflow-y: auto; /* Permite el scroll vertical */
@@ -482,6 +493,7 @@ aside {
   align-items: center;
   gap: 8px;
   margin-top: 16px;
+  margin-bottom: 32px;
   padding: 0 16px; /* Añadido para evitar que el botón toque los bordes */
 }
 .probable {

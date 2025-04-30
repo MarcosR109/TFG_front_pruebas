@@ -181,6 +181,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
               <button
+                *ngIf="cancion.privada == 0 && cancion.publicada == 0"
                 mat-icon-button
                 color="light"
                 [routerLink]="['/revisiones', cancion.id]"

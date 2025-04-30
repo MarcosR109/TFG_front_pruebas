@@ -490,4 +490,43 @@ export class MobileboxesComponent {
         },
       });
   }
+  async enviarCancion() {
+    const result = await this.openDialog();
+    this.cancion;
+    if (result) {
+      this.cancionService.enviarCancion(this.cancion!).subscribe((res: any) => {
+        this.router.navigate(['/canciones/show/' + res.cancion.id]);
+      });
+    }
+  }
+  async showInfo() {
+    const result = await this.showDialogInfo();
+  }
+  showDialogInfo(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: { title: 'Recomendaciones armónicas' },
+    });
+    return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
+  }
+  async editarCancion() {
+    const result = await this.openDialog();
+    // Espera la respuesta del diálogo
+    if (result) {
+      if (this.edicion) {
+        this.cancionService.editarCancion(this.cancion!).subscribe();
+        this.cancionService.actualizarBadge();
+        this.router.navigate(['/canciones']);
+      } else {
+        this.cancionService.actualizarBadge();
+        this.cancionService.revisarCancion(this.cancion!).subscribe();
+        this.router.navigate(['/canciones']);
+      }
+    }
+  }
+  openDialog(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: { title: '¿Enviar canción?', message: '¿Estás seguro?' },
+    });
+    return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
+  }
 }

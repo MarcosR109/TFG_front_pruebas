@@ -354,3 +354,33 @@
     </div>
   </div>
 </div>
+<div *ngIf="!block && !revision && !edicion" class="submit-container">
+  <button
+    [disabled]="this.cancion?.lineas?.length === 0"
+    mat-raised-button
+    style="background-color: #a6c5f3"
+    (click)="enviarCancion()"
+  >
+    Enviar canción
+  </button>
+</div>
+<div *ngIf="!block && revision" class="submit-container">
+  <button
+    [disabled]="this.cancion?.lineas?.length === 0"
+    mat-raised-button
+    style="background-color: #a6c5f3"
+    (click)="editarCancion()"
+  >
+    Terminar revisión
+  </button>
+</div>
+<div *ngIf="!block && edicion" class="submit-container">
+  <button
+    [disabled]="this.cancion?.lineas?.length === 0"
+    mat-raised-button
+    style="background-color: #a6c5f3"
+    (click)="editarCancion()"
+  >
+    Editar
+  </button>
+</div>

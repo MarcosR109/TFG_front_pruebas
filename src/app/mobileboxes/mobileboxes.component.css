@@ -160,6 +160,7 @@
   gap: 8px;
   margin-top: 16px;
   padding: 0 16px; /* Añadido para evitar que el botón toque los bordes */
+  margin-bottom: 100px;
 }
 /* Estilos generales del panel */
 .mobile-tools-panel {
