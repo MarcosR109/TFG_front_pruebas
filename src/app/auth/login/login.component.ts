@@ -77,6 +77,7 @@ import { AuthService } from '../auth.service';
               <button
                 mat-raised-button
                 color="primary"
+                [class]="loginForm.valid ? 'primary' : 'disabled'"
                 type="submit"
                 [disabled]="!loginForm.valid"
               >
@@ -99,7 +100,10 @@ import { AuthService } from '../auth.service';
         </mat-card-content>
 
         <mat-card-actions class="footer-actions">
-          <a mat-button color="primary" routerLink="/register"
+          <a
+            mat-button
+            style="background-color:rgba(166, 197, 243, 0.54)"
+            routerLink="/register"
             >¿No tienes cuenta? Regístrate</a
           >
         </mat-card-actions>
@@ -150,6 +154,11 @@ import { AuthService } from '../auth.service';
       .error-message p {
         margin: 5px 0;
       }
+      .primary {
+        background-color: #a6c5f3;
+        color: black;
+      }
+
       @media (max-width: 768px) {
         .login-container {
           height: calc(100vh - 56px);

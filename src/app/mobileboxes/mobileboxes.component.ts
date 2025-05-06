@@ -513,6 +513,8 @@ export class MobileboxesComponent {
     // Espera la respuesta del diálogo
     if (result) {
       if (this.edicion) {
+        console.log('Canción editada', this.cancion);
+
         this.cancionService.editarCancion(this.cancion!).subscribe();
         this.cancionService.actualizarBadge();
         this.router.navigate(['/canciones']);

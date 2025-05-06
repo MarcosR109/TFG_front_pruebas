@@ -143,8 +143,8 @@
       >
         <mat-label>Privada</mat-label>
         <mat-select [(ngModel)]="cancion.privada" required="true">
-          <mat-option [value]="true" selected>Sí</mat-option>
-          <mat-option [value]="false">No</mat-option>
+          <mat-option [value]="1" selected>Sí</mat-option>
+          <mat-option [value]="0">No</mat-option>
         </mat-select>
         <mat-icon matSuffix>visibility_off</mat-icon>
       </mat-form-field>

@@ -88,7 +88,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
             <span>Buscar</span>
           </button>
           <button
-            *ngIf="(isLoggedIn && this.userRole === 1) || this.userRole === 3"
+            *ngIf="isLoggedIn"
             mat-button
             [routerLink]="['/canciones/mine']"
             class="menu-item"

@@ -240,7 +240,6 @@ export class TextinputComponent {
       return;
     }
     this.text = lines.trim().split('\n');
-    this.text;
     this.enviado = true;
     this.cancion.artista_id = this.artistaSeleccionado?.id;
     this.cancion.tonalidade_id = this.tonalidadSeleccionada?.id;
@@ -249,96 +248,93 @@ export class TextinputComponent {
     this.cancion.genero_id = this.generoSeleccionado?.id;
     this.cancion.genero = this.generoSeleccionado?.nombre;
     this.cancion.metrica = this.bin ? 'bin' : 'ter';
-    this.artistaSeleccionado;
-    this.tonalidadSeleccionada;
-    this.cancion;
+    this.cancion.lineas = this.lineas;
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
+    this.lineas = [];
+    this.text.forEach((line) => {
+      if (this.bin) {
+        let acordesV = [
+          {
+            posicion_en_compas: 0,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+          {
+            posicion_en_compas: 1,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+          {
+            posicion_en_compas: 2,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+          {
+            posicion_en_compas: 3,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+        ];
+        const nuevaLinea: Linea = {
+          texto: line,
+          n_linea: this.lineas.length + 1,
+          acordes: acordesV,
+        };
+        this.lineas.push(nuevaLinea);
+        this.cancion.lineas = this.lineas;
+        this.cancion.metrica = 'bin';
+      } else {
+        let acordesT = [
+          {
+            posicion_en_compas: 0,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+          {
+            posicion_en_compas: 1,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+          {
+            posicion_en_compas: 2,
+            acorde: '',
+            variacion: '',
+            grado: 0,
+            effect: 'copy',
+            id: 169,
+          },
+        ];
+        const nuevaLinea: Linea = {
+          texto: line,
+          n_linea: this.lineas.length + 1,
+          acordes: acordesT,
+        };
+        this.lineas.push(nuevaLinea);
+        this.cancion.lineas = this.lineas;
+        this.cancion.metrica = 'ter';
+      }
+    });
 
-    if (!this.esRevision && !this.esEdicion) {
-      this.text.forEach((line) => {
-        if (this.bin) {
-          let acordesV = [
-            {
-              posicion_en_compas: 0,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-            {
-              posicion_en_compas: 1,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-            {
-              posicion_en_compas: 2,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-            {
-              posicion_en_compas: 3,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-          ];
-          const nuevaLinea: Linea = {
-            texto: line,
-            n_linea: this.lineas.length + 1,
-            acordes: acordesV,
-          };
-          this.lineas.push(nuevaLinea);
-          this.cancion.lineas = this.lineas;
-          this.cancion.metrica = 'bin';
-        } else {
-          let acordesT = [
-            {
-              posicion_en_compas: 0,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-            {
-              posicion_en_compas: 1,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-            {
-              posicion_en_compas: 2,
-              acorde: '',
-              variacion: '',
-              grado: 0,
-              effect: 'copy',
-              id: 169,
-            },
-          ];
-          const nuevaLinea: Linea = {
-            texto: line,
-            n_linea: this.lineas.length + 1,
-            acordes: acordesT,
-          };
-          this.lineas.push(nuevaLinea);
-          this.cancion.lineas = this.lineas;
-          this.cancion.metrica = 'ter';
-        }
-      });
-    }
     this.cancion;
   }
 }

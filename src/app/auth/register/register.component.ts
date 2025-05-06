@@ -120,6 +120,7 @@ import { passwordMatchValidator } from '../passwordmatch.service';
                 mat-raised-button
                 color="primary"
                 type="submit"
+                [class]="registerForm.valid ? 'primary' : 'disabled'"
                 [disabled]="!registerForm.valid"
               >
                 Registrarse
@@ -129,7 +130,7 @@ import { passwordMatchValidator } from '../passwordmatch.service';
         </mat-card-content>
 
         <mat-card-actions class="footer-actions">
-          <a mat-button color="primary" routerLink="/login"
+          <a mat-button style="color:rgba(31, 53, 88, 0.9)" routerLink="/login"
             >¿Ya tienes cuenta? Inicia sesión</a
           >
         </mat-card-actions>
@@ -168,6 +169,10 @@ import { passwordMatchValidator } from '../passwordmatch.service';
       mat-card-title {
         text-align: center;
         margin-bottom: 24px;
+      }
+      .primary {
+        background-color: #a6c5f3;
+        color: black;
       }
       @media (max-width: 768px) {
         .register-container {

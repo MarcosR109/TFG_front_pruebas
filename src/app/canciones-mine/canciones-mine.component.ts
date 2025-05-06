@@ -57,8 +57,13 @@ export class CancionesMineComponent {
         es_favorita: false,
         es_propia: true,
       }));
-      this.cancionesCombinadas = [...cancionesFav, ...cancionesPro];
-
+      const idsPropias = new Set(
+        cancionesPro.map((cancion: any) => cancion.id)
+      );
+      this.cancionesCombinadas = [
+        ...cancionesPro,
+        ...cancionesFav.filter((cancion: any) => !idsPropias.has(cancion.id)),
+      ];
       this.cancionesFiltradas = [...this.cancionesCombinadas];
       this.cancionesCombinadas;
       this.isLoading = false;

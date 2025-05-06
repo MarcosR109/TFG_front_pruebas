@@ -147,6 +147,9 @@ export class TextBoxesComponent {
     }
   }
   ngOnInit() {
+    console.log('CANCION EN TEXTBOXES', this.cancion);
+    console.log('LINEAS EN TEXTBOXES', this.lines);
+
     if (this.edicion) {
       this.revision = false;
     }
