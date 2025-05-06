@@ -77,14 +77,16 @@ export class CancioneslistfComponent {
     this.filteredCanciones = this.cancionesList.filter((cancion: any) => {
       cancion;
 
-      // Asegurarse de que género es string y manejar null/undefined correctamente
-      const generoCancion = cancion?.genero?.nombre
-        ? String(cancion.genero.nombre).toLowerCase()
+      let generoCancion = cancion?.genero
+        ? typeof cancion.genero === 'object'
+          ? String(cancion.genero.nombre).toLowerCase()
+          : String(cancion.genero).toLowerCase()
         : '';
+
       const generoFiltro = this.filtros.genero
         ? String(this.filtros.genero).toLowerCase()
         : '';
-
+      console.log(cancion);
       const matchesGenero =
         !this.filtros.genero || generoCancion.includes(generoFiltro);
 
@@ -103,6 +105,8 @@ export class CancioneslistfComponent {
 
       const matchesTitle =
         !this.filtros.titulo || tituloCancion.includes(tituloFiltro);
+      console.log(matchesGenero);
+      console.log(generoCancion);
 
       return matchesGenero && matchesRating && matchesTitle;
     });
