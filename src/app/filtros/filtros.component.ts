@@ -105,7 +105,7 @@ export class FiltrosComponent {
     //     ?.valueChanges.pipe(debounceTime(400), distinctUntilChanged())
     //     .subscribe(() => this.aplicarFiltros());
     // }
-    this.filtrosForm.value;
+    console.log(this.filtrosForm.value);
     this.filtrosForm.patchValue({
       artista: this.artistaSeleccionado?.nombre,
       genero: this.generoSeleccionado?.nombre,
