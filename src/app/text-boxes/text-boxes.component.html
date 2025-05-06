@@ -62,7 +62,7 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="block" class="slider-container" [class.open]="sliderOpen">
+<div *ngIf="!block" class="slider-container" [class.open]="sliderOpen">
   <!-- Botón de despliegue dentro del slider -->
   <button class="slider-toggle centered-chevron" (click)="toggleSlider()">
     <mat-icon *ngIf="!sliderOpen">chevron_left</mat-icon>
@@ -331,12 +331,14 @@
 <aside *ngIf="!block">
   <div class="contenedor">
     <mat-icon
+      style="z-index: 10000"
       #tooltip="matTooltip"
       matTooltip="Selecciona una tonalidad y arrastra los acordes al compás que quieras"
       [matTooltipPosition]="'below'"
       matTooltipHideDelay="100"
       aria-label="Button that displays a tooltip that hides when scrolled out of the container"
       ><svg
+        style="z-index: 10000"
         xmlns="http://www.w3.org/2000/svg"
         height="24px"
         viewBox="0 -960 960 960"
@@ -359,7 +361,12 @@
         class="acorde-box"
         [dndDraggable]="acorde"
       >
-        {{ acorde.acorde }}
+        <app-acordeshow
+          *ngIf="acorde.acorde != 'aux'"
+          [chord]="acorde.acorde || ''"
+          [variacion]="acorde.variacion || ''"
+          [semitones]="this.semitones"
+        ></app-acordeshow>
       </div>
     </div>
 

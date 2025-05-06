@@ -252,6 +252,9 @@ export class TextinputComponent {
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
+    console.log('CANCIÓN EN TEXTINPUT ANTES DE TRANSFORMACIÓN', this.cancion);
+    console.log('LINEAS EN TEXTINPUT', this.lineas);
+    const clon = this.lineas;
     this.lineas = [];
     this.text.forEach((line) => {
       if (this.bin) {
@@ -334,7 +337,13 @@ export class TextinputComponent {
         this.cancion.metrica = 'ter';
       }
     });
+    clon.forEach((linea) => {
+      const index = this.lineas.findIndex((l) => l.n_linea === linea.n_linea);
+      if (index !== -1) {
+        this.lineas[index].acordes = linea.acordes;
+      }
+    });
 
-    this.cancion;
+    console.log('CANCIÓN EN TEXTINPUT', this.cancion);
   }
 }

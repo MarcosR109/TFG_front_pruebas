@@ -43,7 +43,12 @@ import { filter, map, mergeMap } from 'rxjs/operators';
     </mat-toolbar>
     <!-- Menú lateral para pantallas grandes -->
     <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #sidenav mode="side" [opened]="!isMobile || isMenuOpen">
+      <mat-sidenav
+        #sidenav
+        [mode]="isMobile ? 'over' : 'side'"
+        [opened]="!isMobile || isMenuOpen"
+        (closedStart)="isMenuOpen = false"
+      >
         <div class="menu">
           <button
             *ngIf="this.userRole === 3"

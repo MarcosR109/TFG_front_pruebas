@@ -17,7 +17,7 @@
         >
           <!-- Botón "x" para limpiar el contenido textual (solo visible si hay contenido) -->
           <button
-            *ngIf="acorde.acorde && !block"
+            *ngIf="acorde.id != 169 && !block"
             class="delete-button"
             (click)="eliminarAcorde($event, linea.n_linea, squareIndex)"
           >

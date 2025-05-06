@@ -256,6 +256,7 @@ export class MobileboxesComponent {
       const linea = this.lines?.find((line) => line.n_linea === n_linea);
       if (linea) {
         const acorde = linea.acordes[squareIndex];
+        acorde.id = 169;
         acorde;
         acorde.acorde = ''; // Limpiamos el acorde
         acorde.variacion = ''; // Limpiamos la variación
@@ -395,11 +396,12 @@ export class MobileboxesComponent {
       this.lines?.forEach((line) => {
         if (line.n_linea === linea) {
           const acorde = line.acordes[squareIndex!];
+          acorde.id = this.acordeTouch.id; // Asigna el id al acorde
           acorde.acorde = this.acordeTouch.acorde; // Asigna el acorde al cuadrado
           acorde.variacion = this.acordeTouch.variacion; // Asigna la variación al cuadrado
           acorde.effect = 'copy';
           acorde.grado = this.acordeTouch.grado; // Efecto de copia
-          acorde;
+          console.log(acorde);
           this.recomendaciones.anadirAcorde(
             acorde.id!,
             acorde.acorde!,
@@ -420,7 +422,7 @@ export class MobileboxesComponent {
       this.lines?.forEach((line) => {
         if (line.n_linea === linea) {
           const acorde = line.acordes[squareIndex!];
-          acorde;
+          console.log(acorde);
           if (acorde.acorde) {
             acorde.variacion = this.variacionTouch; // Asigna la variación al cuadrado
           }
