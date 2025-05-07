@@ -102,7 +102,14 @@
         "
       ></tr>
     </table>
-
+    <mat-paginator
+      [length]="cancionesInit.length"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page"
+      showFirstLastButtons
+    >
+    </mat-paginator>
     <!-- Mensaje cuando no hay resultados -->
     <div *ngIf="cancionesFiltradas.length === 0" class="no-results">
       <mat-icon>info</mat-icon>
