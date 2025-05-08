@@ -426,6 +426,7 @@ export class TextBoxesComponent {
       linea.acordes[squareIndex].grado = event.data.grado;
       linea.acordes[squareIndex].effect = event.data.effect;
       linea.acordes[squareIndex].id = event.data.id;
+
       this.recomendaciones.anadirAcorde(
         event.data.id,
         event.data.acorde,
@@ -459,11 +460,15 @@ export class TextBoxesComponent {
     this.recomendaciones.getRecomendaciones().subscribe((res) => {
       this.recomendacion = res.recomendaciones;
       this.loading = false;
+      const uniqueRecomendaciones = new Set();
       this.recomendacion.forEach((recomendacion) => {
-        this.findAcordeRecomendado(
-          recomendacion.siguiente,
-          recomendacion.probabilidad
-        );
+        if (!uniqueRecomendaciones.has(recomendacion.siguiente)) {
+          uniqueRecomendaciones.add(recomendacion.siguiente);
+          this.findAcordeRecomendado(
+            recomendacion.siguiente,
+            recomendacion.probabilidad
+          );
+        }
       });
     });
   }

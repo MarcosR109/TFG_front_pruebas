@@ -39,7 +39,9 @@ export class RecomendacionesService {
     return;
   }
   getRecomendaciones(): Observable<any> {
-    this.recomendaciones;
+    this.recomendaciones?.forEach((recomendacion) => {
+      console.log('RECOMENDACION', recomendacion);
+    });
     if (this.recomendaciones) {
       return this.recomendaciones;
     }
@@ -63,21 +65,34 @@ export class RecomendacionesService {
       effect: 'copy',
       linea,
     };
+    if (this.acordeActual?.id === nuevoAcorde.id) {
+      console.warn('Acorde ya añadido - no se actualiza la progresión');
+      return;
+    }
     if (this.ultimoAcorde === null) {
       this.acordeActual = nuevoAcorde;
       this.ultimoAcorde = nuevoAcorde;
+      console.log('ACORDE ACTUAL', this.acordeActual);
+
+      console.log('ULTIMO ACORDE', this.ultimoAcorde);
+
       return this.actualizarRecomendaciones(this.acordeActual.grado, null, 3);
     }
+
     // Caso 2: Acorde en nueva línea (mayor número de línea)
-    if (linea > this.ultimoAcorde.linea!) {
+    if (linea > this.ultimoAcorde.linea! || linea > this.acordeActual?.linea!) {
       this.ultimoAcorde = this.acordeActual;
       this.acordeActual = nuevoAcorde;
+      console.log('ACORDE ACTUAL', this.acordeActual);
+      console.log('ULTIMO ACORDE', this.ultimoAcorde);
+
       return this.actualizarRecomendaciones(
         this.acordeActual.grado,
         this.ultimoAcorde?.grado,
         3
       );
     }
+
     if (
       linea === this.ultimoAcorde.linea &&
       posicion_en_compas > this.ultimoAcorde.posicion_en_compas!
@@ -85,6 +100,10 @@ export class RecomendacionesService {
       // El acorde actual pasa a ser el último
       this.ultimoAcorde = this.acordeActual;
       this.acordeActual = nuevoAcorde;
+      console.log('ACORDE ACTUAL', this.acordeActual);
+
+      console.log('ULTIMO ACORDE', this.ultimoAcorde);
+
       if (this.ultimoAcorde)
         return this.actualizarRecomendaciones(
           this.acordeActual.grado,
@@ -92,15 +111,26 @@ export class RecomendacionesService {
           3
         );
     }
-
     // Caso 4: Acorde en posición anterior (posible edición)
-    if (posicion_en_compas <= this.ultimoAcorde?.posicion_en_compas!) {
+    if (
+      this.ultimoAcorde &&
+      posicion_en_compas <= this.ultimoAcorde.posicion_en_compas! &&
+      this.ultimoAcorde.linea <= linea
+    ) {
+      console.log('ACORDE ACTUAL', this.acordeActual);
+
+      console.log('ULTIMO ACORDE', this.ultimoAcorde);
+
       console.warn(
         'Acorde en posición anterior - no se actualiza la progresión'
       );
       return;
     }
     return;
+  }
+  ngOnDestroy() {
+    // Limpiar el observable al destruir el servicio
+    this.recomendaciones = undefined;
   }
 }
 export interface AcordeRecomendacion {
