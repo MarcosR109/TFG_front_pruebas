@@ -172,6 +172,8 @@ export class TextBoxesComponent {
       );
     }
     this.velocidad = 0;
+    this.recomendaciones.ultimoAcorde = null;
+    this.recomendaciones.acordeActual = null;
   }
   autoScrollContainer() {
     this.container = this.renderer.selectRootElement('.scrollable', true);

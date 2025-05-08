@@ -31,7 +31,7 @@ export class RecomendacionesService {
 
     // Solo añadir previo si existe
     if (previo !== undefined && previo !== null) {
-      params = params.set('previo', previo.toString());
+      params = params.set('previo', previo.toString() || 0);
     }
     this.recomendaciones = this.http.get(`${this.URL}canciones/recomendacion`, {
       params,
@@ -131,6 +131,8 @@ export class RecomendacionesService {
   ngOnDestroy() {
     // Limpiar el observable al destruir el servicio
     this.recomendaciones = undefined;
+    this.acordeActual = null;
+    this.ultimoAcorde = null;
   }
 }
 export interface AcordeRecomendacion {
