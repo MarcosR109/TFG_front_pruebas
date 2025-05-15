@@ -1,29 +1,18 @@
-<form [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+<form [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()" >
   <mat-form-field appearance="outline">
     <mat-label>Título</mat-label>
-    <input
-      (input)="sleepFiltro()"
-      matInput
-      formControlName="titulo"
-      placeholder="Buscar..."
-    />
+    <input (input)="aplicarFiltros()" matInput formControlName="titulo" placeholder="Buscar..." />
   </mat-form-field>
+
   <mat-form-field appearance="outline" class="form-col">
     <mat-label>Artista</mat-label>
-    <input
-      type="text"
-      matInput
-      placeholder="Buscar artista..."
-      [matAutocomplete]="autoArtista"
-      [value]="inputTextoArtista"
-      (input)="filtrarArtistas($event)"
-    />
+    <input type="text" matInput placeholder="Buscar artista..." 
+           [matAutocomplete]="autoArtista"
+           formControlName="artista"
+           >
     <mat-autocomplete #autoArtista="matAutocomplete">
-      <mat-option
-        *ngFor="let artista of artistasFiltrados"
-        [value]="artista.nombre"
-        (onSelectionChange)="seleccionarArtista(artista)"
-      >
+      <mat-option *ngFor="let artista of artistasFiltrados" [value]="artista.nombre"
+        (onSelectionChange)="seleccionarArtista(artista)">
         <div class="artist-option">
           <mat-icon>person</mat-icon>
           <span>{{ artista.nombre }}</span>
@@ -33,23 +22,14 @@
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 
-  <!-- Campo Género -->
   <mat-form-field appearance="outline" class="form-col">
     <mat-label>Género</mat-label>
-    <input
-      type="text"
-      matInput
-      placeholder="Buscar género..."
-      [matAutocomplete]="autoGenero"
-      [value]="inputTextoGenero"
-      (input)="filtrarGeneros($event)"
-    />
+    <input type="text" matInput placeholder="Buscar género..." 
+           [matAutocomplete]="autoGenero"
+           formControlName="genero">
     <mat-autocomplete #autoGenero="matAutocomplete">
-      <mat-option
-        *ngFor="let genero of generosFiltrados"
-        [value]="genero.nombre"
-        (onSelectionChange)="seleccionarGenero(genero)"
-      >
+      <mat-option *ngFor="let genero of generosFiltrados" [value]="genero.nombre"
+        (onSelectionChange)="seleccionarGenero(genero)">
         <div class="genre-option">
           <mat-icon>music_note</mat-icon>
           <span>{{ genero.nombre }}</span>
@@ -69,7 +49,4 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button style="background-color: #a6c5f3" type="submit">
-    Filtrar
-  </button>
 </form>

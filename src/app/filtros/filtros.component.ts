@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CancionService } from '../cancion.service';
@@ -8,13 +8,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormGroup } from '@angular/forms';
 import { Artistas, artistas } from '../artistas';
 import { generos } from '../generos';
-import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 @Component({
   selector: 'app-filtros',
+  standalone: true,
   imports: [
     MatFormFieldModule,
     CommonModule,
@@ -22,96 +24,90 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatOption,
     MatIconModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule,
     MatButtonModule,
     MatAutocompleteModule,
+    FormsModule,
   ],
   templateUrl: './filtros.component.html',
   styleUrl: './filtros.component.css',
 })
-export class FiltrosComponent {
+export class FiltrosComponent implements OnInit {
   filtrosForm: FormGroup;
-  artistas = artistas.artistas; // Accede al array dentro del objeto
-  generos = generos.generos; // Accede al array dentro del objeto
+  artistas = artistas.artistas;
+  generos = generos.generos;
   artistasFiltrados: any[] = [];
   generosFiltrados: any[] = [];
-  artistaSeleccionado: any = null;
-  generoSeleccionado: any = null;
-  inputTextoArtista: string = '';
-  inputTextoGenero: string = '';
   esLista: boolean = false;
+
   constructor(private fb: FormBuilder, private cancionService: CancionService) {
     this.filtrosForm = this.fb.group({
       titulo: [''],
-      artista: [null],
-      genero: [null],
+      artista: [''],
+      genero: [''],
       calificacion: [null],
     });
-    this.artistas = artistas.artistas;
-    this.generos = generos.generos;
   }
 
-  filtrarArtistas(event: any) {
-    const filtro = event.target.value.toLowerCase();
-    this.inputTextoArtista = event.target.value;
-    this.artistaSeleccionado = null;
-    this.artistasFiltrados = filtro
-      ? this.artistas.filter((artista: { nombre: string }) =>
-          artista.nombre.toLowerCase().includes(filtro)
-        )
-      : [...this.artistas];
+  ngOnInit(): void {
+    this.setupAutocomplete();
+    this.setupReactiveFilters();
   }
 
-  seleccionarArtista(artista: any) {
-    this.artistaSeleccionado = artista;
-    this.inputTextoArtista = artista.nombre;
-    this.inputTextoArtista;
-    this.filtrosForm.patchValue({
-      artista: artista.nombre,
-    });
+  private setupAutocomplete(): void {
+    // Autocompletado para artistas
+    this.filtrosForm.get('artista')?.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      map(value => this.filterArtistas(value))
+    ).subscribe(filtered => this.artistasFiltrados = filtered);
+
+    // Autocompletado para géneros
+    this.filtrosForm.get('genero')?.valueChanges.pipe(
+      startWith(''),
+      debounceTime(300),
+      distinctUntilChanged(),
+      map(value => this.filterGeneros(value))
+    ).subscribe(filtered => this.generosFiltrados = filtered);
   }
 
-  filtrarGeneros(event: any) {
-    const filtro = event.target.value.toLowerCase();
-    this.inputTextoGenero = event.target.value;
-    this.generoSeleccionado = null;
-    this.generosFiltrados = filtro
-      ? this.generos.filter((genero: { nombre: string }) =>
-          genero.nombre.toLowerCase().includes(filtro)
-        )
-      : [...this.generos];
-  }
-  sleepFiltro() {
-    setTimeout(() => {
+  private setupReactiveFilters(): void {
+    // Escuchar cambios en todos los campos del formulario
+    this.filtrosForm.valueChanges.pipe(
+      debounceTime(400), // Pequeño retraso para evitar múltiples llamadas
+      distinctUntilChanged((prev, curr) => 
+        JSON.stringify(prev) === JSON.stringify(curr))
+    ).subscribe(() => {
       this.aplicarFiltros();
-    }, 200);
-  }
-  // Método para seleccionar género
-  seleccionarGenero(genero: any) {
-    this.generoSeleccionado = genero;
-    this.inputTextoGenero = genero.nombre;
-    this.inputTextoGenero;
-    this.filtrosForm.patchValue({
-      genero: genero.nombre,
     });
   }
-  aplicarFiltros() {
-    // if (this.filtrosForm) {
-    //   this.filtrosForm
-    //     .get('titulo')
-    //     ?.valueChanges.pipe(debounceTime(400), distinctUntilChanged())
-    //     .subscribe(() => this.aplicarFiltros());
-    // }
-    console.log(this.filtrosForm.value);
-    this.filtrosForm.patchValue({
-      artista: this.artistaSeleccionado?.nombre,
-      genero: this.generoSeleccionado?.nombre,
-      titulo: this.filtrosForm.get('titulo')?.value,
-      calificacion: this.filtrosForm.get('calificacion')?.value,
-    });
+
+  private filterArtistas(value: string | any): any[] {
+    // Manejar cuando value es el objeto completo (selección)
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
+    return this.artistas.filter(artista => 
+      artista.nombre.toLowerCase().includes(filterValue)
+    );
+  }
+
+  private filterGeneros(value: string | any): any[] {
+    const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
+    return this.generos.filter(genero => 
+      genero.nombre.toLowerCase().includes(filterValue)
+    );
+  }
+
+  seleccionarArtista(artista: any): void {
+    this.filtrosForm.get('artista')?.setValue(artista.nombre, { emitEvent: true });
+  }
+
+  seleccionarGenero(genero: any): void {
+    this.filtrosForm.get('genero')?.setValue(genero.nombre, { emitEvent: true });
+  }
+
+  aplicarFiltros(): void {
     this.cancionService.actualizarFiltros(this.filtrosForm.value);
   }
 }

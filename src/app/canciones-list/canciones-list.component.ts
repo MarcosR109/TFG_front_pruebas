@@ -44,7 +44,7 @@ export class CancionesListComponent {
   isLoading: boolean = true;
   pageSize = 10;
   pageIndex = 0;
-  constructor(private cancionService: CancionService) {}
+  constructor(private cancionService: CancionService) { }
 
   ngOnInit() {
     this.cancionService.getCanciones().subscribe((res) => {
@@ -63,12 +63,15 @@ export class CancionesListComponent {
     });
   }
   ngAfterViewInit() {
-    this.paginator.page.subscribe((event: PageEvent) => {
-      this.pageIndex = event.pageIndex;
-      this.pageSize = event.pageSize;
-      this.updatePaginated();
-    });
-    this.paginator._intl.itemsPerPageLabel = 'items por pagina';
+    if (this.cancionesInit) {
+      this.paginator.page.subscribe((event: PageEvent) => {
+        this.pageIndex = event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.updatePaginated();
+      });
+      this.paginator._intl.itemsPerPageLabel = 'items por pagina';
+    }
+
   }
   updatePaginated() {
     this.paginator.length = this.cancionesFiltradas.length;
