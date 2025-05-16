@@ -12,3 +12,75 @@ body {
 .mat-mdc-progress-spinner {
   --mdc-circular-progress-active-indicator-color: #6b80a0;
 }
+/* En tu archivo de estilos del componente o global */
+@media print {
+  /* Reset general */
+  @page {
+    size: A4 portrait;
+    margin: 15mm 10mm;
+    marks: none;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* Ocultar elementos no deseados */
+  .rating-fav,
+  .favorite-icon,
+  .rating,
+  button[mat-button],
+  .no-print,
+  header,
+  aside,
+  footer {
+    display: none !important;
+  }
+
+  /* Contenido principal */
+  .parent {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    break-inside: avoid;
+  }
+
+  /* Estilos para tarjetas */
+  .song-card {
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: avoid;
+  }
+
+  /* Cuadrados de acordes */
+  .square-container {
+    display: flex !important;
+    justify-content: space-between !important;
+    page-break-inside: avoid;
+  }
+
+  .square {
+    width: 100% !important;
+    height: 50px !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Texto de la canción */
+  .plaintext {
+    white-space: pre !important;
+    font-family: Arial !important;
+    font-size: 12pt !important;
+  }
+
+  /* Asegurar visibilidad de componentes */
+  app-acordeshow,
+  app-text-boxes {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
