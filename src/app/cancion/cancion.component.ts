@@ -146,7 +146,7 @@ export class CancionComponent {
     );
     this.authService.authStatus.subscribe((status) => {
       this.isLoggedIn = status;
-      console.log(this.isLoggedIn);
+    //  console.log(this.isLoggedIn);
       // Actualiza el estado de login
     });
   }

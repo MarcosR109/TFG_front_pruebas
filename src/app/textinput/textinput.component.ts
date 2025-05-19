@@ -196,16 +196,16 @@ export class TextinputComponent {
 
   romperTexto(lines: string) {
     this.error = {};
-    console.log(this.texto);
-    console.log();
-
-    console.log('Título:', this.cancion.titulo);
-    console.log('Texto:', this.texto);
-    console.log('Privada:', this.cancion.privada);
-    console.log('Género seleccionado:', this.generoSeleccionado);
-    console.log('Tonalidad seleccionada:', this.tonalidadSeleccionada);
-    console.log('Capo:', this.cancion.capo);
-    console.log('Artista seleccionado:', this.artistaSeleccionado?.nombre);
+  //  console.log(this.texto);
+  //  console.log();
+//
+  //  console.log('Título:', this.cancion.titulo);
+  //  console.log('Texto:', this.texto);
+  //  console.log('Privada:', this.cancion.privada);
+  //  console.log('Género seleccionado:', this.generoSeleccionado);
+  //  console.log('Tonalidad seleccionada:', this.tonalidadSeleccionada);
+  //  console.log('Capo:', this.cancion.capo);
+  //  console.log('Artista seleccionado:', this.artistaSeleccionado?.nombre);
     if (this.cancion.titulo == null) {
       this.error.titulo = 'Porfavor introduce un título';
     }
@@ -252,8 +252,8 @@ export class TextinputComponent {
     if (this.metricaInicial != this.cancion.metrica) {
       this.modificarMetrica(this.cancion.lineas || []);
     }
-    console.log('CANCIÓN EN TEXTINPUT ANTES DE TRANSFORMACIÓN', this.cancion);
-    console.log('LINEAS EN TEXTINPUT', this.lineas);
+ //   console.log('CANCIÓN EN TEXTINPUT ANTES DE TRANSFORMACIÓN', this.cancion);
+ //   console.log('LINEAS EN TEXTINPUT', this.lineas);
     const clon = this.lineas;
     this.lineas = [];
     this.text.forEach((line) => {
@@ -344,6 +344,6 @@ export class TextinputComponent {
       }
     });
 
-    console.log('CANCIÓN EN TEXTINPUT', this.cancion);
+ //   console.log('CANCIÓN EN TEXTINPUT', this.cancion);
   }
 }

@@ -401,7 +401,7 @@ export class MobileboxesComponent {
           acorde.variacion = this.acordeTouch.variacion; // Asigna la variación al cuadrado
           acorde.effect = 'copy';
           acorde.grado = this.acordeTouch.grado; // Efecto de copia
-          console.log(acorde);
+      //    console.log(acorde);
           this.recomendaciones.anadirAcorde(
             acorde.id!,
             acorde.acorde!,
@@ -422,7 +422,7 @@ export class MobileboxesComponent {
       this.lines?.forEach((line) => {
         if (line.n_linea === linea) {
           const acorde = line.acordes[squareIndex!];
-          console.log(acorde);
+       //   console.log(acorde);
           if (acorde.acorde) {
             acorde.variacion = this.variacionTouch; // Asigna la variación al cuadrado
           }
@@ -515,7 +515,7 @@ export class MobileboxesComponent {
     // Espera la respuesta del diálogo
     if (result) {
       if (this.edicion) {
-        console.log('Canción editada', this.cancion);
+    //    console.log('Canción editada', this.cancion);
 
         this.cancionService.editarCancion(this.cancion!).subscribe();
         this.cancionService.actualizarBadge();

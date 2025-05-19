@@ -70,7 +70,7 @@ export class CancionService {
     return this.http.post(this.URL + 'canciones', cancion);
   }
   editarCancion(cancion: Cancion) {
-    console.log('CANCIÓN ANTES DE ENVIAR A API', cancion);
+    //console.log('CANCIÓN ANTES DE ENVIAR A API', cancion);
 
     return this.http.put(
       this.URL + 'canciones/' + cancion.id + ' /editar',

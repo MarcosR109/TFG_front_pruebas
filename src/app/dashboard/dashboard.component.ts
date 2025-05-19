@@ -118,7 +118,7 @@ export class DashboardComponent {
   cambiarVista(event: MatTabChangeEvent): void {
     this.vistaActual = event.index === 0 ? 'canciones' : 'usuarios';
     if (this.vistaActual === 'usuarios' && this.usuarios.length === 0) {
-      console.log(this.isLoading);
+  //    console.log(this.isLoading);
 
       this.isLoading = true;
       this.cargarUsuarios();

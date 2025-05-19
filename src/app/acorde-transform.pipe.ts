@@ -169,7 +169,6 @@ export class AcordeTransformPipe implements PipeTransform {
     if (!chord || chord.trim() === '' || chord == 'aux') return chord;
 
     const transformedBase = this.transformBaseChord(chord);
-
     return transformedBase;
   }
 

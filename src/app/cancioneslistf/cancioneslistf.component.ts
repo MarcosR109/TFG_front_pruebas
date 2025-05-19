@@ -86,7 +86,7 @@ export class CancioneslistfComponent {
       const generoFiltro = this.filtros.genero
         ? String(this.filtros.genero).toLowerCase()
         : '';
-      console.log(cancion);
+   //   console.log(cancion);
       const matchesGenero =
         !this.filtros.genero || generoCancion.includes(generoFiltro);
 
@@ -105,8 +105,8 @@ export class CancioneslistfComponent {
 
       const matchesTitle =
         !this.filtros.titulo || tituloCancion.includes(tituloFiltro);
-      console.log(matchesGenero);
-      console.log(generoCancion);
+ //   console.log(matchesGenero);
+ //   console.log(generoCancion);
 
       return matchesGenero && matchesRating && matchesTitle;
     });

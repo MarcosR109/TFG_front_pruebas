@@ -62,7 +62,7 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="!block" class="slider-container" [class.open]="sliderOpen">
+<div class="slider-container" [class.open]="sliderOpen">
   <!-- Botón de despliegue dentro del slider -->
   <button class="slider-toggle centered-chevron" (click)="toggleSlider()">
     <mat-icon *ngIf="!sliderOpen">chevron_left</mat-icon>

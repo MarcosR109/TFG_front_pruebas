@@ -147,8 +147,8 @@ export class TextBoxesComponent {
     }
   }
   ngOnInit() {
-    console.log('CANCION EN TEXTBOXES', this.cancion);
-    console.log('LINEAS EN TEXTBOXES', this.lines);
+ //  console.log('CANCION EN TEXTBOXES', this.cancion);
+ //  console.log('LINEAS EN TEXTBOXES', this.lines);
 
     if (this.edicion) {
       this.revision = false;
@@ -159,12 +159,12 @@ export class TextBoxesComponent {
     ) as HTMLElement;
 
     if (!this.externalContainer) {
-      console.error('No se encontró el contenedor externo');
+ //     console.error('No se encontró el contenedor externo');
       return;
     }
   }
   ngOnDestroy() {
-    console.log('Destruyendo componente...');
+  //  console.log('Destruyendo componente...');
     if (this.externalContainer) {
       this.externalContainer.removeEventListener(
         'scroll',
@@ -235,6 +235,7 @@ export class TextBoxesComponent {
     this.preferSostenidos = !this.preferSostenidos;
   }
   modSemitono(semitones: number) {
+ //   console.log("Semitonos antes de modificar:", this.semitones);
     if (this.semitones == 12 || this.semitones == -12) this.semitones = 0;
     this.semitones += semitones;
   }
