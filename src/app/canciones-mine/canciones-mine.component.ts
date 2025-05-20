@@ -12,6 +12,8 @@ import { MatIconButton } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmComponent } from '../confirm/confirm.component';
 @Component({
   selector: 'app-canciones-mine',
   imports: [
@@ -31,6 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSortModule,
     MatSort,
     MatProgressSpinnerModule,
+    ConfirmComponent,
   ],
   templateUrl: './canciones-mine.component.html',
   styleUrl: './canciones-mine.component.css',
@@ -40,7 +43,10 @@ export class CancionesMineComponent {
   debug: any[] = [];
   cancionesCombinadas: CancionFoo[] = [];
   isLoading: boolean = true;
-  constructor(private cancionService: CancionService) {}
+  constructor(
+    private cancionService: CancionService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.cancionService.getMine().subscribe((res: any) => {
@@ -112,6 +118,28 @@ export class CancionesMineComponent {
     } else {
       return 'star_border'; // Estrella vacía
     }
+  }
+
+  async eliminarCancion(id: number) {
+    const result = await this.openDialog();
+    if (result) {
+      this.cancionService.eliminarCancion(id).subscribe((res: any) => {
+        if (res) {
+          this.cancionesFiltradas = this.cancionesFiltradas.filter(
+            (cancion) => cancion.id !== id
+          );
+        }
+      });
+    }
+  }
+  openDialog(): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: {
+        title: '¿Elimiar canción?',
+        message: 'Esta acción no se puede deshacer',
+      },
+    });
+    return dialogRef.afterClosed().toPromise(); // Retorna una promesa con el valor de `result`
   }
 }
 
